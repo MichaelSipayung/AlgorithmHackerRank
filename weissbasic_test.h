@@ -1,0 +1,207 @@
+#ifndef BASIC_ALGORITHM_TEST
+#define BASIC_ALGORITHM_TEST
+#include "weissbasic.h"
+#include <gtest/gtest.h>
+#include <list>
+TEST(removeEveryOtherItem, sizeiseven) {
+	std::list<int> data = { 1, 2, 3, 4, 5, 6 };
+	std::list<int> result = { 2, 4, 6 };
+	removeEveryOtherItem(data);
+	EXPECT_EQ(result, data);
+}
+TEST(removeEveryOtherItem, sizeisodd) {
+	std::list<int> data = { 1, 2, 3 };
+	std::list<int> result = { 2 };
+	removeEveryOtherItem(data);
+	EXPECT_EQ(result, data);
+}
+TEST(removeEveryOtherItem, sizeisone) {
+	std::list<int> data = { 1 };
+	std::list<int> result;
+	removeEveryOtherItem(data);
+	EXPECT_EQ(data, result);
+}
+TEST(removeEveryOtherItem, sizeisnil) {
+	std::list<int> data;
+	std::list<int> result;
+	removeEveryOtherItem(data);
+	EXPECT_EQ(data, result);
+}
+TEST(saveThePrisoner, testcase1) { EXPECT_EQ(2, saveThePrisoner(5, 2, 1)); }
+TEST(saveThePrisoner, testcase2) { EXPECT_EQ(3, saveThePrisoner(5, 2, 2)); }
+TEST(saveThePrisoner, testcase3) { EXPECT_EQ(7, saveThePrisoner(7, 19, 3)); }
+TEST(saveThePrisoner, testcase4) { EXPECT_EQ(3, saveThePrisoner(3, 7, 3)); }
+TEST(saveThePrisoner, testcase5) { EXPECT_EQ(1, saveThePrisoner(3, 7, 1)); }
+TEST(saveThePrisoner, testcase6) { EXPECT_EQ(3, saveThePrisoner(5, 2, 2)); }
+TEST(saveThePrisoner, testcase8) {
+	EXPECT_EQ(405956028, saveThePrisoner(962975336, 972576181, 396355184));
+}
+TEST(saveThePrisoner, testcase9) {
+	EXPECT_EQ(23525398, saveThePrisoner(94431605, 679262176, 5284458));
+}
+TEST(saveThePrisoner, testcase10) {
+	EXPECT_EQ(122129406, saveThePrisoner(352926151, 380324688, 94730870));
+}
+TEST(saveThePrisoner, testcase11) {
+	EXPECT_EQ(674567416, saveThePrisoner(946486979, 973168361, 647886035));
+}
+TEST(saveThePrisoner, testcase12) {
+	EXPECT_EQ(999999999, saveThePrisoner(999999999, 999999999, 1));
+}
+TEST(saveThePrisoner, testcase13) {
+	EXPECT_EQ(1, saveThePrisoner(499999999, 999999998, 2));
+}
+TEST(saveThePrisoner, testcase14) {
+	EXPECT_EQ(72975907, saveThePrisoner(208526924, 756265725, 150817879));
+}
+TEST(circularArrayRotation, testcase1) {
+	std::vector<int> data = { 3, 4, 5 };
+	std::vector<int> result = { 5, 3 };
+	EXPECT_EQ(result, circularArrayRotation(data, 2, { 1, 2 }));
+}
+TEST(circularArrayRotation, testcase2) {
+	std::vector<int> data = { 1, 2, 3 };
+	std::vector<int> result = { 2, 3, 1 };
+	EXPECT_EQ(result, circularArrayRotation(data, 2, { 0, 1, 2 }));
+}
+TEST(permutationEquation, testcase1) {
+	std::vector<int> data = { 2, 3, 1 };
+	std::vector<int> result = { 2, 3, 1 };
+	EXPECT_EQ(result, permutationEquation(data));
+}
+TEST(permutationEquation, testcase2) {
+	std::vector<int> data = { 4, 3, 5, 1, 2 };
+	std::vector<int> result = { 1, 3, 5, 4, 2 };
+	EXPECT_EQ(result, permutationEquation(data));
+}
+TEST(jumpingOnClouds, testcase1) {
+	std::vector<int> data = { 0, 0, 1, 0, 0, 1, 1, 0 };
+	EXPECT_EQ(92, jumpingOnClouds(data, 2));
+}
+TEST(jumpingOnClouds, testcase2) {
+	std::vector<int> data = { 0, 0, 1, 0 };
+	EXPECT_EQ(96, jumpingOnClouds(data, 2));
+}
+TEST(findDigits, testcase1) {
+	const auto number = 12;
+	EXPECT_EQ(2, findDigits(number));
+}
+TEST(findDigits, testcase2) {
+	const auto number = 1012;
+	EXPECT_EQ(3, findDigits(number));
+}
+TEST(findDigits, testcase3) {
+	const auto number = 124;
+	EXPECT_EQ(3, findDigits(number));
+}
+TEST(findDigits, testcase4) {
+	const auto number = 10;
+	EXPECT_EQ(1, findDigits(number));
+}
+TEST(findDigits, testcase5) {
+	const auto number = 123456789;
+	EXPECT_EQ(3, findDigits(number));
+}
+TEST(findDigits, testcase6) {
+	const auto number = 106108048;
+	EXPECT_EQ(5, findDigits(number));
+}
+TEST(appendAndDelete, testcase1) {
+	string s = "hackerhappy";
+	string t = "hackerrank";
+	int k = 9;
+	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
+}
+TEST(appendAndDelete, testcase2) {
+	string s = "abc";
+	string t = "def";
+	int k = 6;
+	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
+}
+TEST(appendAndDelete, testcase3) {
+	string s = "ashley";
+	string t = "ash";
+	int k = 2;
+	EXPECT_EQ(string("No"), appendAndDelete(s, t, k));
+}
+TEST(appendAndDelete, testcase4) {
+	string s = "aba";
+	string t = "aba";
+	int k = 7;
+	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
+}
+TEST(appendAndDelete, testcase5) {
+	string s = "abjad";
+	string t = "abj";
+	int k = 3;
+	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
+}
+TEST(appendAndDelete, testcase6) {
+	string s = "y";
+	string t = "yu";
+	int k = 2;
+	EXPECT_EQ(string("No"), appendAndDelete(s, t, k));
+}
+// TEST(appendAndDelete, testcase7) {
+//     string s = "zzzzz";
+//     string t = "zzzzzzz";
+//     int k = 4;
+//     EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
+// }
+TEST(squares, testcase1) {
+	auto a = 3;
+	auto b = 9;
+	EXPECT_EQ(2, squares(a, b));
+}
+TEST(squares, testcase2) {
+	auto a = 17;
+	auto b = 24;
+	EXPECT_EQ(0, squares(a, b));
+}
+TEST(squares, testcase3) {
+	auto a = 24;
+	auto b = 49;
+	EXPECT_EQ(3, squares(a, b));
+}
+TEST(squares, testcase4) {
+	auto a = 465868129;
+	auto b = 988379794;
+	EXPECT_EQ(9855, squares(a, b));
+}
+TEST(libraryFine, testcase1) {
+	int d1 = 9, m1 = 6, y1 = 2015;
+	int d2 = 6, m2 = 6, y2 = 2015;
+	EXPECT_EQ(45, libraryFine(d1, m1, y1, d2, m2, y2));
+}
+TEST(libraryFine, testcase2) {
+	int d1 = 14, m1 = 2, y1 = 2024;
+	int d2 = 16, m2 = 1, y2 = 2024;
+	EXPECT_EQ((m1 - m2) * 500, libraryFine(d1, m1, y1, d2, m2, y2));
+}
+TEST(cutTheSticks, testcase1) {
+	vector<int> data = { 5,4,4,2,2,8 };
+	vector<int> goal = { 6,4,2,1 };
+	EXPECT_EQ(goal, cutTheSticks(data));
+}
+TEST(cutTheSticks, testcase2) {
+	vector<int> data = { 1,2,3,4,3,3,2,1 };
+	vector<int> goal = { 8,6,4,1 };
+	EXPECT_EQ(goal, cutTheSticks(data));
+}
+TEST(nonDivisibleSubset, testcase1) {
+	const int k = 3;
+	vector<int> data = { 1,7,2,4 };
+	EXPECT_EQ(3, nonDivisibleSubset(k, data));
+}
+TEST(nonDivisibleSubset, testcase2) {
+	const int k = 5;
+	vector<int> data = { 1,2,3,4,5,6 };
+	EXPECT_EQ(4, nonDivisibleSubset(k, data));
+}
+TEST(nonDivisibleSubset, testcase3) {
+	const int k = 7;
+	vector<int> data = { 278 ,576 ,496, 727 ,410 ,124 ,
+		338 ,149 ,209 ,702 ,282 ,718 ,771 ,575, 436 };
+	EXPECT_EQ(11, nonDivisibleSubset(k, data));
+}
+#endif
