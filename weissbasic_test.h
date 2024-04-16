@@ -148,26 +148,26 @@ TEST(appendAndDelete, testcase6) {
 //     int k = 4;
 //     EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
 // }
-TEST(squares, testcase1) {
-	auto a = 3;
-	auto b = 9;
-	EXPECT_EQ(2, squares(a, b));
-}
-TEST(squares, testcase2) {
-	auto a = 17;
-	auto b = 24;
-	EXPECT_EQ(0, squares(a, b));
-}
-TEST(squares, testcase3) {
-	auto a = 24;
-	auto b = 49;
-	EXPECT_EQ(3, squares(a, b));
-}
-TEST(squares, testcase4) {
-	auto a = 465868129;
-	auto b = 988379794;
-	EXPECT_EQ(9855, squares(a, b));
-}
+// TEST(squares, testcase1) {
+// 	auto a = 3;
+// 	auto b = 9;
+// 	EXPECT_EQ(2, squares(a, b));
+// }
+// TEST(squares, testcase2) {
+// 	auto a = 17;
+// 	auto b = 24;
+// 	EXPECT_EQ(0, squares(a, b));
+// }
+// TEST(squares, testcase3) {
+// 	auto a = 24;
+// 	auto b = 49;
+// 	EXPECT_EQ(3, squares(a, b));
+// }
+// TEST(squares, testcase4) {
+// 	auto a = 465868129;
+// 	auto b = 988379794;
+// 	EXPECT_EQ(9855, squares(a, b));
+// }
 TEST(libraryFine, testcase1) {
 	int d1 = 9, m1 = 6, y1 = 2015;
 	int d2 = 6, m2 = 6, y2 = 2015;
@@ -203,5 +203,85 @@ TEST(nonDivisibleSubset, testcase3) {
 	vector<int> data = { 278 ,576 ,496, 727 ,410 ,124 ,
 		338 ,149 ,209 ,702 ,282 ,718 ,771 ,575, 436 };
 	EXPECT_EQ(11, nonDivisibleSubset(k, data));
+}
+TEST(organizingContainers, testcase1) {
+	vector<vector<int>> data = {
+		{1,3,1},
+		{2,1,2},
+		{3,3,3}
+	};
+	EXPECT_EQ(string("Impossible"), organizingContainers(data));
+}
+TEST(organizingContainers, testcase2) {
+	vector<vector<int>> data = {
+		{0,2,1},
+		{1,1,1},
+		{2,0,0}
+	};
+	EXPECT_EQ(string("Possible"), organizingContainers(data));
+}
+TEST(organizingContainers, testcase3) {
+	vector<vector<int>> data = {
+		{1,1},
+		{1,1},
+	};
+	EXPECT_EQ(string("Possible"), organizingContainers(data));
+}
+TEST(organizingContainers, testcase4) {
+	vector<vector<int>> data = {
+		{0,2},
+		{1,1},
+	};
+	EXPECT_EQ(string("Impossible"), organizingContainers(data));
+}
+TEST(removeKdigitss, testcase1) {
+	EXPECT_EQ(string("1219"), removeKdigitss(string("1432219"), 3));
+}
+TEST(removeKdigitss, testcase2) {
+	EXPECT_EQ(string("200"), removeKdigitss(string("10200"), 1));
+}
+TEST(removeKdigitss, testcase3) {
+	EXPECT_EQ(string("0"), removeKdigitss(string("10"), 2));
+}
+TEST(removeKdigitss, testcase4) {
+	EXPECT_EQ(string("11"), removeKdigitss(string("112"), 1));
+}
+TEST(removeKdigitss, testcase5) {
+	EXPECT_EQ(string("11"), removeKdigitss(string("11123"), 3));
+}
+TEST(removeKdigitss, testcase6) {
+	EXPECT_EQ(string("100"), removeKdigitss(string("10200"), 2));
+}
+TEST(miniMaxSum, testcase1) {
+	stringstream buffer;
+	// redirect standart ouput to buffer
+	streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+	miniMaxSum({ 256741038, 623958417, 467905213, 714532089, 938071625 });
+	cout.rdbuf(prevcoutbuf);
+	auto output = buffer.str();
+	EXPECT_EQ(output, "2063136757 2744467344");
+}
+TEST(timeConversion, testcase1) {
+	EXPECT_EQ(string("19:05:45"), timeConversion({ "07:05:45PM" }));
+}
+TEST(timeConversion, testcase2) {
+	EXPECT_EQ(string("12:01:00"), timeConversion({ "12:01:00PM" }));
+}
+TEST(timeConversion, testcase3) {
+	EXPECT_EQ(string("00:01:00"), timeConversion({ "12:01:00AM" }));
+}
+TEST(timeConversion, testcase4) {
+	EXPECT_EQ(string("00:00:00"), timeConversion({ "12:00:00AM" }));
+}
+TEST(timeConversion, tetstcase5) {
+	EXPECT_EQ(string("12:00:00"), timeConversion({ "12:00:00PM" }));
+}
+TEST(matchingStrings, testcase1) {
+	vector<int> result = { 2,1,0 };
+	EXPECT_EQ(result, matchingStrings({"aba", "baba","aba","xzxb"}, {"aba","xzxb","ab"}));
+}
+TEST(matchingStrings, testcase2) {
+	vector<int> result = { 1,0,1 };
+	EXPECT_EQ(result, matchingStrings({ "def", "de","fgh" }, { "de","lmn","fgh" }));
 }
 #endif

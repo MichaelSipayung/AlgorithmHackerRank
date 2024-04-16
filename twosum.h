@@ -39,4 +39,5 @@ int TwoSum<Number>::rank(const Number &_val, const std::vector<Number> &_data) {
   }
   return -1;
 }
+
 #endif // ALGORITHM_TWOSUM_H

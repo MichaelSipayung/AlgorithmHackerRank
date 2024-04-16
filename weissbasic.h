@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <cmath>
 using namespace std;
 // removeEveryOtherItem: remove every other item on list using iterator
 template <typename Container> void removeEveryOtherItem(Container& lst) {
@@ -224,23 +225,24 @@ string appendAndDelete(string s, string t, int k) {
 						--k;
 						continue;
 					}
-					else
+					else {
 						s.pop_back();
+					}
 			}
 			--k;
 		}
 		return s == t ? "Yes" : "No";
 	}
 }
-int squares(int a, int b) {
-	// for (auto i = a; i <= b; i++) {
-	//     auto temp = std::sqrt(i);
-	//     int convert = temp;
-	//     if (temp - convert == 0)
-	//         ++result;
-	// }
-	return floor(sqrt(b)) - ceil(sqrt(a)) + 1;
-}
+// int squares(int a, int b) {
+// 	// for (auto i = a; i <= b; i++) {
+// 	//     auto temp = std::sqrt(i);
+// 	//     int convert = temp;
+// 	//     if (temp - convert == 0)
+// 	//         ++result;
+// 	// }
+// 	return std::floor(std::sqrt(b)) - std::ceil(std::sqrt(a)) + 1;
+// }
 int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2) {
 	if (y1 > y2)
 		return 10000;
@@ -262,8 +264,8 @@ vector<int> cutTheSticks(vector<int> arr) {
 		std::sort(temp.begin(), temp.end());
 		if (temp.front() == temp.back())
 			break; //case: [1,1] on arr
-		for (auto i = 0; i < arr.size(); ++i)
-			arr[i] = arr[i] - temp.front();
+		for (int& i : arr)
+			i = i - temp.front();
 		arr.erase(std::remove(arr.begin(), arr.end(), 0), arr.end());
 		result.push_back(arr.size());
 	}
@@ -316,5 +318,86 @@ int nonDivisibleSubset(int k, vector<int> s) {
 	}
 
 	return maxSize;
+}
+string organizingContainers(vector<vector<int>> container) {
+	//simple case: container type 0 and 1
+	auto type1_first = container[0][0];
+	auto type2_first = container[0][1];
+	auto first_total = type1_first + type2_first;
+
+	auto type1_second = container[1][0];
+	auto type2_second = container[1][1];
+	auto second_total = type1_second + type2_second;
+
+	return { "Impossible" };
+}
+string removeKdigitss(string num, int k) {
+	auto temp = num; 
+	temp.erase(temp.begin(), temp.begin() + k);
+	if (temp.size() == 0)
+		return { "0" };
+	auto min = stoi(temp);
+	temp = num;
+	for (auto i = 1; i <= num.size() - k; ++i) {
+		temp.erase(temp.begin() + i, temp.begin() + i + k);
+		if (stoi(temp) < min)
+			min = stoi(temp);
+		temp = num;
+	}
+	return to_string(min);
+}
+inline void plusMinus(vector<int> arr) {
+	int pos = 0, neg = 0, zero = 0;
+	for(const auto &i : arr)
+	{
+		if (i > 0)
+			++pos;
+		else if (i == 0)
+			++zero;
+		else
+			++neg;
+	}
+	int len = arr.size();
+	printf("%.6f\n", (double)pos / len);
+	printf("%.6f\n", (double)neg / len);
+	printf("%.6f\n", (double)zero / len);
+}
+inline void miniMaxSum(vector<int> arr) {
+	std::sort(arr.begin(), arr.end());
+	long long max = 0;
+	long long min = 0;
+	min = std::accumulate(arr.begin(), arr.begin() + 4, min);
+	max = std::accumulate(arr.rbegin(),arr.rbegin()+4, max);
+	cout << min << " " << max;
+}
+inline string timeConversion(string s) {
+	if (s.substr(s.size() - 2, 2) == "AM") {
+		if (s.substr(0, 2) == "12") {
+			if (s.substr(3, 2) != "00" || s.substr(6, 2) != "00") {
+				return string("00").append(s.substr(2, s.size() - 4));
+			}
+			else
+				return { "00:00:00" };
+		}
+		else
+			return s.substr(0, s.size() - 2);
+	}
+	else {
+		if (s.substr(0, 2) == "12")
+			return s.substr(0, s.size() - 2);
+		else {
+			auto sum = stoi(s.substr(0, 2)) + 12;
+			return to_string(sum).append(s.substr(2, s.size()-4));
+		}
+	}
+}
+vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
+	vector<int> result(queries.size(),0);
+	auto idx = 0;
+	for (const auto& q : queries) {
+		result[idx] = std::count(strings.begin(), strings.end(), q);
+		++idx;
+	}
+	return result;
 }
 #endif
