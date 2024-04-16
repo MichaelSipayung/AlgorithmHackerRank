@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <unordered_set>
 using namespace std;
 // removeEveryOtherItem: remove every other item on list using iterator
 template <typename Container> void removeEveryOtherItem(Container& lst) {
@@ -391,7 +392,7 @@ inline string timeConversion(string s) {
 		}
 	}
 }
-vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
+inline vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
 	vector<int> result(queries.size(),0);
 	auto idx = 0;
 	for (const auto& q : queries) {
@@ -400,4 +401,52 @@ vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
 	}
 	return result;
 }
+inline int lonelyinteger(vector<int> a) {
+	for (const auto& i : a)
+		if (std::count(a.begin(), a.end(), i) == 1)
+			return i;
+	return 0;
+}
+inline long flippingBits(long n) {
+	return 0;
+}
+inline int diagonalDifference(vector<vector<int>> arr) {
+	auto leftdiag = 0, rightdiag=0;
+	for (size_t j = 0; j < arr.size(); ++j)
+		leftdiag += arr[j][j];
+	for (int i = arr.size() - 1; i != -1; --i)
+		rightdiag += arr[i][arr.size()-1-i];
+	return std::abs(leftdiag - rightdiag);
+}
+inline vector<int> countingSort(vector<int> arr) {
+	std::vector<int> result;
+	for (auto i = 0; i < 100; ++i)
+		result.push_back(i);
+	auto i = 0;
+	for (auto& x : result)
+		x = std::count(arr.begin(), arr.end(), x);
+	return result;
+}
+inline string pangrams(string s) {
+	vector<char> ls;
+	for (auto i = 0; i < 26; ++i)
+		ls.push_back((char)65 + i);
+	for (const auto& x : ls) {
+		if (std::count(s.begin(), s.end(), x) == 0 &&
+			std::count(s.begin(), s.end(), std::tolower(x)) ==0)
+			return { "not pangram" };
+	}
+	return { "pangram" };
+}
+inline string twoArrays(int k, vector<int> A, vector<int> B) {
+	auto temp_a = A;
+	auto temp_b = B;
+	std::sort(temp_a.begin(), temp_a.end(), std::greater<int>());
+	std::sort(temp_b.begin(), temp_b.end());
+	for (size_t i = 0; i < B.size(); ++i)
+		if (temp_a[i] + temp_b[i] < k)
+			return { "NO" };
+	return { "YES" };
+}
+
 #endif
