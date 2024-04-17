@@ -374,4 +374,72 @@ TEST(flippingBits, testcase2) {
 TEST(flippingBits, testcase3) {
 	EXPECT_EQ(4294967295, flippingBits(0));;
 }
+TEST(sockMerchant, testcase1) {
+	EXPECT_EQ(2, sockMerchant(7, { 1,2,1,2,1,3,2 }));
+}
+TEST(findZigZagSequence, testcase1) {
+	stringstream buffer;
+	streambuf* prebuffer = cout.rdbuf(buffer.rdbuf());
+	findZigZagSequence({1,2,3,4,5,6,7 }, 7);
+	cout.rdbuf(prebuffer);
+	auto output = buffer.str();
+	EXPECT_EQ(output,"1 2 3 7 6 5 4\n");
+}
+TEST(pageCount, testcase1) {
+	EXPECT_EQ(1, pageCount(5, 3));
+}
+TEST(pageCount, testcase2) {
+	EXPECT_EQ(0, pageCount(9, 8));
+}
+TEST(pageCount, testcase3) {
+	EXPECT_EQ(1, pageCount(9, 7));
+}
+TEST(pageCount, testcase4) {
+	EXPECT_EQ(1, pageCount(9, 6));
+}
+TEST(pageCount, testcase5) {
+	EXPECT_EQ(2, pageCount(9, 4));
+}
+TEST(pageCount, testcase6) {
+	EXPECT_EQ(2, pageCount(9, 5));
+}
+TEST(pageCount, testcase7) {
+	EXPECT_EQ(1, pageCount(10, 9));
+}
+TEST(pageCount, testcase8) {
+	EXPECT_EQ(1, pageCount(10, 8));
+}
+TEST(pageCount, testcase9) {
+	EXPECT_EQ(1, pageCount(10, 2));
+}
+TEST(pageCount, testcase10) {
+	EXPECT_EQ(1, pageCount(10, 3));
+}
+TEST(pageCount, testcase11) {
+	EXPECT_EQ(2, pageCount(10, 4));
+}
+TEST(pageCount, testcase12) {
+	EXPECT_EQ(2, pageCount(10, 5));
+}
+TEST(pageCount, testcase13) {
+	EXPECT_EQ(1, pageCount(4, 2));
+}
+TEST(pageCount, testcase14) {
+	EXPECT_EQ(1, pageCount(4, 3));
+}
+TEST(pageCount, testcase15) {
+	EXPECT_EQ(0, pageCount(4, 4));
+}
+TEST(pageCount, testcase16) {
+	EXPECT_EQ(0, pageCount(9, 9));
+}
+TEST(pageCount, testcase17) {
+	EXPECT_EQ(2, pageCount(8, 5));
+}
+TEST(pageCount, testcase18) {
+	EXPECT_EQ(2, pageCount(8, 4));
+}
+TEST(pageCount, testcase19) {
+	EXPECT_EQ(1, pageCount(7, 4));
+}
 #endif	

@@ -491,4 +491,63 @@ inline long long flippingBits(long n) {
 		sum += stoi(str.substr(i, 1)) * std::pow(2, str.size() - i - 1);
 	return sum;
 }
+inline int sockMerchant(int n, vector<int> ar) {
+	set<int> val;
+	for (const auto& i : ar)
+		val.insert(i);
+	auto count = 0;
+	for (const auto& j : val)
+		count += std::count(ar.begin(), ar.end(), j) / 2;;
+	return count;
+}
+inline void findZigZagSequence(vector < int > a, int n) {
+	sort(a.begin(), a.end());
+	int mid = n / 2;
+	swap(a[mid], a[n - 1]);
+
+	int st = mid + 1;
+	int ed = n - 2;
+	while (st < ed) {
+		swap(a[st], a[ed]);
+		st = st + 1;
+		ed = ed - 1;
+	}
+	for (int i = 0; i < n; i++) {
+		if (i > 0) cout << " ";
+		cout << a[i];
+	}
+	cout << endl;
+}
+inline int pageCount(int n, int p) {
+	auto minleft = std::abs(1-p);
+	auto minright = std::abs(n - p);
+	if (n % 2 != 0) {
+		auto count = 0;
+		if (minleft < minright) {
+			for (auto i = 1; i < p; i += 2) {
+				++count;
+			}
+			return count;
+		}
+		else {
+			for (auto i = n-1; i > p; i -= 2)
+				++count;
+			return count;
+		}
+	}
+	else {
+		auto count = 0;
+		if (minleft <= minright) {
+			for (auto i = 1; i < p; i += 2) {
+				++count;
+			}
+			return count;
+		}
+		else {
+			for (auto i = n; i > p; i -= 2)
+				++count;
+			return count;
+		}
+	}
+}
 #endif
