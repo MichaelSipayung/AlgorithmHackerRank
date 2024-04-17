@@ -12,6 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <unordered_set>
+#include <bitset>
 using namespace std;
 // removeEveryOtherItem: remove every other item on list using iterator
 template <typename Container> void removeEveryOtherItem(Container& lst) {
@@ -333,7 +334,7 @@ string organizingContainers(vector<vector<int>> container) {
 	return { "Impossible" };
 }
 string removeKdigitss(string num, int k) {
-	auto temp = num; 
+	auto temp = num;
 	temp.erase(temp.begin(), temp.begin() + k);
 	if (temp.size() == 0)
 		return { "0" };
@@ -349,7 +350,7 @@ string removeKdigitss(string num, int k) {
 }
 inline void plusMinus(vector<int> arr) {
 	int pos = 0, neg = 0, zero = 0;
-	for(const auto &i : arr)
+	for (const auto& i : arr)
 	{
 		if (i > 0)
 			++pos;
@@ -368,7 +369,7 @@ inline void miniMaxSum(vector<int> arr) {
 	long long max = 0;
 	long long min = 0;
 	min = std::accumulate(arr.begin(), arr.begin() + 4, min);
-	max = std::accumulate(arr.rbegin(),arr.rbegin()+4, max);
+	max = std::accumulate(arr.rbegin(), arr.rbegin() + 4, max);
 	cout << min << " " << max;
 }
 inline string timeConversion(string s) {
@@ -388,12 +389,12 @@ inline string timeConversion(string s) {
 			return s.substr(0, s.size() - 2);
 		else {
 			auto sum = stoi(s.substr(0, 2)) + 12;
-			return to_string(sum).append(s.substr(2, s.size()-4));
+			return to_string(sum).append(s.substr(2, s.size() - 4));
 		}
 	}
 }
 inline vector<int> matchingStrings(vector<string> strings, vector<string> queries) {
-	vector<int> result(queries.size(),0);
+	vector<int> result(queries.size(), 0);
 	auto idx = 0;
 	for (const auto& q : queries) {
 		result[idx] = std::count(strings.begin(), strings.end(), q);
@@ -407,15 +408,12 @@ inline int lonelyinteger(vector<int> a) {
 			return i;
 	return 0;
 }
-inline long flippingBits(long n) {
-	return 0;
-}
 inline int diagonalDifference(vector<vector<int>> arr) {
-	auto leftdiag = 0, rightdiag=0;
+	auto leftdiag = 0, rightdiag = 0;
 	for (size_t j = 0; j < arr.size(); ++j)
 		leftdiag += arr[j][j];
 	for (int i = arr.size() - 1; i != -1; --i)
-		rightdiag += arr[i][arr.size()-1-i];
+		rightdiag += arr[i][arr.size() - 1 - i];
 	return std::abs(leftdiag - rightdiag);
 }
 inline vector<int> countingSort(vector<int> arr) {
@@ -433,7 +431,7 @@ inline string pangrams(string s) {
 		ls.push_back((char)65 + i);
 	for (const auto& x : ls) {
 		if (std::count(s.begin(), s.end(), x) == 0 &&
-			std::count(s.begin(), s.end(), std::tolower(x)) ==0)
+			std::count(s.begin(), s.end(), std::tolower(x)) == 0)
 			return { "not pangram" };
 	}
 	return { "pangram" };
@@ -448,5 +446,49 @@ inline string twoArrays(int k, vector<int> A, vector<int> B) {
 			return { "NO" };
 	return { "YES" };
 }
-
+inline int birthday(vector<int> s, int d, int m) {
+	auto way = 0;
+	for (size_t i = 0; i <= s.size() - m; ++i)
+		if (std::accumulate(s.begin() + i, s.begin() + i + m, 0) == d)
+			++way;
+	return way;
+}
+inline string strings_xor(string s, string t) {
+	string res = "";
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] == t[i])
+			res.push_back('0');
+		else
+			res.push_back('1');
+	}
+	return res;
+}
+// findMedian : finding median of element given arr 
+inline int findMedian(vector<int> arr) {
+	std::sort(arr.begin(), arr.end());
+	return arr[arr.size() / 2];
+}
+// flippingMatrix: find the maximum upper left, 
+// for example : [1,2], [3,4] => [2,1] [4,3] =>[4,2], [3,1]
+inline int flippingMatrix(vector<vector<int>> matrix) {
+	int n = matrix.size() / 2; // the idea is simple, just flip the top left quadrant
+	int sum = 0;
+	for (int i = 0; i < n; ++i)
+		for (int j = 0; j < n; ++j)
+			// Select the maximum element from each 2x2 sub-matrix
+			sum += max({ matrix[i][j], matrix[i][2 * n - j - 1],
+				matrix[2 * n - i - 1][j], matrix[2 * n - i - 1][2 * n - j - 1] });
+	return sum;
+}
+// flippingBits: flip all bits (1->0 and 0->1), return unsigned integer, 
+// return value to long long
+inline long long flippingBits(long n) {
+	std::bitset<32> bin(n);
+	bin.flip(); // flip bit from 0 -> 1, and 1-> 0
+	auto str = bin.to_string();
+	long long sum = 0;
+	for (int i = 0; i < str.size(); ++i)
+		sum += stoi(str.substr(i, 1)) * std::pow(2, str.size() - i - 1);
+	return sum;
+}
 #endif

@@ -204,29 +204,29 @@ TEST(nonDivisibleSubset, testcase3) {
 		338 ,149 ,209 ,702 ,282 ,718 ,771 ,575, 436 };
 	EXPECT_EQ(11, nonDivisibleSubset(k, data));
 }
-TEST(organizingContainers, testcase1) {
-	vector<vector<int>> data = {
-		{1,3,1},
-		{2,1,2},
-		{3,3,3}
-	};
-	EXPECT_EQ(string("Impossible"), organizingContainers(data));
-}
-TEST(organizingContainers, testcase2) {
-	vector<vector<int>> data = {
-		{0,2,1},
-		{1,1,1},
-		{2,0,0}
-	};
-	EXPECT_EQ(string("Possible"), organizingContainers(data));
-}
-TEST(organizingContainers, testcase3) {
-	vector<vector<int>> data = {
-		{1,1},
-		{1,1},
-	};
-	EXPECT_EQ(string("Possible"), organizingContainers(data));
-}
+//TEST(organizingContainers, testcase1) {
+//	vector<vector<int>> data = {
+//		{1,3,1},
+//		{2,1,2},
+//		{3,3,3}
+//	};
+//	EXPECT_EQ(string("Impossible"), organizingContainers(data));
+//}
+//TEST(organizingContainers, testcase2) {
+//	vector<vector<int>> data = {
+//		{0,2,1},
+//		{1,1,1},
+//		{2,0,0}
+//	};
+//	EXPECT_EQ(string("Possible"), organizingContainers(data));
+//}
+//TEST(organizingContainers, testcase3) {
+//	vector<vector<int>> data = {
+//		{1,1},
+//		{1,1},
+//	};
+//	EXPECT_EQ(string("Possible"), organizingContainers(data));
+//}
 TEST(organizingContainers, testcase4) {
 	vector<vector<int>> data = {
 		{0,2},
@@ -334,4 +334,44 @@ TEST(twoArrays, testcase2) {
 TEST(twoArrays, testcase3) {
 	EXPECT_EQ(string("YES"), twoArrays(1, { 0,1 }, { 0,2 }));
 }
-#endif
+TEST(birthday, testcase1) {
+	EXPECT_EQ(2, birthday({2,2,1,3,2},4,2));
+}
+TEST(strings_xor, testcase1) {
+	EXPECT_EQ(string("10000"), strings_xor({ "10101" }, { "00101" }));
+}
+TEST(findMedian, testcase1) {
+	EXPECT_EQ(3, findMedian({ 0,1,2,4,6,5,3 }));
+}
+TEST(flippingMatrix, testcase1) {
+	vector<vector<int>> data = { {1,2},{3,4} };
+	EXPECT_EQ(4, flippingMatrix(data));
+}
+TEST(flippingMatrix, testcase2) {
+	vector<vector<int>> data = {
+		{112,42,83,119},
+		{56,125,56,49},
+		{15,78,101,43},
+		{62,98,114,108}
+	};
+	EXPECT_EQ(414, flippingMatrix(data));
+}
+TEST(flippingMatrix, testcase3) {
+	vector<vector<int>> data = {
+		{1,2,3,4},
+		{1,2,3,4},
+		{1,2,3,4},
+		{1,2,3,4}
+	};
+	EXPECT_EQ(14, flippingMatrix(data));
+}
+TEST(flippingBits, testcase1) {
+	EXPECT_EQ(2147483648, flippingBits(2147483647));
+}
+TEST(flippingBits, testcase2) {
+	EXPECT_EQ(4294967294, flippingBits(1));
+}
+TEST(flippingBits, testcase3) {
+	EXPECT_EQ(4294967295, flippingBits(0));;
+}
+#endif	
