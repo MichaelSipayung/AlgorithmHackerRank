@@ -491,6 +491,7 @@ inline long long flippingBits(long n) {
 		sum += stoi(str.substr(i, 1)) * std::pow(2, str.size() - i - 1);
 	return sum;
 }
+// sockMerchant: count a pair of sock in arr
 inline int sockMerchant(int n, vector<int> ar) {
 	set<int> val;
 	for (const auto& i : ar)
@@ -500,6 +501,7 @@ inline int sockMerchant(int n, vector<int> ar) {
 		count += std::count(ar.begin(), ar.end(), j) / 2;;
 	return count;
 }
+// findZigZagSequence: arrage container a to have zigzag element
 inline void findZigZagSequence(vector < int > a, int n) {
 	sort(a.begin(), a.end());
 	int mid = n / 2;
@@ -518,15 +520,15 @@ inline void findZigZagSequence(vector < int > a, int n) {
 	}
 	cout << endl;
 }
+// pageCount: count minimum way to reach page p from n page
 inline int pageCount(int n, int p) {
 	auto minleft = std::abs(1-p);
 	auto minright = std::abs(n - p);
+	auto count = 0;
 	if (n % 2 != 0) {
-		auto count = 0;
 		if (minleft < minright) {
-			for (auto i = 1; i < p; i += 2) {
+			for (auto i = 1; i < p; i += 2)
 				++count;
-			}
 			return count;
 		}
 		else {
@@ -536,11 +538,9 @@ inline int pageCount(int n, int p) {
 		}
 	}
 	else {
-		auto count = 0;
 		if (minleft <= minright) {
-			for (auto i = 1; i < p; i += 2) {
+			for (auto i = 1; i < p; i += 2)
 				++count;
-			}
 			return count;
 		}
 		else {
@@ -550,4 +550,64 @@ inline int pageCount(int n, int p) {
 		}
 	}
 }
+// towerBreakers: find the player who will loose the game
+inline int towerBreakers(int n, int m) {
+	return n % 2 == 0  && m%2==0 ? 2 : 1;
+}
+// caesarCipher: encrypt s by caesar cipher method, shift by k position 
+inline string caesarCipher(string s, int k) {
+	auto maxUpper = toascii('Z');
+	auto maxLower = toascii('z');
+	if (k > 25)
+		k %= 25;
+	for (auto& i : s)
+		if (std::isalpha(i)) {
+			if (std::isupper(i)) {
+				auto temp = ((toascii(i) + k) % maxUpper);
+				if ((toascii(i) + k) == toascii('Z'))
+					i = 'Z';
+				else if (temp < toascii('A'))
+					i = (char)(temp - 1 + toascii('A'));
+				else
+					i = (char)((toascii(i) + k) % maxUpper);
+			}
+			else {
+				auto temp = ((toascii(i) + k) % maxLower);
+				if((toascii(i) + k) == toascii('z'))
+					i = 'z';
+				else if (temp < toascii('a'))
+					i = (char)(temp-1 + toascii('a'));
+				else
+					i = (char)((toascii(i) + k) % maxLower);
+			}
+		}
+	return s;
+}
+// maxMin : find minimum 
+inline int maxMin(int k, vector<int> arr) {
+	std::sort(arr.begin(), arr.end());
+	auto min = arr.back();
+	auto min_temp = 0, max_temp=0,res_temp=0;
+	//for (auto i = 0; i <= arr.size() - k; ++i) {
+	//	for (auto j = i ; j <= arr.size()-k; ++j) {
+	//		min_temp = arr[0 + i];
+	//		max_temp = arr[0 + k - 1 + j];
+	//		res_temp = max_temp - min_temp;
+	//		if (min > res_temp)
+	//			min = res_temp;
+	//	}
+	//}
+	// improve maxMin for O(n-k) where n is size of arr
+	for (auto i = 0; i <= arr.size() - k; ++i) {
+		for (auto j = 0;j<1; ++j) {
+			min_temp = arr[i];
+			max_temp = arr[k - 1 + i];
+			res_temp = max_temp - min_temp;
+			if (min > res_temp)
+				min = res_temp;
+		}
+	}
+	return min;
+}
+
 #endif

@@ -442,4 +442,45 @@ TEST(pageCount, testcase18) {
 TEST(pageCount, testcase19) {
 	EXPECT_EQ(1, pageCount(7, 4));
 }
+TEST(towerBreakers, DISABLED_testcase1) {
+	EXPECT_EQ(2, towerBreakers(2, 2));
+}
+TEST(towerBreakers, DISABLED_testcase2) {
+	EXPECT_EQ(1, towerBreakers(1, 4));
+}
+TEST(towerBreakers, DISABLED_testcase3) {
+	EXPECT_EQ(2, towerBreakers(2, 6));
+}
+TEST(caesarCipher, testcase1) {
+	EXPECT_EQ(string("bcd"), caesarCipher({ "abc" }, 1));
+}
+TEST(caesarCipher, testcase2) {
+	EXPECT_EQ(string("defghijklmnopqrstuvwxyzabc"), 
+		caesarCipher({ "abcdefghijklmnopqrstuvwxyz" }, 3));
+}
+TEST(caesarCipher, testcase3) {
+	EXPECT_EQ(string("okffng-Qwvb"), caesarCipher({ "middle-Outz" }, 2));
+}
+TEST(caesarCipher, testcase4){
+	EXPECT_EQ(string("cdefghijklmnopqrstuvwxyzab"),
+		caesarCipher({ "abcdefghijklmnopqrstuvwxyz" },2));
+}
+TEST(caesarCipher, testcase5) {
+	EXPECT_EQ(string("AB"), caesarCipher({ "YZ" }, 2));
+}
+TEST(maxMin, testcase1) {
+	EXPECT_EQ(1, maxMin(2,{ 1,4,7,2 }));
+}
+TEST(maxMin, testcase2) {
+	EXPECT_EQ(3, maxMin(4, { 1,2,3,4,10,20,30,40,100,200 }));
+}
+TEST(maxMin, testcase3) {
+	EXPECT_EQ(0, maxMin(2, { 1,2,1,2,1 }));
+}
+TEST(maxMin, testcase4) {
+	EXPECT_EQ(20, maxMin(3, { 10,100,300,200,1000,20,30 }));
+}
+TEST(maxMin, testcase5) {
+	EXPECT_EQ(1, maxMin(2, { 10,12,13,14 }));
+}
 #endif	
