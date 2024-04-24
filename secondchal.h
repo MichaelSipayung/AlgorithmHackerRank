@@ -267,42 +267,28 @@ inline string isValid(string s) {
 
 // climbingLeaderboard: hackerarnk problem to determine rank of each player
 inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
-	/*std::set<int> leaderboard;
-	for (const auto& i : ranked)
-		leaderboard.insert(i);*/
 	vector<int> filter ;
 	for (size_t i = 0; i < ranked.size(); i++)
-	{
 		if (ranked[i+1] != ranked[i])
 			filter.push_back(ranked[i]);
-	}
-	//auto begin = leaderboard.rbegin();
-	//auto end = leaderboard.rend();
-	//while (begin != end) { // leaderboard rank, first, ..... last
-	//	filter.push_back(*begin);
-	//	++begin;
-	//}
-	auto pointfind = 0;
 	vector<int> result;
-	for (const auto& i : player) {
-		if (i <= filter.back()) {
-			if (i == filter.back())
+	for (auto i = 0; i < player.size();++i) {
+		if (player[i] <= filter.back()) {
+			if (player[i] == filter.back())
 				result.push_back(filter.size());
 			else
 				result.push_back(filter.size() + 1);
 		}
-		else if (i >= filter.front())
+		else if (player[i] >= filter.front())
 				result.push_back(1);
-		else { // position either not in front or back, move to left or right
-			// but excluded the front and back
-			for (auto j = 1; j < filter.size(); ++j) {
-				if (i >= filter[j]) {
+		else {	// position either not in front or back, move to left or right
+				// but excluded the front and back
+			for (auto j = 1; j < filter.size(); ++j)
+				if (player[i] >= filter[j]) {
 					result.push_back(j + 1);
 					break;
 				}
-			}
 		}
-
 	}
 	return result;
 }
