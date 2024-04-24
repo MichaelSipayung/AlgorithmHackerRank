@@ -222,7 +222,7 @@ string appendAndDelete(string s, string t, int k) {
 							s.erase(sizetemp, difference);
 					}
 				}
-				if (s != t)
+				if (s != t) {
 					if (s.empty()) {
 						--k;
 						continue;
@@ -230,6 +230,8 @@ string appendAndDelete(string s, string t, int k) {
 					else {
 						s.pop_back();
 					}
+				}
+
 			}
 			--k;
 		}
@@ -551,8 +553,10 @@ inline int pageCount(int n, int p) {
 	}
 }
 // towerBreakers: find the player who will loose the game
-inline int towerBreakers(int n, int m) {
-	return n % 2 == 0  && m%2==0 ? 2 : 1;
+inline constexpr auto towerBreakers(int n, int m) {
+	if(m==1)
+		return 2;
+	return n%2==1 ? 1:2;
 }
 // caesarCipher: encrypt s by caesar cipher method, shift by k position 
 inline string caesarCipher(string s, int k) {
@@ -583,7 +587,8 @@ inline string caesarCipher(string s, int k) {
 		}
 	return s;
 }
-// maxMin : find minimum 
+// maxMin : find minimum arr' where arr' is element from arr which 
+// satisfied the condition max(arr') - min(arr')
 inline int maxMin(int k, vector<int> arr) {
 	std::sort(arr.begin(), arr.end());
 	auto min = arr.back();
@@ -609,5 +614,20 @@ inline int maxMin(int k, vector<int> arr) {
 	}
 	return min;
 }
-
+//inline vector<int> dynamicArray(int n, vector<vector<int>> queries) {
+//
+//}
+inline string gridChallenge(vector<string> grid) {
+	for (auto i = 0; i < grid.size(); ++i)
+		std::sort(grid[i].begin(), grid[i].end());
+	for (auto i = 0; i < grid.size(); ++i) {
+		auto min = grid[0][i];
+		for (auto j = 1; j < grid.size(); ++j) {
+			if (min > grid[j][i])
+				return { "NO" };
+			min = grid[j][i];
+		}
+	}
+	return { "YES" };
+}
 #endif

@@ -483,4 +483,20 @@ TEST(maxMin, testcase4) {
 TEST(maxMin, testcase5) {
 	EXPECT_EQ(1, maxMin(2, { 10,12,13,14 }));
 }
+//TEST(dynamicArray, testcase1) {
+//	EXPECT_EQ();
+//}
+//TEST(dynamicArray, testcase2) {
+//	EXPECT_EQ();
+//}
+TEST(gridChallenge, testcase1) {
+	vector<string> data = { "abc","ade","efg" };
+	EXPECT_EQ(string("YES"), gridChallenge(data));
+}
+TEST(gridChallenge, testcase2) {
+	EXPECT_EQ(string("YES"), gridChallenge({ "ebacd", "fghij", "olmkn", "trpqs", "xywuv" }));
+}
+TEST(gridChallenge, testcase3) {
+    EXPECT_EQ(string("YES"), gridChallenge({ "ebacd", "fghij", "olmkn", "trpqs", "xywuv" }));
+}
 #endif	
