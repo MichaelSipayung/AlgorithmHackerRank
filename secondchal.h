@@ -302,7 +302,7 @@ inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
 			if (ranked[i] != filter.back())
 				filter.push_back(ranked[i]);
 	}
-	auto memory = 0;
+	auto memory = 0; //remember the position
 	vector<int> result;
 	for (const int i : player)
 	{
@@ -329,4 +329,26 @@ inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
 	}
 	return result;
 }
+inline string isBalanced(string s) {
+	return { "YES" };
+}
+// example : [1 3 4 5 6], m = 6, return 1 and 4 (index)
+inline vector<int> icecreamParlor(int m, vector<int> arr) {
+	vector<int> result;
+	for(auto i=0; i<arr.size()-1;++i)
+	{
+		for(auto j=i+1 ;j<arr.size(); ++j)
+		{
+			if(arr[i] + arr[j] == m)
+			{
+				result.push_back(i + 1);
+				result.push_back(j + 1);
+				break;
+			}
+		}
+	}
+	std::sort(result.begin(), result.end());
+	return  result;
+}
+
 #endif // !WEEK_TWO

@@ -102,4 +102,34 @@ TEST(climbingLeaderboard, sample3) {
 	EXPECT_EQ(vector({ 6,5,4,2,1 }), climbingLeaderboard({ 100, 90, 90, 80, 75, 60 },
 		{ 50, 65, 77, 90, 102 }));
 }
+TEST(isBalanced, DISABLED_sample1){
+	EXPECT_EQ(string("YES"), isBalanced({ "{[()]}" }));
+}
+TEST(isBalanced, DISABLED_sample2){
+	EXPECT_EQ(string("YES"), isBalanced({ "{{[[(())]]}}" }));
+}
+TEST(isBalanced, DISABLED_sample3) {
+	EXPECT_EQ(string("NO"), isBalanced({ "{[(])}" }));
+}
+TEST(isBalanced, DISABLED_sample4){
+	EXPECT_EQ(string("NO"), isBalanced({ "{[(])}" }));
+}
+TEST(isBalanced, DISABLED_sample5) {
+	EXPECT_EQ(string("NO"), isBalanced({ "{[(])}" }));
+}
+TEST(isBalanced, DISABLED_sample6){
+	EXPECT_EQ(string("YES"), isBalanced({ "{(([])[])[]}[]" }));
+}
+TEST(isBalanced, DISABLED_sample7){
+	EXPECT_EQ(string("NO"), isBalanced({ "{(([])[])[]]}" }));
+}
+TEST(iceCreamPolar, sample1){
+	EXPECT_EQ(vector({ 1,4 }), icecreamParlor(6, { 1,3,4,5,6 }));
+}
+TEST(iceCreamPolar, sample2){
+	EXPECT_EQ(vector({ 1,4 }), icecreamParlor(4, { 1, 4, 5, 3, 2 }));
+}
+TEST(iceCreamPolar, sample3){
+	EXPECT_EQ(vector({ 1,2 }), icecreamParlor(4, { 2, 2 ,4 ,3 }));
+}
 #endif // !WEEK_TWO_TEST
