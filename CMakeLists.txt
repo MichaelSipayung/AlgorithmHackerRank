@@ -12,7 +12,7 @@ add_executable(Algorithm main.cpp
 
 # add separate executable for test
 add_executable(AlgorithmTests test.cpp
-        test.cpp)
+        test.cpp "linkedlst.h")
 target_link_libraries(AlgorithmTests PRIVATE GTest::gtest GTest::gtest_main
         GTest::gmock GTest::gmock_main fmt::fmt)
 
