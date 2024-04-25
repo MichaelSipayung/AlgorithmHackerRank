@@ -230,7 +230,6 @@ inline int getTotalX(vector<int> a, vector<int> b) {
 inline string isValid(string s) {
 	map<char, size_t> temp;
 	auto cnt = 0;
-	auto falsecnt = 0;
 	for (const auto& i : s)
 		++temp[i];
 	//println("logs: ");
@@ -242,50 +241,88 @@ inline string isValid(string s) {
 	// check the current filter
 	if (filter.size() == 1)
 		return { "YES" };
-	else if (filter.size() > 2)
+	if (filter.size() > 2)
 		return { "NO" };
-	else { //only two element
-		vector<int> lastfilter;
-			for (const auto& i : temp)
-				lastfilter.push_back(i.second);
-			if (std::count(lastfilter.begin(), lastfilter.end(), 1) == 1)
-				return { "YES" };
-			auto left = std::count(lastfilter.begin(), lastfilter.end(),
-				*(filter.begin()));
-			auto right = std::count(lastfilter.begin(), lastfilter.end(),
-				*(++filter.begin()));
-			if (left == 1 || right == 1) {
-				if (abs(*filter.begin() - *(++filter.begin())) == 1)
-					return { "YES" };
-				else
-					return { "NO" };
-			}
-			else
-				return { "NO" };
+	//only two element
+	vector<int> lastfilter;
+	for (const auto& i : temp)
+		lastfilter.push_back(i.second);
+	if (std::count(lastfilter.begin(), lastfilter.end(), 1) == 1)
+		return { "YES" };
+	auto left = std::count(lastfilter.begin(), lastfilter.end(),
+		*(filter.begin()));
+	auto right = std::count(lastfilter.begin(), lastfilter.end(),
+		*(++filter.begin()));
+	if (left == 1 || right == 1) {
+		if (abs(*filter.begin() - *(++filter.begin())) == 1)
+			return { "YES" };
+		return { "NO" };
 	}
+	return { "NO" };
 }
 
 // climbingLeaderboard: hackerarnk problem to determine rank of each player
+//inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
+//	vector<int> filter;
+//	for (size_t i = 0; i < ranked.size(); i++) {
+//		if (i == 0)
+//			filter.push_back(ranked[i]);
+//		else
+//			if (ranked[i] != ranked[i - 1])
+//				filter.push_back(ranked[i]);
+//	}
+//	vector<int> result;
+//	for (const int i : player)
+//	{
+//		if (i <= filter.back()) {
+//			if (i == filter.back())
+//				result.push_back(filter.size());
+//			else
+//				result.push_back(filter.size() + 1);
+//		}
+//		else if (i >= filter.front())
+//			result.push_back(1);
+//		else {
+//			for (auto j = 1; j < filter.size(); ++j)
+//				if (i >= filter[j]) {
+//					result.push_back(j + 1);
+//					break;
+//				}
+//		}
+//	}
+//	return result;
+//}
 inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
-	vector<int> filter ;
-	for (size_t i = 0; i < ranked.size(); i++)
-		if (ranked[i+1] != ranked[i])
+	vector<int> filter;
+	const int len = ranked.size()-1;
+	for (int i = len; i>=0; --i) {
+		if (i == len)
 			filter.push_back(ranked[i]);
+		else
+			if (ranked[i] != filter.back())
+				filter.push_back(ranked[i]);
+	}
+	auto memory = 0;
 	vector<int> result;
-	for (auto i = 0; i < player.size();++i) {
-		if (player[i] <= filter.back()) {
-			if (player[i] == filter.back())
+	for (const int i : player)
+	{
+		if (i <= filter.front()) {
+			if (i == filter.front())
 				result.push_back(filter.size());
 			else
-				result.push_back(filter.size() + 1);
+				result.push_back(filter.size()+1);
 		}
-		else if (player[i] >= filter.front())
-				result.push_back(1);
-		else {	// position either not in front or back, move to left or right
-				// but excluded the front and back
-			for (auto j = 1; j < filter.size(); ++j)
-				if (player[i] >= filter[j]) {
-					result.push_back(j + 1);
+		else if (i >= filter.back())
+			result.push_back(1);
+		else {
+			for (auto j = 1+memory; j < filter.size(); ++j)
+				if (i <= filter[j]) {
+					if(i==filter[j])
+						result.push_back(filter.size()-j);
+					else
+						result.push_back(filter.size() - j+1);
+
+					memory = j-1;
 					break;
 				}
 		}
