@@ -377,9 +377,8 @@ inline void miniMaxSum(vector<int> arr) {
 inline string timeConversion(string s) {
 	if (s.substr(s.size() - 2, 2) == "AM") {
 		if (s.substr(0, 2) == "12") {
-			if (s.substr(3, 2) != "00" || s.substr(6, 2) != "00") {
+			if (s.substr(3, 2) != "00" || s.substr(6, 2) != "00")
 				return string("00").append(s.substr(2, s.size() - 4));
-			}
 			else
 				return { "00:00:00" };
 		}

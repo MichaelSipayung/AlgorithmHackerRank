@@ -410,5 +410,45 @@ inline vector<int> waiter(vector<int> number, int q) {
 		answer.push_back(*begin);
 	return answer;
 }
-
+inline void mytextEditor(){
+	int q; //total q operation
+	string s; //s for store S value
+	cin>>q;
+	int ops;
+	int posdel; // postion that the deletion begin, look startpos
+	int printkpos; // the position we want to print [1,2,...s.len]
+	string appendtos; // if append command, append to the last s
+	auto startpos=0; // the position we want to start delete, auxilary for s
+	vector<string> history;
+	vector<int> histroy_ops;
+	while(q){
+		cin>>ops;
+		switch (ops)
+		{
+		case 1:
+            history.push_back(s);
+			cin>>appendtos; //append
+			s.append(appendtos);
+			break;
+		case 2:
+            history.push_back(s);
+			cin>>posdel;
+			startpos=0;
+			startpos = s.size()-posdel;
+			s.erase(s.begin()+startpos, s.end());
+			break;
+		case 3:
+			cin>>printkpos;
+			cout<<s[printkpos-1]<<endl;
+			break;
+		case 4:
+            s = history.back();
+            history.erase(history.begin()+ history.size()-1, history.end());
+			break;
+		default:
+			break;
+		}
+		--q;
+	}
+}
 #endif // !WEEK_TWO
