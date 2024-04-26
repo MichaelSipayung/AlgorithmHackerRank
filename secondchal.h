@@ -294,8 +294,8 @@ inline string isValid(string s) {
 //}
 inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
 	vector<int> filter;
-	const int len = ranked.size()-1;
-	for (int i = len; i>=0; --i) {
+	const int len = ranked.size() - 1;
+	for (int i = len; i >= 0; --i) {
 		if (i == len)
 			filter.push_back(ranked[i]);
 		else
@@ -310,19 +310,19 @@ inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
 			if (i == filter.front())
 				result.push_back(filter.size());
 			else
-				result.push_back(filter.size()+1);
+				result.push_back(filter.size() + 1);
 		}
 		else if (i >= filter.back())
 			result.push_back(1);
 		else {
-			for (auto j = 1+memory; j < filter.size(); ++j)
+			for (auto j = 1 + memory; j < filter.size(); ++j)
 				if (i <= filter[j]) {
-					if(i==filter[j])
-						result.push_back(filter.size()-j);
+					if (i == filter[j])
+						result.push_back(filter.size() - j);
 					else
-						result.push_back(filter.size() - j+1);
+						result.push_back(filter.size() - j + 1);
 
-					memory = j-1;
+					memory = j - 1;
 					break;
 				}
 		}
@@ -335,20 +335,80 @@ inline string isBalanced(string s) {
 // example : [1 3 4 5 6], m = 6, return 1 and 4 (index)
 inline vector<int> icecreamParlor(int m, vector<int> arr) {
 	vector<int> result;
-	for(auto i=0; i<arr.size()-1;++i)
-	{
-		for(auto j=i+1 ;j<arr.size(); ++j)
-		{
-			if(arr[i] + arr[j] == m)
+	for (auto i = 0; i < arr.size() - 1; ++i)
+		for (auto j = i + 1; j < arr.size(); ++j)
+			if (arr[i] + arr[j] == m)
 			{
 				result.push_back(i + 1);
 				result.push_back(j + 1);
 				break;
 			}
-		}
-	}
 	std::sort(result.begin(), result.end());
 	return  result;
+}
+inline constexpr int isPrime(const int& n) {
+	if (n % 2 == 0 || n % 3 == 0)
+		return false;
+	// Check from 5 to square root of n 
+	// Iterate i by (i+6) 
+	for (int i = 5; i <= sqrt(n); i = i + 6)
+		if (n % i == 0 || n % (i + 2) == 0)
+			return false;
+	return true;
+}
+inline vector<int> generatePrime(const int& n) {
+	vector<int> prime = { 2, 3, 5, 7,
+		11, 13, 17, 19, 23, 29, 31, 37,
+		41, 43, 47, 53, 59, 61, 67, 71, 73,
+		79, 83, 89, 97, 101, 103, 107, 109, 113,
+		127, 131, 137, 139, 149, 151, 157, 163, 167,
+		173, 179, 181, 191, 193, 197, 199, 211, 223,
+		227, 229, 233, 239, 241, 251, 257, 263, 269, 271,
+		277, 281, 283, 293, 307, 311, 313, 317, 331, 337,
+		347, 349, 353, 359, 367, 373, 379, 383, 389, 397,
+		401, 409, 419, 421, 431, 433, 439, 443, 449, 457,
+		461, 463, 467, 479, 487, 491, 499, 503, 509, 521,
+		523, 541, 547, 557, 563, 569, 571, 577, 587, 593,
+		599, 601, 607, 613, 617, 619, 631, 641, 643, 647,
+		653, 659, 661, 673, 677, 683, 691, 701, 709, 719,
+		727, 733, 739, 743, 751, 757, 761, 769, 773, 787,
+		797, 809, 811, 821, 823, 827, 829, 839, 853, 857,
+		859, 863, 877, 881, 883, 887, 907, 911, 919, 929,
+		937, 941, 947, 953, 967, 971, 977, 983, 991, 997 };
+	//generate the other i-th prime number
+	auto i = 998;
+	while (n >= prime.size()) {
+		if (isPrime(i))
+			prime.push_back(i);
+		++i;
+	}
+	return prime;
+}
+inline vector<int> waiter(vector<int> number, int q) {
+	vector<int> answer;
+	vector<int> a = number;
+	vector<int> b;
+	auto listprime = generatePrime(q);
+	for (auto i = 0; i < q; ++i) {
+		b.clear();
+		for (int j = a.size()-1; j>=0;--j) {
+			if (a[j] % listprime[i] == 0) {
+				b.push_back(a[j]);
+				a.erase(a.begin() + j, a.begin() + j + 1);
+			}
+		}
+		std::reverse(a.begin(), a.end());
+		//std::sort(a.begin(), a.end(), greater<int>());
+		//println("a {}", a);
+		//std::sort(b.begin(), b.end(),greater<int>());
+		//println("b {}", b);
+
+		for (auto begin = b.rbegin(); begin != b.rend(); ++begin)
+			answer.push_back(*begin);
+	}
+	for (auto begin= a.rbegin(); begin!=a.rend(); ++begin)
+		answer.push_back(*begin);
+	return answer;
 }
 
 #endif // !WEEK_TWO

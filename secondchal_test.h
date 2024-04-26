@@ -132,4 +132,12 @@ TEST(iceCreamPolar, sample2){
 TEST(iceCreamPolar, sample3){
 	EXPECT_EQ(vector({ 1,2 }), icecreamParlor(4, { 2, 2 ,4 ,3 }));
 }
+TEST(waiter, sample1) {
+	vector<int> dest = { 2,4,6,3,5,7 };
+	EXPECT_EQ(dest, waiter({2,3,4,5,6,7}, 3));
+}
+TEST(waiter, sample2) {
+	vector<int> dest = {4,6,3,7,5};
+	EXPECT_EQ(dest,waiter({3,4,7,6,5}, 1));
+}
 #endif // !WEEK_TWO_TEST
