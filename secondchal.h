@@ -330,7 +330,29 @@ inline vector<int> climbingLeaderboard(vector<int> ranked, vector<int> player) {
 	return result;
 }
 inline string isBalanced(string s) {
-	return { "YES" };
+	int len = s.size();
+	for (auto i = s.size()-1; i > 0 || len == 0; --i) {
+		//cout << s << endl;
+		switch (s[i])
+		{
+		case ']':
+			if (s[i - 1] == '[')
+				s.erase(s.begin() + i - 1, s.begin() + i+1 );
+			break;
+		case ')':
+			if (s[i - 1] == '(')
+				s.erase(s.begin() + i -1, s.begin() + i+1 );
+			break;
+		case '}':
+			if (s[i - 1] == '{')
+				s.erase(s.begin() + i - 1, s.begin() + i+1 );
+			break;
+		default:
+			break;
+		}
+		--len;
+	}
+	return s.size() == 0 ? string("YES") : string("NO");
 }
 // example : [1 3 4 5 6], m = 6, return 1 and 4 (index)
 inline vector<int> icecreamParlor(int m, vector<int> arr) {
