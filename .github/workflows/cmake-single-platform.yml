@@ -1,0 +1,40 @@
+name: C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgtest-dev libfmt-dev cmake
+        git clone https://github.com/google/googletest.git
+        cd googletest
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
+
+    - name: Create Build Directory
+      run: |
+        rm -rf build
+        mkdir build
+
+    - name: Configure CMake
+      run: cmake -B . -S ..
+      working-directory: build
+
+    - name: Build
+      run: cmake --build .
+      working-directory: build
+
+    - name: Run Tests
+      run: ./AlgorithmTests
+      working-directory: build
