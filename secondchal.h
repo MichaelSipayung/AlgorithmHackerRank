@@ -473,4 +473,38 @@ inline void mytextEditor(){
 		--q;
 	}
 }
+inline int truckTour(vector<vector<int>> petrolpumps) {
+    int start = 0;
+    int surplus = 0;
+    int deficit = 0;
+    for (int i = 0; i < petrolpumps.size(); i++) {
+        surplus += petrolpumps[i][0] - petrolpumps[i][1];
+        if (surplus < 0) {
+            start = i + 1;
+            deficit += surplus;
+            surplus = 0;
+        }
+    }
+    return (surplus + deficit >= 0) ? start : -1;
+}
+int pairs(int k, vector<int> arr) {
+	auto totalpair=0;
+	std::sort(arr.begin(), arr.end());
+	for(int i=0; i<arr.size()-1; ++i)
+		for(int j=i; j<arr.size();++j){
+			if(abs(arr[i]-arr[j])==k)
+				++totalpair;
+			else if(abs(arr[i]-arr[j])>k)
+				break; //there is no important check needed if the value is > k
+		}
+	return totalpair;
+}
+vector<string> bigSorting(vector<string> unsorted) {
+	std::sirt(unsorted.begin(), result.end(), [] (cons string a, const string b){
+		if(a.length()!= b.length())
+			return a.length() < b.length(); // the small length always at the front
+		return a < b; //otherwise just convert the numerical value, compare
+	});
+	return unsorted;
+}
 #endif // !WEEK_TWO
