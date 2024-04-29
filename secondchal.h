@@ -500,7 +500,7 @@ int pairs(int k, vector<int> arr) {
 	return totalpair;
 }
 vector<string> bigSorting(vector<string> unsorted) {
-	std::sort(unsorted.begin(), result.end(), [] (const string a, const string b){
+	std::sort(unsorted.begin(), unsorted.end(), [] (const string a, const string b){
 		if(a.length()!= b.length())
 			return a.length() < b.length(); // the small length always at the front
 		return a < b; //otherwise just convert the numerical value, compare
