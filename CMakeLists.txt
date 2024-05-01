@@ -5,8 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(GTest CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 # find_package(Boost CONFIG REQUIRED)
-add_executable(Algorithm main.cpp
-        twosum.h)
+# add_executable(Algorithm main.cpptwosum.h)
 #target_link_libraries(Algorithm PRIVATE GTest::gtest GTest::gtest_main
 #        GTest::gmock GTest::gmock_main)
 

@@ -552,7 +552,7 @@ inline int pageCount(int n, int p) {
 	}
 }
 // towerBreakers: find the player who will loose the game
-inline constexpr auto towerBreakers(int n, int m) {
+constexpr auto towerBreakers(int n, int m) {
 	if(m==1)
 		return 2;
 	return n%2==1 ? 1:2;

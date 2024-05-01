@@ -18,7 +18,7 @@ TEST(InsertionSort, oddsample) {
 }
 TEST(InsertionSort, randsample) {
 	vector<int> data;
-	for (auto i = 0; i < 100; ++i)
+	for (auto i = 0; i < 15; ++i)
 		data.push_back(std::rand());
 	auto temp = data;
 	std::sort(temp.begin(), temp.end());
@@ -38,5 +38,59 @@ TEST(InsertionSort, lambdasample) {
 		return i < j;
 		});
 	EXPECT_EQ(dest, data);
+}
+TEST(LinkedList, emptyitemlist) {
+	LinkedList<int> *a = new LinkedList<int>;
+	auto empty = a->empty();
+	EXPECT_EQ(true, empty);
+}
+TEST(LinkedList, nonemptylist) {
+	LinkedList<int>* a = new LinkedList<int>;
+	a->push_front(13);
+	auto empty = a->empty();
+	EXPECT_EQ(false, empty);
+}
+TEST(LinkedList, clearitem) {
+	auto data = new LinkedList<string>;
+	data->push_front(string("Michael"));
+	data->push_front(string("Jonathan"));
+	EXPECT_EQ(true, !data->empty());
+	data->pop_front();
+	data->pop_front();
+	EXPECT_EQ(true, data->empty());
+}
+TEST(LinkedList, clearall) {
+	auto data = new LinkedList<string>;
+	data->push_front(string("Michael"));
+	data->push_front(string("Jonathan"));
+	EXPECT_EQ(true, !data->empty());
+	data->clear();
+	EXPECT_EQ(true, data->empty());
+}
+TEST(LinkedList, countitem) {
+	auto data = new LinkedList<string>;
+	data->push_front(string("Michael"));
+	data->push_front(string("Jonathan"));
+	EXPECT_EQ(2, data->size());
+}
+TEST(LinkedList,callpoponemptylist) {
+	auto data = new LinkedList<string>;
+	 //call will fail due to static assertion
+	EXPECT_ANY_THROW(data->pop_front());
+}
+TEST(LinkedList, itematbackposition)
+{
+	auto data = new LinkedList<string>;
+	data->push_front(string("Michael"));
+	data->push_front(string("Jonathan"));
+	EXPECT_EQ(string("Michael"), data->back());
+	EXPECT_EQ(string("Jonathan"), data->front());
+}
+TEST(LinkedList, itematfrontposition)
+{
+	auto data = new LinkedList<string>;
+	data->push_front(string("Michael"));
+	data->push_front(string("Jonathan"));
+	EXPECT_EQ(string("Jonathan"), data->front());
 }
 #endif

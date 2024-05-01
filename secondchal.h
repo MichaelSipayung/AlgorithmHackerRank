@@ -88,7 +88,8 @@ inline const auto ispower(const long& n) {
 	auto x = std::log2l(n);
 	return (x - (int)x) == 0;
 }
-inline constexpr auto reduceToPower(long n) {
+
+constexpr auto reduceToPower(long n) {
 	while (n & (n - 1))// make it to zero
 		n = n & (n - 1);
 	return n;
@@ -368,7 +369,8 @@ inline vector<int> icecreamParlor(int m, vector<int> arr) {
 	std::sort(result.begin(), result.end());
 	return  result;
 }
-inline constexpr int isPrime(const int& n) {
+
+constexpr int isPrime(const int& n) {
 	if (n % 2 == 0 || n % 3 == 0)
 		return false;
 	// Check from 5 to square root of n 
