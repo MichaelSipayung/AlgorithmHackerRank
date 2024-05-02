@@ -5,25 +5,25 @@
 #include <list>
 TEST(removeEveryOtherItem, sizeiseven) {
 	std::list<int> data = { 1, 2, 3, 4, 5, 6 };
-	std::list<int> result = { 2, 4, 6 };
+	const std::list<int> result = { 2, 4, 6 };
 	removeEveryOtherItem(data);
 	EXPECT_EQ(result, data);
 }
 TEST(removeEveryOtherItem, sizeisodd) {
 	std::list<int> data = { 1, 2, 3 };
-	std::list<int> result = { 2 };
+	const std::list<int> result = { 2 };
 	removeEveryOtherItem(data);
 	EXPECT_EQ(result, data);
 }
 TEST(removeEveryOtherItem, sizeisone) {
 	std::list<int> data = { 1 };
-	std::list<int> result;
+	const std::list<int> result;
 	removeEveryOtherItem(data);
 	EXPECT_EQ(data, result);
 }
 TEST(removeEveryOtherItem, sizeisnil) {
 	std::list<int> data;
-	std::list<int> result;
+	const std::list<int> result;
 	removeEveryOtherItem(data);
 	EXPECT_EQ(data, result);
 }
@@ -55,91 +55,91 @@ TEST(saveThePrisoner, testcase14) {
 	EXPECT_EQ(72975907, saveThePrisoner(208526924, 756265725, 150817879));
 }
 TEST(circularArrayRotation, testcase1) {
-	std::vector<int> data = { 3, 4, 5 };
-	std::vector<int> result = { 5, 3 };
+	const std::vector<int> data = { 3, 4, 5 };
+	const std::vector<int> result = { 5, 3 };
 	EXPECT_EQ(result, circularArrayRotation(data, 2, { 1, 2 }));
 }
 TEST(circularArrayRotation, testcase2) {
-	std::vector<int> data = { 1, 2, 3 };
-	std::vector<int> result = { 2, 3, 1 };
+	const std::vector<int> data = { 1, 2, 3 };
+	const std::vector<int> result = { 2, 3, 1 };
 	EXPECT_EQ(result, circularArrayRotation(data, 2, { 0, 1, 2 }));
 }
 TEST(permutationEquation, testcase1) {
-	std::vector<int> data = { 2, 3, 1 };
-	std::vector<int> result = { 2, 3, 1 };
+	const std::vector<int> data = { 2, 3, 1 };
+	const std::vector<int> result = { 2, 3, 1 };
 	EXPECT_EQ(result, permutationEquation(data));
 }
 TEST(permutationEquation, testcase2) {
-	std::vector<int> data = { 4, 3, 5, 1, 2 };
-	std::vector<int> result = { 1, 3, 5, 4, 2 };
+	const std::vector<int> data = { 4, 3, 5, 1, 2 };
+	const std::vector<int> result = { 1, 3, 5, 4, 2 };
 	EXPECT_EQ(result, permutationEquation(data));
 }
 TEST(jumpingOnClouds, testcase1) {
-	std::vector<int> data = { 0, 0, 1, 0, 0, 1, 1, 0 };
+	const std::vector<int> data = { 0, 0, 1, 0, 0, 1, 1, 0 };
 	EXPECT_EQ(92, jumpingOnClouds(data, 2));
 }
 TEST(jumpingOnClouds, testcase2) {
-	std::vector<int> data = { 0, 0, 1, 0 };
+	const std::vector<int> data = { 0, 0, 1, 0 };
 	EXPECT_EQ(96, jumpingOnClouds(data, 2));
 }
 TEST(findDigits, testcase1) {
-	const auto number = 12;
+	constexpr auto number = 12;
 	EXPECT_EQ(2, findDigits(number));
 }
 TEST(findDigits, testcase2) {
-	const auto number = 1012;
+	constexpr auto number = 1012;
 	EXPECT_EQ(3, findDigits(number));
 }
 TEST(findDigits, testcase3) {
-	const auto number = 124;
+	constexpr auto number = 124;
 	EXPECT_EQ(3, findDigits(number));
 }
 TEST(findDigits, testcase4) {
-	const auto number = 10;
+	constexpr auto number = 10;
 	EXPECT_EQ(1, findDigits(number));
 }
 TEST(findDigits, testcase5) {
-	const auto number = 123456789;
+	constexpr auto number = 123456789;
 	EXPECT_EQ(3, findDigits(number));
 }
 TEST(findDigits, testcase6) {
-	const auto number = 106108048;
+	constexpr auto number = 106108048;
 	EXPECT_EQ(5, findDigits(number));
 }
 TEST(appendAndDelete, testcase1) {
-	string s = "hackerhappy";
-	string t = "hackerrank";
-	int k = 9;
+	const string s = "hackerhappy";
+	const string t = "hackerrank";
+	constexpr int k = 9;
 	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
 }
 TEST(appendAndDelete, testcase2) {
-	string s = "abc";
-	string t = "def";
-	int k = 6;
+	const string s = "abc";
+	const string t = "def";
+	constexpr int k = 6;
 	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
 }
 TEST(appendAndDelete, testcase3) {
-	string s = "ashley";
-	string t = "ash";
-	int k = 2;
+	const string s = "ashley";
+	const string t = "ash";
+	constexpr int k = 2;
 	EXPECT_EQ(string("No"), appendAndDelete(s, t, k));
 }
 TEST(appendAndDelete, testcase4) {
-	string s = "aba";
-	string t = "aba";
-	int k = 7;
+	const string s = "aba";
+	const string t = "aba";
+	constexpr int k = 7;
 	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
 }
 TEST(appendAndDelete, testcase5) {
-	string s = "abjad";
-	string t = "abj";
-	int k = 3;
+	const string s = "abjad";
+	const string t = "abj";
+	constexpr int k = 3;
 	EXPECT_EQ(string("Yes"), appendAndDelete(s, t, k));
 }
 TEST(appendAndDelete, testcase6) {
-	string s = "y";
-	string t = "yu";
-	int k = 2;
+	const string s = "y";
+	const string t = "yu";
+	constexpr int k = 2;
 	EXPECT_EQ(string("No"), appendAndDelete(s, t, k));
 }
 // TEST(appendAndDelete, testcase7) {
@@ -169,38 +169,38 @@ TEST(appendAndDelete, testcase6) {
 // 	EXPECT_EQ(9855, squares(a, b));
 // }
 TEST(libraryFine, testcase1) {
-	int d1 = 9, m1 = 6, y1 = 2015;
-	int d2 = 6, m2 = 6, y2 = 2015;
+	constexpr int d1 = 9, m1 = 6, y1 = 2015;
+	constexpr int d2 = 6, m2 = 6, y2 = 2015;
 	EXPECT_EQ(45, libraryFine(d1, m1, y1, d2, m2, y2));
 }
 TEST(libraryFine, testcase2) {
-	int d1 = 14, m1 = 2, y1 = 2024;
-	int d2 = 16, m2 = 1, y2 = 2024;
+	constexpr int d1 = 14, m1 = 2, y1 = 2024;
+	constexpr int d2 = 16, m2 = 1, y2 = 2024;
 	EXPECT_EQ((m1 - m2) * 500, libraryFine(d1, m1, y1, d2, m2, y2));
 }
 TEST(cutTheSticks, testcase1) {
-	vector<int> data = { 5,4,4,2,2,8 };
-	vector<int> goal = { 6,4,2,1 };
+	const vector<int> data = { 5,4,4,2,2,8 };
+	const vector<int> goal = { 6,4,2,1 };
 	EXPECT_EQ(goal, cutTheSticks(data));
 }
 TEST(cutTheSticks, testcase2) {
-	vector<int> data = { 1,2,3,4,3,3,2,1 };
-	vector<int> goal = { 8,6,4,1 };
+	const vector<int> data = { 1,2,3,4,3,3,2,1 };
+	const vector<int> goal = { 8,6,4,1 };
 	EXPECT_EQ(goal, cutTheSticks(data));
 }
 TEST(nonDivisibleSubset, testcase1) {
-	const int k = 3;
-	vector<int> data = { 1,7,2,4 };
+	constexpr int k = 3;
+	const vector<int> data = { 1,7,2,4 };
 	EXPECT_EQ(3, nonDivisibleSubset(k, data));
 }
 TEST(nonDivisibleSubset, testcase2) {
-	const int k = 5;
-	vector<int> data = { 1,2,3,4,5,6 };
+	constexpr int k = 5;
+	const vector<int> data = { 1,2,3,4,5,6 };
 	EXPECT_EQ(4, nonDivisibleSubset(k, data));
 }
 TEST(nonDivisibleSubset, testcase3) {
-	const int k = 7;
-	vector<int> data = { 278 ,576 ,496, 727 ,410 ,124 ,
+	constexpr int k = 7;
+	const vector<int> data = { 278 ,576 ,496, 727 ,410 ,124 ,
 		338 ,149 ,209 ,702 ,282 ,718 ,771 ,575, 436 };
 	EXPECT_EQ(11, nonDivisibleSubset(k, data));
 }
@@ -228,7 +228,7 @@ TEST(nonDivisibleSubset, testcase3) {
 //	EXPECT_EQ(string("Possible"), organizingContainers(data));
 //}
 TEST(organizingContainers, testcase4) {
-	vector<vector<int>> data = {
+	const vector<vector<int>> data = {
 		{0,2},
 		{1,1},
 	};
@@ -253,12 +253,12 @@ TEST(removeKdigitss, testcase6) {
 	EXPECT_EQ(string("100"), removeKdigitss(string("10200"), 2));
 }
 TEST(miniMaxSum, testcase1) {
-	stringstream buffer;
-	// redirect standart ouput to buffer
+	const stringstream buffer;
+	// redirect standard output to buffer
 	streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
 	miniMaxSum({ 256741038, 623958417, 467905213, 714532089, 938071625 });
 	cout.rdbuf(prevcoutbuf);
-	auto output = buffer.str();
+	const auto output = buffer.str();
 	EXPECT_EQ(output, "2063136757 2744467344");
 }
 TEST(timeConversion, testcase1) {
@@ -277,18 +277,18 @@ TEST(timeConversion, tetstcase5) {
 	EXPECT_EQ(string("12:00:00"), timeConversion({ "12:00:00PM" }));
 }
 TEST(matchingStrings, testcase1) {
-	vector<int> result = { 2,1,0 };
+	const vector<int> result = { 2,1,0 };
 	EXPECT_EQ(result, matchingStrings({"aba", "baba","aba","xzxb"}, {"aba","xzxb","ab"}));
 }
 TEST(matchingStrings, testcase2) {
-	vector<int> result = { 1,0,1 };
+	const vector<int> result = { 1,0,1 };
 	EXPECT_EQ(result, matchingStrings({ "def", "de","fgh" }, { "de","lmn","fgh" }));
 }
 TEST(lonelyinteger, testcase1) {
 	EXPECT_EQ(4, lonelyinteger({ 1,2,3,4,3,2,1 }));
 }
 TEST(diagonalDifference, testcase1) {
-	vector<vector<int>> data = {
+	const vector<vector<int>> data = {
 		{1,2,3},
 		{4,5,6},
 		{9,8,9}
@@ -296,7 +296,7 @@ TEST(diagonalDifference, testcase1) {
 	EXPECT_EQ(2, diagonalDifference(data));
 }
 TEST(countingSort, testcase1) {
-	vector<int> data = { 63, 25, 73, 1, 98, 73, 56, 84, 86,
+	const vector<int> data = { 63, 25, 73, 1, 98, 73, 56, 84, 86,
 		57, 16, 83, 8, 25, 81, 56, 9 ,53, 98, 67, 99, 12, 83, 89,
 		80 ,91, 39, 86, 76, 85, 74, 39, 25, 90, 59, 10 ,94, 32,
 		44 ,3 ,89 ,30 ,27 ,79 ,46 ,96, 27 ,32 ,18 ,21 ,92 ,69,
@@ -305,7 +305,7 @@ TEST(countingSort, testcase1) {
 		46 ,44 ,9 ,69 ,48, 33 ,60 ,65 ,16,
 		82, 67 ,61 ,32 ,21 ,79 ,75 ,75 ,13 ,87 ,70 ,33
 	};
-	vector<int> goal = {
+	const vector<int> goal = {
 		0 ,2 ,0 ,2 ,0 ,0 ,1 ,0 ,1 ,2 ,1 ,0 ,
 		1 ,1 ,0 ,0 ,2 ,0 ,1 ,0 ,1 ,2 ,1 ,1 ,1,
 		3 ,0 ,2 ,0 ,0 ,2 ,0 ,3 ,3 ,1 ,0 ,0 ,0 ,
@@ -344,11 +344,11 @@ TEST(findMedian, testcase1) {
 	EXPECT_EQ(3, findMedian({ 0,1,2,4,6,5,3 }));
 }
 TEST(flippingMatrix, testcase1) {
-	vector<vector<int>> data = { {1,2},{3,4} };
+	const vector<vector<int>> data = { {1,2},{3,4} };
 	EXPECT_EQ(4, flippingMatrix(data));
 }
 TEST(flippingMatrix, testcase2) {
-	vector<vector<int>> data = {
+	const vector<vector<int>> data = {
 		{112,42,83,119},
 		{56,125,56,49},
 		{15,78,101,43},
@@ -357,7 +357,7 @@ TEST(flippingMatrix, testcase2) {
 	EXPECT_EQ(414, flippingMatrix(data));
 }
 TEST(flippingMatrix, testcase3) {
-	vector<vector<int>> data = {
+	const vector<vector<int>> data = {
 		{1,2,3,4},
 		{1,2,3,4},
 		{1,2,3,4},
@@ -378,11 +378,11 @@ TEST(sockMerchant, testcase1) {
 	EXPECT_EQ(2, sockMerchant(7, { 1,2,1,2,1,3,2 }));
 }
 TEST(findZigZagSequence, testcase1) {
-	stringstream buffer;
+	const stringstream buffer;
 	streambuf* prebuffer = cout.rdbuf(buffer.rdbuf());
 	findZigZagSequence({1,2,3,4,5,6,7 }, 7);
 	cout.rdbuf(prebuffer);
-	auto output = buffer.str();
+	const auto output = buffer.str();
 	EXPECT_EQ(output,"1 2 3 7 6 5 4\n");
 }
 TEST(pageCount, testcase1) {
@@ -490,7 +490,7 @@ TEST(maxMin, testcase5) {
 //	EXPECT_EQ();
 //}
 TEST(gridChallenge, testcase1) {
-	vector<string> data = { "abc","ade","efg" };
+	const vector<string> data = { "abc","ade","efg" };
 	EXPECT_EQ(string("YES"), gridChallenge(data));
 }
 TEST(gridChallenge, testcase2) {
