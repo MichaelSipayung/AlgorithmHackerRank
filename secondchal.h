@@ -509,4 +509,52 @@ vector<string> bigSorting(vector<string> unsorted) {
 	});
 	return unsorted;
 }
+inline int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
+	std::reverse(h1.begin(), h1.end());
+	std::reverse(h2.begin(), h2.end());
+	std::reverse(h3.begin(), h3.end());
+	auto h1_acumulate = std::accumulate(h1.begin(), h1.end(), 0);
+	auto h2_acumulate = std::accumulate(h2.begin(), h2.end(), 0);
+	auto h3_acumulate = std::accumulate(h3.begin(), h3.end(), 0);
+	auto min = 0;
+	while (true) {
+		if ((h1_acumulate == h2_acumulate) && (h1_acumulate == h3_acumulate))
+			break;
+		min = std::min(std::min(h1_acumulate, h2_acumulate), h3_acumulate);
+		if (h1_acumulate == min) {
+			// manipulate stack 2 and 3
+			if (h2_acumulate != min){
+				h2_acumulate-=h2.back();
+				h2.pop_back();
+			}
+			if (h3_acumulate != min){
+				h3_acumulate-=h3.back();
+				h3.pop_back();
+			}
+		}
+		else if (h2_acumulate == min) {
+			// manipulate stack 1 and 3
+			if (h3_acumulate != min){
+				h3_acumulate-=h3.back();
+				h3.pop_back();
+			}
+			if (h1_acumulate != min){
+				h1_acumulate-=h1.back();
+				h1.pop_back();
+			}
+		}
+		else {
+			// manipulate the stack 1 and 2
+			if (h1_acumulate != min){
+				h1_acumulate-=h1.back();
+				h1.pop_back();
+			}
+			if (h2_acumulate != min){
+				h2_acumulate-=h2.back();
+				h2.pop_back();
+			}
+		}
+	}
+	return h1_acumulate;
+}
 #endif // !WEEK_TWO

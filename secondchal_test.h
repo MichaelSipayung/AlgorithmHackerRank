@@ -140,4 +140,10 @@ TEST(waiter, sample2) {
 	vector<int> dest = {4,6,3,7,5};
 	EXPECT_EQ(dest,waiter({3,4,7,6,5}, 1));
 }
+TEST(equalStacks, sample1) {
+	EXPECT_EQ(5, equalStacks({ 3,2,1,1,1 }, { 4,3,2 }, { 1,1,4,1 }));
+}
+TEST(equalStacks, sample2){
+	EXPECT_EQ(2,equalStacks({1,2,1,1},{1,1,2},{1,1}));
+}
 #endif // !WEEK_TWO_TEST

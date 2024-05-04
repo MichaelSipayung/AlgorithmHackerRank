@@ -170,14 +170,14 @@ namespace cormen {
 	public:
 		d_linked_list();
 		~d_linked_list();
-		[[nodiscard]] bool empty()const;
-		[[nodiscard]] const T& front()const;
-		[[nodiscard]] const T& back()const;
+		bool empty()const;
+		const T& front()const;
+		const T& back()const;
 		void push_front(const T&)noexcept;
 		void push_back(const T&)noexcept;
 		void pop_back();
 		void pop_front();
-		[[nodiscard]] size_t size() const;
+		size_t size() const;
 		const d_node<T>* get_head() const { return head; }
 		const d_node<T>* get_tail() const { return tail; }
 	private:
@@ -266,8 +266,10 @@ namespace cormen {
 		auto new_item = new d_node<T>(val);
 		new_item->next = pos; // link new_item in between pos
 		new_item->prev = pos->prev; // and pos->prev
-		pos->prev->next = new_item;
-		pos->prev = new_item;
+		pos->prev->next = new_item;	// update the next pointer of the node at the
+									// position where new_item is inserted
+		pos->prev = new_item; 	// update the prev pointer of the node at the
+								// position where new_item is inserted
 	}
 	// remove: removing node pos from list, u: predecessor, w: successor
 	template<typename T>
