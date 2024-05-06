@@ -7,6 +7,7 @@
 #include <numeric>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
+#include <limits>
 using namespace fmt;
 using namespace std;
 
@@ -556,5 +557,70 @@ inline int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
 		}
 	}
 	return h1_acumulate;
+}
+inline vector<int> max_crossing_array(const vector<int> &data, const int &low, 
+		const int &mid, const int &high) {
+	int leftsum = INT_MIN;
+	auto sum = 0;
+	int maxleft = 0;
+	for (int i = mid; i >= low; --i) {
+		sum += data[i];
+		if (sum > leftsum) {
+			leftsum = sum;
+			maxleft = i;
+		}
+	}
+	int maxright = 0;
+	int rightsum = INT_MIN;
+	sum = 0;
+	for (int j = mid+1 ; j <= high;++j) {
+		sum += data[j];
+		if (sum > rightsum) {
+			rightsum = sum;
+			maxright = j;
+		}
+	}
+	const vector<int> &pos = { maxleft, maxright, leftsum + rightsum };
+	return pos;
+}
+inline vector<int> crosing_demo(const vector<int>& data, const int &low, const int &high) {
+	//vector<int> left_result,right_result,cross_result;
+	if (high == low){
+		return { low,high,data[low] };
+	}
+	else {
+		int mid = low + (high-low)/2;
+		const auto &left_result = crosing_demo(data, low, mid);
+		const auto &right_result = crosing_demo(data, mid + 1, high);
+		const auto &cross_result = max_crossing_array(data, low,mid,high);
+		// println("cross : {}", cross_result);
+		if (left_result.back() >= right_result.back() &&
+			left_result.back() >= cross_result.back()) {
+			return left_result;
+		}
+		else if (right_result.back() >= left_result.back() &&
+			right_result.back() >= cross_result.back()) {
+			return right_result;
+		}
+		return cross_result;
+	}
+}
+inline vector<int> maxSubarray(vector<int>arr) {
+	auto len = arr.size()-1;
+	auto result = crosing_demo(arr,0,len);
+	auto sum = result.back();
+	vector<int> maxarr;
+	maxarr.push_back(sum);
+	// finding the subsequence 
+	if (sum < 0) 
+		maxarr.push_back(sum);
+	else {
+		sum = 0;
+		for (const auto& i : arr) 
+			if (i > 0)
+				sum += i;
+		maxarr.push_back(sum);
+	}
+	return maxarr;
 }
 #endif // !WEEK_TWO

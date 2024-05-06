@@ -146,4 +146,44 @@ TEST(equalStacks, sample1) {
 TEST(equalStacks, sample2){
 	EXPECT_EQ(2,equalStacks({1,2,1,1},{1,1,2},{1,1}));
 }
+TEST(maxSubarray, sample1) {
+	EXPECT_EQ(vector({ 16,20 }), maxSubarray({ -1,2,3,-4,5,10 }));
+}
+TEST(maxSubarray, sample2) {
+	EXPECT_EQ(vector({ 10,11}), maxSubarray({ 2, -1, 2, 3, 4, -5 }));
+}
+TEST(crosingdemo, sample1) {
+	vector<int> data = { 13,-3,-25,20,-3,-16,-23,18,20,-7,12,-5,-22,15,-4,7 };
+	int len = data.size()-1;
+	auto temp = crosing_demo(data, 0, len);
+	//println("result: {}", temp);
+	EXPECT_EQ(vector({7,10,43}), temp );
+}
+TEST(crosingdemo, sample2) {
+	vector<int> data = {-1,2,3,-4,5,10};
+	int len = data.size()-1;
+	auto temp = crosing_demo(data, 0, len);
+	//println("result: {}",temp);
+	EXPECT_EQ(vector<int>({1,5,16}), temp);
+}
+TEST(maxSubarray, sample3) {
+	vector<int> data = {1};
+	EXPECT_EQ(vector({ 1,1 }), maxSubarray(data));
+}
+TEST(maxSubarray, sample4) {
+	vector<int> data = { -1 ,-2 ,-3 ,-4 ,-5 ,-6 };
+	EXPECT_EQ(vector({ -1,-1 }), maxSubarray(data));
+}
+TEST(maxSubarray, sample5) {
+	vector<int> data = { 1 ,-2 };
+	EXPECT_EQ(vector({ 1,1 }), maxSubarray(data));
+}
+TEST(maxSubarray, sample6) {
+	vector<int> data = { 1, -1 ,-1 ,-1 ,-1, 5 };
+	EXPECT_EQ(vector({ 5,6 }), maxSubarray(data));
+}
+TEST(maxcrosing, sample1){
+	vector<int> data = { 13,-3,-25,20,-3,-16,-23,18,20,-7,12,-5,-22,15,-4,7 };
+	EXPECT_EQ(vector({ 7,10,43 }), max_crossing_array(data, 0,7,15));
+}
 #endif // !WEEK_TWO_TEST
