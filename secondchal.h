@@ -560,7 +560,7 @@ inline int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
 }
 inline vector<int> max_crossing_array(const vector<int> &data, const int &low, 
 		const int &mid, const int &high) {
-	int leftsum = INT_MIN;
+	int leftsum = INT64_MIN;
 	auto sum = 0;
 	int maxleft = 0;
 	for (int i = mid; i >= low; --i) {
@@ -571,7 +571,7 @@ inline vector<int> max_crossing_array(const vector<int> &data, const int &low,
 		}
 	}
 	int maxright = 0;
-	int rightsum = INT_MIN;
+	int rightsum = INT16_MIN;
 	sum = 0;
 	for (int j = mid+1 ; j <= high;++j) {
 		sum += data[j];
