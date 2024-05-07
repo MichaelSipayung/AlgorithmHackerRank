@@ -560,7 +560,7 @@ inline int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
 }
 inline vector<int> max_crossing_array(const vector<int> &data, const int &low, 
 		const int &mid, const int &high) {
-	int leftsum = INT64_MIN;
+	int leftsum = INT32_MIN;
 	auto sum = 0;
 	int maxleft = 0;
 	for (int i = mid; i >= low; --i) {
@@ -622,5 +622,39 @@ inline vector<int> maxSubarray(vector<int>arr) {
 		maxarr.push_back(sum);
 	}
 	return maxarr;
+}
+inline int legoBlocks(int n, int m) {
+	return 0;
+}
+inline void qheap_problem(){
+	auto operation =0;
+	set<int> data;
+	int q=0;
+	std::cin>>q;
+	long long v;
+	auto find = data.begin();
+	auto finnext = data.begin();
+	while(q>0){
+		std::cin>>operation;
+		switch (operation)
+		{
+		case 1:
+			std::cin>>v;
+			data.insert(v);
+			break;
+		case 2:
+			std::cin>>v;
+			find= std::find(data.begin(), data.end(),v);
+			finnext = find;
+			data.erase(find,++finnext);
+			break;
+		case 3:
+			cout<<*data.begin()<<endl;
+			break;
+		default:
+			break;
+		}
+		--q;
+	}
 }
 #endif // !WEEK_TWO
