@@ -186,4 +186,14 @@ TEST(maxcrosing, sample1){
 	vector<int> data = { 13,-3,-25,20,-3,-16,-23,18,20,-7,12,-5,-22,15,-4,7 };
 	EXPECT_EQ(vector({ 7,10,43 }), max_crossing_array(data, 0,7,15));
 }
+TEST(solve, sample1){
+    EXPECT_EQ(vector({3,4}), solve({2,3,4,5,6},{2,3}));
+}
+TEST(solve, sample2){
+    EXPECT_EQ(vector({1,2,3,4,5}), solve({1,2,3,4,5},{1,2,3,4,5}));
+}
+TEST(arrayManipulation, sample1){
+    EXPECT_EQ(200, arrayManipulation(5,{{1,2,100},{2,5,100},{3,4,100}}));
+}
+
 #endif // !WEEK_TWO_TEST
