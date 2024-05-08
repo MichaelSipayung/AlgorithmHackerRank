@@ -10,6 +10,7 @@
 #include <fmt/ranges.h>
 #include <limits>
 #include <deque>
+
 using namespace fmt;
 using namespace std;
 
@@ -681,9 +682,10 @@ inline vector<int> solve(const vector<int> &arr, const vector<int> &queries) {
     }
     return result;
 }
+
 vector<int> solve(const vector<int> &arr, const vector<int> &queries, int op) {
     vector<int> result;
-    int temp_min= INT32_MAX;
+    int temp_min = INT32_MAX;
     for (const auto &i: queries) {
         deque<int> Qi(i);
         int j;
@@ -706,22 +708,108 @@ vector<int> solve(const vector<int> &arr, const vector<int> &queries, int op) {
     }
     return result;
 }
+
 // arrayManipulation: finding the maximum element by performing
 // addition on each range on each query on queries, (query[0]... query[1]) = query[2]
 inline long arrayManipulation(const int &n, const vector<vector<int>> &queries) {
-    vector<long> result(n,0);
-    long temp_max= 0;
+    vector<long> result(n, 0);
+    long temp_max = 0;
     // process the start and the end of the range
-    for(auto &query : queries){
-        result[query.front()-1] += query.back(); // since the indexed start from 0
-        if(query[1]<n) // since the n is invalid range on result
+    for (auto &query: queries) {
+        result[query.front() - 1] += query.back(); // since the indexed start from 0
+        if (query[1] < n) // since the n is invalid range on result
             result[query[1]] -= query.back(); //subtract, as the sign of excluded range
     }
     // process the next range, guide is the start and the end above
-    for(int i=1; i<n; ++i){ // start from index 1, since addition result[i-1]
-        result[i] += result[i-1]; // add the current + the last one
-        temp_max= std::max(temp_max, result[i]);
+    for (int i = 1; i < n; ++i) { // start from index 1, since addition result[i-1]
+        result[i] += result[i - 1]; // add the current + the last one
+        temp_max = std::max(temp_max, result[i]);
     }
-    return  temp_max;
+    return temp_max;
 }
+
+[[maybe_unused]] inline void queue_two_stack() {
+    auto q = 0;
+    std::list<int> data;
+    auto qtype = 0;
+    auto addelement = 0;
+    std::cin >> q;
+    while (q) {
+        std::cin >> qtype;
+        switch (qtype) {
+            case 1:
+                std::cin >> addelement;
+                data.push_back(addelement);
+                break;
+            case 2:
+                data.pop_front();
+                break;
+            case 3:
+                std::cout << data.front() << endl;
+                break;
+            default:
+                break;
+        }
+        --q;
+    }
+}
+
+[[maybe_unused]] inline constexpr bool increase_value(const std::string &old_v,
+                                                      const std::string &new_v) {
+    if (old_v.length() != new_v.length())
+        return old_v.length() < new_v.length();
+    return old_v < new_v;
+}
+
+inline string reverse_string(const std::string &v) {
+    auto temp = v;
+    std::reverse(temp.begin(), temp.end());
+    return temp;
+}
+
+[[maybe_unused]] inline bool is_palindrome(const string &v) {
+    return v == reverse_string(v);
+}
+
+inline string highestValuePalindrome(const string &s, const int &n, int k) {
+    string result = s;
+    if (s.length() % 2 == 0) { // length of the str is even number
+        // already palindrome, case 1
+        if (s.substr(0, s.length() / 2) == reverse_string(
+                s.substr(s.length() / 2, s.length() / 2))) {
+            for (auto i = 0; i < s.length() / 2; ++i) {
+                if (s[i] < '9') {
+                    if (k >= 2) {
+                        result[i] = '9';
+                        result[s.length() - i - 1] = '9';
+                        k -= 2;
+                    }
+                }
+            }
+        } else {
+            for (auto i = 0; i < s.length() / 2; ++i) {
+                if (s[i] < '9') {
+                    if (k >= 2) {
+                        result[i] = '9';
+                        result[s.length() - i - 1] = '9';
+                        k -= 2;
+                    }
+                    else if(k==1){
+                        if(s[i]>s[i+1])
+                            result[i+1] = s[i];
+                        else {
+                            result[i] = s[i+1];
+                        }
+                        --k;
+                    }
+                }
+            }
+        }
+    }
+    // main line for change the string to the highest palindrome if possible
+    if (is_palindrome(result) && (s < result))
+        return result;
+    return {"-1"};
+}
+
 #endif // !WEEK_TWO

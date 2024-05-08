@@ -198,4 +198,22 @@ TEST(arrayManipulation, sample1){
 TEST(arrayManipulation, sample2){
     EXPECT_EQ(10, arrayManipulation(10, {{1,5,3},{4,8,7},{6,9,1}}));
 }
+TEST(highestValuePalindrome, DISABLED_sample1){
+    EXPECT_EQ(string("9339"), highestValuePalindrome({"1231"},4,3));
+}
+TEST(highestValuePalindrome, DISABLED_sample2){
+    EXPECT_EQ(string("12921"), highestValuePalindrome({"12321"},5,1));
+}
+TEST(highestValuePalindrome, DISABLED_sample3){
+    EXPECT_EQ(string("3993"), highestValuePalindrome({"3943"},4,1));
+}
+TEST(highestValuePalindrome, sample4){
+    EXPECT_EQ(string("-1"), highestValuePalindrome({"0011"},4,1));
+}
+TEST(highestValuePalindrome, already_palindrome){
+    EXPECT_EQ(string("9999"), highestValuePalindrome({"2332"},4,4));
+}
+TEST(highestValuePalindrome, already_palindrome_sample){
+    EXPECT_EQ(string("9999"), highestValuePalindrome({"9119"},4,4));
+}
 #endif // !WEEK_TWO_TEST
