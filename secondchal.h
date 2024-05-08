@@ -706,14 +706,22 @@ vector<int> solve(const vector<int> &arr, const vector<int> &queries, int op) {
     }
     return result;
 }
+// arrayManipulation: finding the maximum element by performing
+// addition on each range on each query on queries, (query[0]... query[1]) = query[2]
 inline long arrayManipulation(const int &n, const vector<vector<int>> &queries) {
     vector<long> result(n,0);
     long temp_max= 0;
-    for(auto & query : queries)
-        for(auto j= query[0]; j <= query[1]; ++j ){
-            result[j-1]+=query[2]; // constant operation
-            temp_max = std::max(temp_max, result[j - 1]);
-        }
+    // process the start and the end of the range
+    for(auto &query : queries){
+        result[query.front()-1] += query.back(); // since the indexed start from 0
+        if(query[1]<n) // since the n is invalid range on result
+            result[query[1]] -= query.back(); //subtract, as the sign of excluded range
+    }
+    // process the next range, guide is the start and the end above
+    for(int i=1; i<n; ++i){ // start from index 1, since addition result[i-1]
+        result[i] += result[i-1]; // add the current + the last one
+        temp_max= std::max(temp_max, result[i]);
+    }
     return  temp_max;
 }
 #endif // !WEEK_TWO

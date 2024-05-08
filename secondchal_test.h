@@ -195,5 +195,7 @@ TEST(solve, sample2){
 TEST(arrayManipulation, sample1){
     EXPECT_EQ(200, arrayManipulation(5,{{1,2,100},{2,5,100},{3,4,100}}));
 }
-
+TEST(arrayManipulation, sample2){
+    EXPECT_EQ(10, arrayManipulation(10, {{1,5,3},{4,8,7},{6,9,1}}));
+}
 #endif // !WEEK_TWO_TEST
