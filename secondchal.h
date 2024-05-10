@@ -1,6 +1,5 @@
 #ifndef WEEK_TWO
 #define WEEK_TWO
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,7 +9,7 @@
 #include <fmt/ranges.h>
 #include <limits>
 #include <deque>
-
+#include <set>
 using namespace fmt;
 using namespace std;
 
@@ -811,5 +810,19 @@ inline string highestValuePalindrome(const string &s, const int &n, int k) {
         return result;
     return {"-1"};
 }
-
+inline int cookies(const int &k, const vector<int> &A) {
+    std::multiset<int> temp(A.begin(),A.end());
+    if(*temp.begin()>=k)
+        return 0;
+    auto cnt=0;
+    while((*temp.begin()<k) && (temp.size()>1)){
+        auto beg = temp.begin();
+        auto next_begin = ++temp.begin();
+        const auto result = (*beg)+2*(*next_begin);
+        temp.erase(beg, ++next_begin);
+        temp.insert(result);
+        ++cnt;
+    }
+    return cnt == 0 || *temp.begin()< k ? -1 : cnt;
+}
 #endif // !WEEK_TWO

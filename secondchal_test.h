@@ -216,4 +216,19 @@ TEST(highestValuePalindrome, already_palindrome){
 TEST(highestValuePalindrome, already_palindrome_sample){
     EXPECT_EQ(string("9999"), highestValuePalindrome({"9119"},4,4));
 }
+TEST(cookies, sample1){
+    EXPECT_EQ(4, cookies(9,{2,7,3,6,4,6}));
+}
+TEST(cookies, sample2){
+    EXPECT_EQ(2, cookies(7,{1, 2, 3, 9, 10, 12}));
+}
+TEST(cookies, sample3){
+    EXPECT_EQ(2, cookies(5,{2,3,4}));
+}
+TEST(cookies, randomsample){
+    EXPECT_EQ(2, cookies(13, {7,8,9}));
+}
+TEST(cookies, randomsample2){
+    EXPECT_EQ(2, cookies(4,{1,2,3,4}));
+}
 #endif // !WEEK_TWO_TEST
