@@ -753,7 +753,7 @@ inline long arrayManipulation(const int &n, const vector<vector<int>> &queries) 
     }
 }
 
-[[maybe_unused]] inline constexpr bool increase_value(const std::string &old_v,
+[[maybe_unused]] inline bool increase_value(const std::string &old_v,
                                                       const std::string &new_v) {
     if (old_v.length() != new_v.length())
         return old_v.length() < new_v.length();
