@@ -1,5 +1,6 @@
 #ifndef WEEK_TWO
 #define WEEK_TWO
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,6 +11,7 @@
 #include <limits>
 #include <deque>
 #include <set>
+
 using namespace fmt;
 using namespace std;
 
@@ -754,7 +756,7 @@ inline long arrayManipulation(const int &n, const vector<vector<int>> &queries) 
 }
 
 [[maybe_unused]] inline bool increase_value(const std::string &old_v,
-                                                      const std::string &new_v) {
+                                            const std::string &new_v) {
     if (old_v.length() != new_v.length())
         return old_v.length() < new_v.length();
     return old_v < new_v;
@@ -792,12 +794,11 @@ inline string highestValuePalindrome(const string &s, const int &n, int k) {
                         result[i] = '9';
                         result[s.length() - i - 1] = '9';
                         k -= 2;
-                    }
-                    else if(k==1){
-                        if(s[i]>s[i+1])
-                            result[i+1] = s[i];
+                    } else if (k == 1) {
+                        if (s[i] > s[i + 1])
+                            result[i + 1] = s[i];
                         else {
-                            result[i] = s[i+1];
+                            result[i] = s[i + 1];
                         }
                         --k;
                     }
@@ -810,19 +811,26 @@ inline string highestValuePalindrome(const string &s, const int &n, int k) {
         return result;
     return {"-1"};
 }
+
 inline int cookies(const int &k, const vector<int> &A) {
-    std::multiset<int> temp(A.begin(),A.end());
-    if(*temp.begin()>=k)
+    std::multiset<int> temp(A.begin(), A.end());
+    if (*temp.begin() >= k)
         return 0;
-    auto cnt=0;
-    while((*temp.begin()<k) && (temp.size()>1)){
+    auto cnt = 0;
+    while ((*temp.begin() < k) && (temp.size() > 1)) {
         auto beg = temp.begin();
         auto next_begin = ++temp.begin();
-        const auto result = (*beg)+2*(*next_begin);
+        const auto result = (*beg) + 2 * (*next_begin);
         temp.erase(beg, ++next_begin);
         temp.insert(result);
         ++cnt;
     }
-    return cnt == 0 || *temp.begin()< k ? -1 : cnt;
+    return cnt == 0 || *temp.begin() < k ? -1 : cnt;
 }
+
+int hackerlandRadioTransmitters(vector<int> x, const int &k) {
+    std::sort(x.begin(), x.end());
+    return 0;
+}
+
 #endif // !WEEK_TWO
