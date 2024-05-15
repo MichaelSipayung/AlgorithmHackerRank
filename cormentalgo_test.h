@@ -230,4 +230,34 @@ TEST(DoublyLinkedList, sizeafterpopfront) {
 	ls.pop_front();
 	EXPECT_TRUE(ls.size() == 0);
 }
+TEST(merge, sample1){
+    vector<int> data = {2,4,5,7,1,2,3,6};
+    merge(data,0,data.size()/2-1,data.size()-1);
+    EXPECT_EQ(vector({1,2,2,3,4,5,6,7}),data);
+}
+TEST(merge, sample2){
+    vector<int> data = {2,4,3,6,9};
+    merge(data,0,data.size()/2-1,data.size()-1);
+    EXPECT_EQ(vector({2,3,4,6,9}),data);
+}
+TEST(merge, sample3){
+    vector<int> data = {2,4,5,6,1,8,11,15};
+    merge(data,0,data.size()/2-1,data.size()-1);
+    EXPECT_EQ(vector({1,2,4,5,6,8,11,15}),data);
+}
+TEST(merge_sort, sample1){
+    vector<int> data = {8,7,6,5,4,3,2,1};
+    merge_sort(data,0,data.size()-1);
+    EXPECT_EQ(vector({1,2,3,4,5,6,7,8}), data);
+}
+TEST(merge_sort, sample2){
+    vector<int> data = {8,7,4,3};
+    merge_sort(data,0,data.size()-1);
+    EXPECT_EQ(vector({3,4,7,8}), data);
+}
+TEST(merge_sort, sample1_double){
+    vector<double> data = {80.8,78.9,48.8,3.86};
+    merge_sort(data,0,data.size()-1);
+    EXPECT_EQ(vector({3.86,48.8,78.9,80.8}), data);
+}
 #endif

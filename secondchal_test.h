@@ -318,4 +318,10 @@ TEST(hackerlandRadioTransmitters, DISABLED_sample2) {
 TEST(hackerlandRadioTransmitters, DISABLED_sample3){
     EXPECT_EQ(2, hackerlandRadioTransmitters({1, 2, 3, 4, 5},1));
 }
+TEST(hackerlandRadioTransmitters, DISABLED_randomsample ){
+    EXPECT_EQ(5, hackerlandRadioTransmitters({1,3,5,7,9},1));
+}
+TEST(hackerlandRadioTransmitters, DISABLED_randomsample1 ){
+    EXPECT_EQ(2, hackerlandRadioTransmitters({1,3},1));
+}
 #endif // !WEEK_TWO_TEST

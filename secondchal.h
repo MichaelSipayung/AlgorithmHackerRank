@@ -613,6 +613,7 @@ inline vector<int> crosing_demo(const vector<int> &data, const int &low, const i
             return right_result;
         }
         return cross_result;
+
     }
 }
 
@@ -828,9 +829,21 @@ inline int cookies(const int &k, const vector<int> &A) {
     return cnt == 0 || *temp.begin() < k ? -1 : cnt;
 }
 
-int hackerlandRadioTransmitters(vector<int> x, const int &k) {
+inline int hackerlandRadioTransmitters(vector<int> x, const int &k) {
+    if(x.size()<2)
+        return 0;
+    auto cnt=1;
+    auto key=0;
     std::sort(x.begin(), x.end());
-    return 0;
+    for(auto i=1; i<x.size();++i){
+        if((std::abs(x[key]-x[i])<= k))
+            continue;
+        else {
+            key =i;
+            ++cnt;
+        }
+    }
+    return cnt;
 }
 
 #endif // !WEEK_TWO
