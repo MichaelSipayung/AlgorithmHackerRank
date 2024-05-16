@@ -368,5 +368,37 @@ namespace cormen {
         merge_sort(ls, mid+1, end);
         merge(ls,beg,mid,end);
     }
+
+    // merge sort with lambada params, custom comparable, default is less than
+    template<typename T, typename Comparable>
+    void merge(std::vector<T> &ls, const int &beg, const int &mid, const int &end,
+        Comparable comp){
+        std::vector<T> temp;
+        for(auto k=beg; k<=end;++k)
+            temp.push_back(ls[k]);
+        auto i=beg;
+        auto j= mid+1;
+        for(auto k = beg; k<=end; ++k){
+            if(i>mid) //control the half left
+                ls[k] = temp[j++ - beg];
+            else if(j>end) //control the laft right
+                ls[k] = temp[i++ - end];
+            else if(comp(temp[j - beg], temp[i - beg])) //compare half right with half left
+                ls[k] = temp[j++ - beg];
+            else
+                ls[k] = temp[i++ - beg];
+        }
+    }
+
+    template<typename T, typename Comparable>
+    void merge_sort(vector<T> &ls, const int &beg, const int &end,
+        Comparable comp){
+        if(end<=beg)
+            return;
+        int mid = beg + (end-beg)/2;
+        merge_sort(ls, beg,mid,comp);
+        merge_sort(ls,mid+1,end,comp);
+        merge(ls,beg,mid,end,comp);
+    }
 };
 #endif // !CORMEN_ALGORITHM
