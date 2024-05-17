@@ -380,8 +380,8 @@ namespace cormen {
         for(auto k = beg; k<=end; ++k){
             if(i>mid) //control the half left
                 ls[k] = temp[j++ - beg];
-            else if(j>end) //control the laft right
-                ls[k] = temp[i++ - end];
+            else if(j>end) //control the left right
+                ls[k] = temp[i++ - beg];
             else if(comp(temp[j - beg], temp[i - beg])) //compare half right with half left
                 ls[k] = temp[j++ - beg];
             else

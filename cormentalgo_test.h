@@ -260,6 +260,86 @@ TEST(merge_sort, sample1_double){
     merge_sort(data,0,data.size()-1);
     EXPECT_EQ(vector({3.86,48.8,78.9,80.8}), data);
 }
+
+TEST(merge_lambda, sample1){
+    vector<int> data = {3,2,1,0,8,7,6,5};
+    merge(data,0,data.size()/2-1, data.size()-1,[](int a, int b){
+        return a>b;
+    });
+    EXPECT_EQ(vector({8,7,6,5,3,2,1,0}),data);
+}
+TEST(merge_lambda, sample2){
+    vector<int> data = {-5,-6,-7,-1,-2,-3};
+    merge(data,0,data.size()/2-1, data.size()-1,[](int a, int b){
+        return a>b;
+    });
+    EXPECT_EQ(vector({-1,-2,-3,-5,-6,-7}),data);
+}
+TEST(merge_sort_lambda, sample1){
+    vector<double> data = {3.86,48.8,78.9,80.8};
+    merge_sort(data,0,data.size()-1, [](double a, double b ){
+        return a>b;
+    });
+    EXPECT_EQ(vector({80.8,78.9,48.8,3.86}), data);
+}
+TEST(merge_sort_lambda, sample2){
+    vector<int> data = {3,4,7,8};
+    merge_sort(data,0,data.size()-1,[](int a, int b){
+        return a>b;
+    });
+    EXPECT_EQ(vector({8,7,4,3}), data);
+}
+TEST(merge_sort_lambda, sample3){
+    vector<int> data = {-9,-8,-7,-6,-5};
+    merge_sort(data,0, data.size()-1, [](int a, int b){
+        return a>b;
+    });
+    EXPECT_EQ(vector({-5,-6,-7,-8,-9}), data);
+}
+TEST(merge_sort, sample_hundred){
+    vector<int> data;
+    for(auto i=-1;i>=-100; --i)
+        data.push_back(i);
+    merge_sort(data,0,data.size()-1);
+    vector<int> expected;
+    for(auto i=-100;i<=-1;++i)
+        expected.push_back(i);
+    EXPECT_EQ(data,expected);
+}
+TEST(merge_sort, sample_thousand){
+    vector<double> data;
+    for(auto i=-1;i>=-1000; --i)
+        data.push_back(i*1.4);
+    merge_sort(data,0,data.size()-1);
+    vector<double> expected;
+    for(auto i=-1000;i<=-1;++i)
+        expected.push_back(i*1.4);
+    EXPECT_EQ(data,expected);
+}
+TEST(merge_sort_lambda, sample_hundred){
+    vector<int> data;
+    for(auto i=-100;i<=-1; ++i)
+        data.push_back(i);
+    merge_sort(data,0,data.size()-1,[](const int &a, const int &b){
+        return a>b;
+    });
+    vector<int> expected;
+    for(auto i=-1;i>=-100;--i)
+        expected.push_back(i);
+    EXPECT_EQ(data,expected);
+}
+TEST(merge_sort_lambda, sample_thousand){
+    vector<double> data;
+    for(auto i=-1000;i<=-1; ++i)
+        data.push_back(i*1.3);
+    merge_sort(data,0,data.size()-1,[](const int &a, const int &b){
+        return a>b;
+    });
+    vector<double> expected;
+    for(auto i=-1;i>=-1000;--i)
+        expected.push_back(i*1.3);
+    EXPECT_EQ(data,expected);
+}
 TEST(node_circle, case1){
 	node_circle<int> node_a(15);
 	EXPECT_EQ(15, node_a.get_item());
