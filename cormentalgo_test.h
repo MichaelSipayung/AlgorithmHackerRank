@@ -230,6 +230,14 @@ TEST(DoublyLinkedList, sizeafterpopfront) {
 	ls.pop_front();
 	EXPECT_TRUE(ls.size() == 0);
 }
+TEST(DoublyLinkedList, reversing_doubly_linked_ls){
+	d_linked_list<string> ls;
+	ls.push_front("donald");
+	ls.push_front("dinar");
+	EXPECT_EQ(string("dinar"), ls.front());
+	rdoubly_linked_list(ls);
+	EXPECT_EQ(string("donald"), ls.front());
+}
 TEST(merge, sample1){
     vector<int> data = {2,4,5,7,1,2,3,6};
     merge(data,0,data.size()/2-1,data.size()-1);

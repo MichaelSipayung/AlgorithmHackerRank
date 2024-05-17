@@ -482,5 +482,20 @@ namespace cormen {
             cursor->next= new_node; //cursor next point to newly added node
         }
     }
+
+    template<typename T>
+    void rdoubly_linked_list(d_linked_list<T> &ls){
+        d_linked_list<T> temp;
+        while(!ls.empty()){ // copying the original ls to temp
+            const auto item = ls.front();
+            ls.pop_front();
+            temp.push_front(item);
+        }
+        while(!temp.empty()){
+            const auto item = temp.front();
+            temp.pop_front();
+            ls.push_back(item);
+        }
+    }
 };
 #endif // !CORMEN_ALGORITHM
