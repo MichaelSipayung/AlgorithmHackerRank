@@ -1,6 +1,5 @@
 #ifndef CORMEN_ALGORITHM
 #define CORMEN_ALGORITHM
-
 #include <iostream>
 #include <ostream>
 #include <vector>
@@ -399,6 +398,89 @@ namespace cormen {
         merge_sort(ls, beg,mid,comp);
         merge_sort(ls,mid+1,end,comp);
         merge(ls,beg,mid,end,comp);
+    }
+
+    template<typename T>
+    class circle_list;
+
+    template<typename T>
+    class node_circle{
+    public:
+        node_circle(const T& value) : item{value}, next{nullptr}{}
+        ~node_circle(){next = nullptr;}
+        const T& get_item()const{return item;}
+    private:
+        T item;
+        node_circle *next;
+        friend class circle_list<T>;
+    };
+
+    template<typename T>
+    class circle_list
+    {
+    public:
+        circle_list(): cursor{nullptr}{}
+        ~circle_list(){
+            while(!empty())
+                remove();
+        }
+        bool empty() const;
+        const T &front() const; // element following cursor, if not advance,
+        // the front is the last inserted element
+        const T &back() const; // element at the cursor, conversly to front behavior
+        void advance(); // advance cursor
+        void add(const T&); // add item after cursor, if current [a,b], add 'c'
+        // will make the list [c,a,b], this maintain the circular behavior
+        void remove(); // remove node after cursor
+    private:
+        node_circle<T> *cursor;    
+    };
+
+    template<typename T>
+    void circle_list<T>::remove(){
+        if(empty())
+            throw std::out_of_range("calling remove() on empty circle_list");
+        auto old = cursor->next;
+        if(old == cursor)
+            cursor = nullptr;
+        else
+            cursor->next = old->next;
+        delete old;
+    }
+    template<typename T>
+    bool circle_list<T>::empty()const{
+        return cursor == nullptr;
+    }
+
+    template<typename T>
+    const T &circle_list<T>::back()const{
+        if(empty())
+            throw std::out_of_range("calling back() on empty circle_list");
+        return cursor->item;
+    }
+
+    template<typename T>
+    const T & circle_list<T>::front()const{
+        if(empty())
+            throw std::out_of_range("calling front() on empty circle_list");
+        return cursor->next->item;
+    }
+
+    template<typename T>
+    void circle_list<T>::advance(){
+        cursor = cursor->next;
+    }
+
+    template<typename T>
+    void circle_list<T>::add(const T& item){
+        auto new_node = new node_circle<T>(item);
+        if(empty()){
+            new_node->next = new_node; //since we deal with circular list
+            cursor = new_node; //cursor point to new_node
+        }else{
+            new_node->next = cursor->next; //link in v after cursor
+            cursor->next= new_node; //cursor next point to newly added node
+        }
     }
 };
 #endif // !CORMEN_ALGORITHM

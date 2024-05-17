@@ -260,4 +260,66 @@ TEST(merge_sort, sample1_double){
     merge_sort(data,0,data.size()-1);
     EXPECT_EQ(vector({3.86,48.8,78.9,80.8}), data);
 }
+TEST(node_circle, case1){
+	node_circle<int> node_a(15);
+	EXPECT_EQ(15, node_a.get_item());
+}
+TEST(node_circle, case2){
+	node_circle<string> node_s("Michael");
+	EXPECT_EQ(string("Michael"), node_s.get_item());
+}
+TEST(circle_list, adding_items){
+	circle_list<double> circle_a;
+	circle_a.add(56.8);
+	EXPECT_FALSE(circle_a.empty());
+}
+TEST(circle_list, calling_front_on_empty){
+	circle_list<double> circle_a;
+	EXPECT_ANY_THROW(circle_a.front());
+}
+TEST(circle_list, calling_back_on_empty){
+	circle_list<double> circle_b;
+	EXPECT_ANY_THROW(circle_b.back());
+}
+TEST(circle_list, calling_front){
+	circle_list<double> circle_a;
+	circle_a.add(89.89);
+	circle_a.add(89.99);
+	circle_a.add(89.79);
+	EXPECT_EQ(89.79, circle_a.front());
+}
+TEST(circle_list, calling_back){
+	circle_list<double> circle_a;
+	circle_a.add(89.89);
+	circle_a.add(89.99);
+	circle_a.add(89.79);
+	EXPECT_EQ(89.89, circle_a.back());
+}
+TEST(circle_list, calling_empty){
+	circle_list<double> circle_a;
+	EXPECT_TRUE(circle_a.empty());
+}
+TEST(circle_list, calling_remove){
+	circle_list<double> circle_a;
+	circle_a.add(89.98);
+	EXPECT_FALSE(circle_a.empty());
+	circle_a.remove();
+	EXPECT_TRUE(circle_a.empty());
+}
+TEST(circle_list, calling_remove_on_empty){
+	circle_list<std::string> circle_a;
+	EXPECT_ANY_THROW(circle_a.remove());
+}
+TEST(circle_list, calling_advance){
+	circle_list<double> circle_a;
+	circle_a.add(89.9);
+	circle_a.add(90.9);
+	circle_a.add(100.9);
+	circle_a.advance();
+	EXPECT_EQ(100.9, circle_a.back());
+	circle_a.advance();
+	EXPECT_EQ(90.9, circle_a.back());
+	circle_a.advance();
+	EXPECT_EQ(89.9, circle_a.back());
+}
 #endif
