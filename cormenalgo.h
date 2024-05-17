@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
-
+using namespace std;
 using std::vector;
 namespace cormen {
 template <typename T, typename Comparable>
