@@ -491,7 +491,7 @@ Number recursive_sum(const vector<Number> &ls, const size_t &ls_len) {
 
 // reversing element on array by linear recursion
 template <typename T>
-void reverse_array(vector<T> &ls, const size_t &beg, const size_t &end) {
+void reverse_array(vector<T> &ls, const size_t &beg=0, const size_t &end=0) {
   if (ls.empty())
     throw std::out_of_range("calling reverse_array() on empty container");
   if (beg < end) {
@@ -499,6 +499,16 @@ void reverse_array(vector<T> &ls, const size_t &beg, const size_t &end) {
     reverse_array(ls, beg + 1, end - 1);
   }
   return; // dealing with size of ls is odd, beg==end
+}
+// binary_sum: performing binary recursion by summing all element on container
+template <typename Number>
+Number binary_sum(const vector<Number> &ls, const size_t &beg=0, 
+    const size_t &last=0)
+{
+    if(last==1)
+        return ls[beg];
+    return binary_sum(ls,beg, std::floor(last/2.0)) + 
+        binary_sum(ls,beg + std::floor(last/2.0),std::ceil(last/2.0));
 }
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

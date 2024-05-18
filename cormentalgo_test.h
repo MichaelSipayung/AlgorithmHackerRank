@@ -429,4 +429,20 @@ TEST(recursive_reverse_array, largesample) {
   reverse_array(ls, 0, 99);
   EXPECT_EQ(des, ls);
 }
+TEST(binary_sum, sample1_integer){
+	const vector<int> data = {0,1,2,3};
+	EXPECT_EQ(6, binary_sum(data,0,4));
+}
+TEST(binary_sum, sample2_double){
+	const vector<double> data = {0.1,1.1,2.1,3.1};
+	EXPECT_EQ(6.4, binary_sum(data,0,4));
+}
+TEST(binary_sum, non_power_two){
+	const vector<int> data = {0,1,2,3,4};
+	EXPECT_EQ(10, binary_sum(data,0,5));
+}
+TEST(binary_sum, non_power_two_double){
+	const vector<double> data = {0.1,1.1,2.1,3.1,4.1};
+	EXPECT_EQ(10.5, binary_sum(data,0,5));
+}
 #endif
