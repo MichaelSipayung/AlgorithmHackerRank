@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 using std::vector;
 namespace cormen {
@@ -507,8 +508,8 @@ Number binary_sum(const vector<Number> &ls, const size_t &beg=0,
 {
     if(last==1)
         return ls[beg];
-    return binary_sum(ls,beg, std::floor(last/2.0)) + 
-        binary_sum(ls,beg + std::floor(last/2.0),std::ceil(last/2.0));
+    return binary_sum(ls,beg, floor(last/2.0)) + 
+        binary_sum(ls,beg + floor(last/2.0), ceil(last/2.0));
 }
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
