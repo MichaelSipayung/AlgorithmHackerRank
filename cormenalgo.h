@@ -663,5 +663,36 @@ inline void stack_linked<T>::push(const T& item){
     s.push_front(item);
     ++n;
 }
+
+//parent_pair(): matching parentheses problem, applications of stack, O(n)
+bool parent_pair(const std::string& ls){
+    char opening[] = {'{', '[', '('};
+    char closing[] = {'}', ']', ')'};
+    stack_linked<char> temp;
+    for(const auto &i : ls){
+        if(i==opening[0]  || i==opening[1] || i==opening[2])
+            temp.push(i);
+        else{
+            if(temp.empty())
+                return false; // no matching pair
+            else{ //not match as a pair
+                if(temp.top()==opening[0]){
+                    if(i!=closing[0])
+                        return false;
+                }
+                else if(temp.top()==opening[1]){
+                    if(i!=closing[1])
+                        return false;
+                }
+                else if(temp.top()==opening[2]){
+                    if(i!=closing[2])
+                        return false;
+                }
+            }
+            temp.pop(); //match, pop it
+        }
+    }
+    return temp.size() == 0;
+}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

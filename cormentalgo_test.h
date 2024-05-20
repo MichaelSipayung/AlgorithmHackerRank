@@ -565,5 +565,16 @@ TEST(stack_linked, calling_size) {
     data.push(87);
     EXPECT_EQ(2, data.size());
 }
-
+TEST(parent_pair, sample1){
+	EXPECT_TRUE(parent_pair(string("()(()){([()])}")));
+}
+TEST(parent_pair, sample2){
+	EXPECT_TRUE(parent_pair(string("((()(()){([()])}))")));
+}
+TEST(parent_pair, sample3){
+	EXPECT_FALSE(parent_pair(string(")(()){([()])}")));
+}
+TEST(parent_pair, sampe4){
+	EXPECT_FALSE(parent_pair(string("({[])}")));
+}
 #endif
