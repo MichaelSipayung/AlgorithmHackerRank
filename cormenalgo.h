@@ -732,39 +732,38 @@ template <typename T> void queue_array<T>::dequeue() {
   --curr;                         // reduce the size
 }
 
-//queue_linked: queue data structure based on doubly linked list
-template<typename T>
-class queue_linked{
+// queue_linked: queue data structure based on doubly linked list
+template <typename T> class queue_linked {
 public:
-  queue_linked(): sz{0},ls(){}
-  int size()const{return sz;}
-  bool empty()const {return sz==0;}
-  const T&front()const;
-  void enqueue(const T&);
+  queue_linked() : sz{0}, ls() {}
+  int size() const { return sz; }
+  bool empty() const { return sz == 0; }
+  const T &front() const;
+  void enqueue(const T &);
   void dequeue();
+
 private:
   size_t sz;
   circle_list<T> ls;
 };
 
-template<typename T>
-const T& queue_linked<T>::front()const{
-  if(empty())
-    throw std::out_of_range("calling front() on empty queue based on circular ls");
+template <typename T> const T &queue_linked<T>::front() const {
+  if (empty())
+    throw std::out_of_range(
+        "calling front() on empty queue based on circular ls");
   return ls.front();
 }
 
-template<typename T>
-void queue_linked<T>::enqueue(const T& item){
+template <typename T> void queue_linked<T>::enqueue(const T &item) {
   ls.add(item);
   ls.advance();
   ++sz;
 }
 
-template<typename T>
-void queue_linked<T>::dequeue(){
-  if(empty())
-    throw std::out_of_range("calling dequeue() on empty queue based on circular ls");
+template <typename T> void queue_linked<T>::dequeue() {
+  if (empty())
+    throw std::out_of_range(
+        "calling dequeue() on empty queue based on circular ls");
   ls.remove();
   --sz;
 }
