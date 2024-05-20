@@ -445,4 +445,50 @@ TEST(binary_sum, non_power_two_double){
 	const vector<double> data = {0.1,1.1,2.1,3.1,4.1};
 	EXPECT_EQ(10.5, binary_sum(data,0,5));
 }
+TEST(binary_fib, base_case){
+	EXPECT_EQ(0, binary_fib(0));
+	EXPECT_EQ(1, binary_fib(1));
+}
+TEST(binary_fib, sample1){
+	EXPECT_EQ(1, binary_fib(2));
+	EXPECT_EQ(2, binary_fib(3));
+	EXPECT_EQ(3, binary_fib(4));
+	EXPECT_EQ(5, binary_fib(5));
+}
+TEST(linear_fib, basecase) {
+    std::pair<size_t, size_t> dest = make_pair(1, 0);
+    EXPECT_EQ(dest, linear_fib(1));
+}
+TEST(linear_fib, fib3){
+    std::pair<size_t, size_t> dest = make_pair(2, 1);
+    EXPECT_EQ(dest, linear_fib(3));
+}
+TEST(linear_fib, fib6){
+    std::pair<size_t, size_t> dest = make_pair(8, 5);
+    EXPECT_EQ(dest, linear_fib(6));
+}
+TEST(linear_fib, fib7) {
+    std::pair<size_t, size_t> dest = make_pair(13, 8);
+    EXPECT_EQ(dest, linear_fib(7));
+}
+TEST(prefix_averages, case1){
+	vector<int> data = {1,2,3};
+	EXPECT_EQ(vector({1.0,1.5,2.0}), prefix_averages(data));
+}
+TEST(prefix_averages_lin, case1){
+	vector<int> data = {1,2,3};
+	EXPECT_EQ(vector({1.0,1.5,2.0}), prefix_averages_lin(data));
+}
+TEST(power_linear, case1){
+	EXPECT_EQ(8, power_linear(2,3));
+}
+TEST(power_linear, case2){
+	EXPECT_EQ(125, power_linear(5,3));
+}
+TEST(power_logarithm, case1){
+	EXPECT_EQ(8, power_logarithm(2,3));
+}
+TEST(power_logarithm, case2){
+	EXPECT_EQ(125, power_logarithm(5,3));
+}
 #endif

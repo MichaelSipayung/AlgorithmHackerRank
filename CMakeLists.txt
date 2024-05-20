@@ -14,4 +14,4 @@ add_executable(AlgorithmTests test.cpp )
 target_link_libraries(AlgorithmTests PRIVATE GTest::gtest GTest::gtest_main
         GTest::gmock GTest::gmock_main fmt::fmt)
 
-add_test(AllTestsInAlgorithm Algorithm)
+add_test(AllTestsInAlgorithm AlgorithmTests)
