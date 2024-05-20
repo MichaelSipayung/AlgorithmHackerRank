@@ -624,4 +624,45 @@ TEST(queue_array, calling_enqueue_full) {
     data.enqueue(i);
   EXPECT_ANY_THROW(data.enqueue(98));
 }
+TEST(queue_linked, calling_empty){
+	queue_linked<int> data;
+	EXPECT_TRUE(data.empty());
+	data.enqueue(89);
+	EXPECT_FALSE(data.empty());
+}
+TEST(queue_linked, calling_size){
+	queue_linked<int> data;
+	EXPECT_EQ(0, data.size());
+	data.enqueue(89);
+	EXPECT_EQ(1, data.size());
+}
+TEST(queue_linked, calling_front){
+	queue_linked<double> data;
+	data.enqueue(90);
+	data.enqueue(78);
+	EXPECT_EQ(90, data.front());
+}
+TEST(queue_linked, calling_front_on_empty){
+	queue_linked<std::string> data;
+	EXPECT_ANY_THROW(data.front());
+}
+TEST(queue_linked, calling_enqueue){
+	queue_linked<int> data;
+	for(auto i=0; i<10;++i)
+		data.enqueue(i+8);
+	EXPECT_EQ(10, data.size());
+	EXPECT_EQ(8, data.front());
+}
+TEST(queue_linked, calling_dequeue){
+	queue_linked<int> data;
+	for(auto i=0; i<10;++i)
+		data.enqueue(i+8);
+	data.dequeue();
+	EXPECT_EQ(9, data.size());
+	EXPECT_EQ(9,data.front());
+}
+TEST(queue_linked, calling_dequeue_empty){
+	queue_linked<int> data;
+	EXPECT_ANY_THROW(data.dequeue());
+}
 #endif
