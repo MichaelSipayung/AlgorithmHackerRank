@@ -622,5 +622,46 @@ template <typename T> void stack_array<T>::pop() {
     throw std::out_of_range("calling pop() on empty stack array based");
   --pos;
 }
+// stack based on singly linked list
+template<typename T>class stack_linked {
+public:
+    stack_linked():s(),n{0}{}
+    size_t size()const;
+    bool empty()const;
+    const T& top()const;
+    void pop();
+    void push(const T&);
+private:
+    linked_list<T> s;
+    size_t n;
+};
+template<typename T>
+inline size_t stack_linked<T>::size() const{
+    return n;
+}
+template<typename T>
+inline bool stack_linked<T>::empty() const{
+    return size()==0;
+}
+template<typename T>
+inline const T& stack_linked<T>::top() const
+{
+    if (empty())
+        throw std::out_of_range("calling top() on empty stack based linked list");
+    return s.front();
+}
+template<typename T>
+inline void stack_linked<T>::pop()
+{
+    if (empty())
+        throw std::out_of_range("calling po() on empty stack based linked list");
+    s.pop_front();
+    --n;
+}
+template<typename T>
+inline void stack_linked<T>::push(const T& item){
+    s.push_front(item);
+    ++n;
+}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

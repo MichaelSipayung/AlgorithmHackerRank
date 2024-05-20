@@ -508,7 +508,6 @@ TEST(stack_array, calling_size) {
   stack_array<double> data;
   EXPECT_EQ(0, data.size());
   data.push(23.2);
-  ;
   EXPECT_EQ(1, data.size());
 }
 TEST(stack_array, calling_empty) {
@@ -525,4 +524,46 @@ TEST(stack_array, calling_top_onempty) {
   stack_array<std::string> data;
   EXPECT_ANY_THROW(data.top());
 }
+TEST(stack_linked, calling_push) {
+    stack_linked<double> data;
+    data.push(23.23);
+    EXPECT_EQ(23.23, data.top());
+}
+TEST(stack_linked, calling_pop) {
+    stack_linked<int> data;
+    data.push(8);
+    data.push(18);
+    EXPECT_EQ(18, data.top());
+    data.pop();
+    EXPECT_EQ(8, data.top());
+}
+TEST(stack_linked, calling_pop_empty) {
+    stack_linked<size_t> data;
+    EXPECT_ANY_THROW(data.pop());
+}
+TEST(stack_linked, calling_top) {
+    stack_linked<int> data;
+    data.push(8);
+    data.push(9);
+    data.push(89);
+    EXPECT_EQ(89, data.top());
+}
+TEST(stack_linked, calling_top_empty) {
+    stack_linked<int> data;
+    EXPECT_ANY_THROW(data.top());
+}
+TEST(stack_linked, calling_empty) {
+    stack_linked<int> data;
+    EXPECT_TRUE(data.empty());
+    data.push(89);
+    EXPECT_FALSE(data.empty());
+}
+TEST(stack_linked, calling_size) {
+    stack_linked<int> data;
+    EXPECT_EQ(0, data.size());
+    data.push(89);
+    data.push(87);
+    EXPECT_EQ(2, data.size());
+}
+
 #endif
