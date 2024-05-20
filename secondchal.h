@@ -7,11 +7,11 @@
 #include <fmt/ranges.h>
 #include <iostream>
 #include <limits>
+#include <list>
 #include <numeric>
 #include <set>
 #include <string>
 #include <vector>
-#include <list>
 using namespace fmt;
 using namespace std;
 

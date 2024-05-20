@@ -429,66 +429,100 @@ TEST(recursive_reverse_array, largesample) {
   reverse_array(ls, 0, 99);
   EXPECT_EQ(des, ls);
 }
-TEST(binary_sum, sample1_integer){
-	const vector<int> data = {0,1,2,3};
-	EXPECT_EQ(6, binary_sum(data,0,4));
+TEST(binary_sum, sample1_integer) {
+  const vector<int> data = {0, 1, 2, 3};
+  EXPECT_EQ(6, binary_sum(data, 0, 4));
 }
-TEST(binary_sum, sample2_double){
-	const vector<double> data = {0.1,1.1,2.1,3.1};
-	EXPECT_EQ(6.4, binary_sum(data,0,4));
+TEST(binary_sum, sample2_double) {
+  const vector<double> data = {0.1, 1.1, 2.1, 3.1};
+  EXPECT_EQ(6.4, binary_sum(data, 0, 4));
 }
-TEST(binary_sum, non_power_two){
-	const vector<int> data = {0,1,2,3,4};
-	EXPECT_EQ(10, binary_sum(data,0,5));
+TEST(binary_sum, non_power_two) {
+  const vector<int> data = {0, 1, 2, 3, 4};
+  EXPECT_EQ(10, binary_sum(data, 0, 5));
 }
-TEST(binary_sum, non_power_two_double){
-	const vector<double> data = {0.1,1.1,2.1,3.1,4.1};
-	EXPECT_EQ(10.5, binary_sum(data,0,5));
+TEST(binary_sum, non_power_two_double) {
+  const vector<double> data = {0.1, 1.1, 2.1, 3.1, 4.1};
+  EXPECT_EQ(10.5, binary_sum(data, 0, 5));
 }
-TEST(binary_fib, base_case){
-	EXPECT_EQ(0, binary_fib(0));
-	EXPECT_EQ(1, binary_fib(1));
+TEST(binary_fib, base_case) {
+  EXPECT_EQ(0, binary_fib(0));
+  EXPECT_EQ(1, binary_fib(1));
 }
-TEST(binary_fib, sample1){
-	EXPECT_EQ(1, binary_fib(2));
-	EXPECT_EQ(2, binary_fib(3));
-	EXPECT_EQ(3, binary_fib(4));
-	EXPECT_EQ(5, binary_fib(5));
+TEST(binary_fib, sample1) {
+  EXPECT_EQ(1, binary_fib(2));
+  EXPECT_EQ(2, binary_fib(3));
+  EXPECT_EQ(3, binary_fib(4));
+  EXPECT_EQ(5, binary_fib(5));
 }
 TEST(linear_fib, basecase) {
-    std::pair<size_t, size_t> dest = make_pair(1, 0);
-    EXPECT_EQ(dest, linear_fib(1));
+  std::pair<size_t, size_t> dest = make_pair(1, 0);
+  EXPECT_EQ(dest, linear_fib(1));
 }
-TEST(linear_fib, fib3){
-    std::pair<size_t, size_t> dest = make_pair(2, 1);
-    EXPECT_EQ(dest, linear_fib(3));
+TEST(linear_fib, fib3) {
+  std::pair<size_t, size_t> dest = make_pair(2, 1);
+  EXPECT_EQ(dest, linear_fib(3));
 }
-TEST(linear_fib, fib6){
-    std::pair<size_t, size_t> dest = make_pair(8, 5);
-    EXPECT_EQ(dest, linear_fib(6));
+TEST(linear_fib, fib6) {
+  std::pair<size_t, size_t> dest = make_pair(8, 5);
+  EXPECT_EQ(dest, linear_fib(6));
 }
 TEST(linear_fib, fib7) {
-    std::pair<size_t, size_t> dest = make_pair(13, 8);
-    EXPECT_EQ(dest, linear_fib(7));
+  std::pair<size_t, size_t> dest = make_pair(13, 8);
+  EXPECT_EQ(dest, linear_fib(7));
 }
-TEST(prefix_averages, case1){
-	vector<int> data = {1,2,3};
-	EXPECT_EQ(vector({1.0,1.5,2.0}), prefix_averages(data));
+TEST(prefix_averages, case1) {
+  vector<int> data = {1, 2, 3};
+  EXPECT_EQ(vector({1.0, 1.5, 2.0}), prefix_averages(data));
 }
-TEST(prefix_averages_lin, case1){
-	vector<int> data = {1,2,3};
-	EXPECT_EQ(vector({1.0,1.5,2.0}), prefix_averages_lin(data));
+TEST(prefix_averages_lin, case1) {
+  vector<int> data = {1, 2, 3};
+  EXPECT_EQ(vector({1.0, 1.5, 2.0}), prefix_averages_lin(data));
 }
-TEST(power_linear, case1){
-	EXPECT_EQ(8, power_linear(2,3));
+TEST(power_linear, case1) { EXPECT_EQ(8, power_linear(2, 3)); }
+TEST(power_linear, case2) { EXPECT_EQ(125, power_linear(5, 3)); }
+TEST(power_logarithm, case1) { EXPECT_EQ(8, power_logarithm(2, 3)); }
+TEST(power_logarithm, case2) { EXPECT_EQ(125, power_logarithm(5, 3)); }
+TEST(stack_array, calling_push) {
+  stack_array<int> data;
+  data.push(12);
+  EXPECT_EQ(12, data.top());
 }
-TEST(power_linear, case2){
-	EXPECT_EQ(125, power_linear(5,3));
+TEST(stack_array, calling_push_onfull) {
+  stack_array<int> data(1);
+  data.push(13);
+  EXPECT_ANY_THROW(data.push(34));
 }
-TEST(power_logarithm, case1){
-	EXPECT_EQ(8, power_logarithm(2,3));
+TEST(stack_array, calling_pop) {
+  stack_array<double> data;
+  data.push(45.6);
+  EXPECT_FALSE(data.empty());
+  data.pop();
+  EXPECT_TRUE(data.empty());
 }
-TEST(power_logarithm, case2){
-	EXPECT_EQ(125, power_logarithm(5,3));
+TEST(stack_array, calling_pop_empty) {
+  stack_array<double> data;
+  EXPECT_ANY_THROW(data.pop());
+}
+TEST(stack_array, calling_size) {
+  stack_array<double> data;
+  EXPECT_EQ(0, data.size());
+  data.push(23.2);
+  ;
+  EXPECT_EQ(1, data.size());
+}
+TEST(stack_array, calling_empty) {
+  stack_array<int> data;
+  EXPECT_TRUE(data.empty());
+}
+TEST(stack_array, calling_top) {
+  stack_array<std::string> data;
+  data.push(string("michael"));
+  data.push(string("jack"));
+  EXPECT_EQ(string("jack"), data.top());
+}
+TEST(stack_array, calling_top_onempty) {
+  stack_array<std::string> data;
+  EXPECT_ANY_THROW(data.top());
 }
 #endif

@@ -7,6 +7,10 @@
 /.vscode
 /build
 /cmake-build-debug
+/gcc_build
+/clang_gcc
+/clang_build
+/msvc_build
 /out/build/x64-Debug
 /Folder.DotSettings.user
 /twosum.h~

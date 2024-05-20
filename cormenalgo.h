@@ -1,9 +1,9 @@
 #ifndef CORMEN_ALGORITHM
 #define CORMEN_ALGORITHM
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <vector>
-#include <cmath>
 using namespace std;
 using std::vector;
 namespace cormen {
@@ -492,7 +492,8 @@ Number recursive_sum(const vector<Number> &ls, const size_t &ls_len) {
 
 // reversing element on array by linear recursion
 template <typename T>
-void reverse_array(vector<T> &ls, const size_t &beg=0, const size_t &end=0) {
+void reverse_array(vector<T> &ls, const size_t &beg = 0,
+                   const size_t &end = 0) {
   if (ls.empty())
     throw std::out_of_range("calling reverse_array() on empty container");
   if (beg < end) {
@@ -503,80 +504,123 @@ void reverse_array(vector<T> &ls, const size_t &beg=0, const size_t &end=0) {
 }
 // binary_sum: performing binary recursion by summing all element on container
 template <typename Number>
-Number binary_sum(const vector<Number> &ls, const size_t &beg=0, 
-    const size_t &last=0)
-{
-    if(last==1)
-        return ls[beg];
-    return binary_sum(ls,beg, floor(last/2.0)) + 
-        binary_sum(ls,beg + floor(last/2.0), ceil(last/2.0));
+Number binary_sum(const vector<Number> &ls, const size_t &beg = 0,
+                  const size_t &last = 0) {
+  if (last == 1)
+    return ls[beg];
+  return binary_sum(ls, beg, floor(last / 2.0)) +
+         binary_sum(ls, beg + floor(last / 2.0), ceil(last / 2.0));
 }
 
 // binary_fib: performing binary recursion by calculate fibonacci number
-size_t binary_fib(const size_t &n){
-    if(n<=1)
-        return n; // base case
-    return binary_fib(n-1) + binary_fib(n-2); // since F_i = f_i-1+ f_i-2
+size_t binary_fib(const size_t &n) {
+  if (n <= 1)
+    return n;                                   // base case
+  return binary_fib(n - 1) + binary_fib(n - 2); // since F_i = f_i-1+ f_i-2
 }
 
 // linear_fib: performing linear recursion by calculate fibonacci number
 // return a pair of fibonacci number of n, and n-1
-std::pair<size_t,size_t> linear_fib(const size_t& n) {
-    std::pair<size_t, size_t> result = { 0,0 };
-    if (n <= 1)
-        return std::make_pair(n,0);
-    else {
-        result = linear_fib(n-1);
-        return { result.first + result.second, result.first };
-    }
+std::pair<size_t, size_t> linear_fib(const size_t &n) {
+  std::pair<size_t, size_t> result = {0, 0};
+  if (n <= 1)
+    return std::make_pair(n, 0);
+  else {
+    result = linear_fib(n - 1);
+    return {result.first + result.second, result.first};
+  }
 }
 
-//prefix_averages(): demonstrate the running time O(n^2) by computing prefix avg
-template<typename Number>
-std::vector<double> prefix_averages(const std::vector<Number> &ls){
-    std::vector<double> result;
-    for(auto i=0; i<=ls.size()-1;++i){
-        auto temp = 0.0;
-        for(auto j=0; j<=i;++j) // 1 + 2 + 3 + .... + n = (n(n+1))/2
-            temp += ls[j];
-        result.push_back(temp/(i+1));
-    }
-    return result; 
+// prefix_averages(): demonstrate the running time O(n^2) by computing prefix
+// avg
+template <typename Number>
+std::vector<double> prefix_averages(const std::vector<Number> &ls) {
+  std::vector<double> result;
+  for (auto i = 0; i <= ls.size() - 1; ++i) {
+    auto temp = 0.0;
+    for (auto j = 0; j <= i; ++j) // 1 + 2 + 3 + .... + n = (n(n+1))/2
+      temp += ls[j];
+    result.push_back(temp / (i + 1));
+  }
+  return result;
 }
 
-//prefix_averages_lin(): demonstrate the running time O(n) by computing prefix avg
-template<typename Number>
-std::vector<double> prefix_averages_lin(const vector<Number>& ls){
-    auto temp =0.0;
-    vector<double> result;
-    for(auto i=0; i<ls.size(); ++i){
-        temp+=ls[i]; // remember the last sum, this and the next line O(n)
-        result.push_back(temp/(i+1));
-    }
-    return result;
+// prefix_averages_lin(): demonstrate the running time O(n) by computing prefix
+// avg
+template <typename Number>
+std::vector<double> prefix_averages_lin(const vector<Number> &ls) {
+  auto temp = 0.0;
+  vector<double> result;
+  for (auto i = 0; i < ls.size(); ++i) {
+    temp += ls[i]; // remember the last sum, this and the next line O(n)
+    result.push_back(temp / (i + 1));
+  }
+  return result;
 }
 
-//power_linear(): demonstrate the running time O(n) by computing power of x by n
-template<typename Number>
-Number power_linear(const Number &x, const size_t &n){
-    if(n==0)
-        return 1;
-    return x * power_linear(x, n-1);
+// power_linear(): demonstrate the running time O(n) by computing power of x by
+// n
+template <typename Number>
+Number power_linear(const Number &x, const size_t &n) {
+  if (n == 0)
+    return 1;
+  return x * power_linear(x, n - 1);
 }
-//power_logarithm(): demonstrate the running time O(log n) by computing power of x by n
-template<typename Number>
-Number power_logarithm(const Number &x, const size_t &n){
-    if(n==0)
-        return 1;
-    if(n%2 != 0){
-        auto y = power_logarithm(x, (n-1)/2);
-        return x * y * y;
-    }
-    else{
-        auto y = power_logarithm(x, n/2);
-        return y * y;
-    }
+// power_logarithm(): demonstrate the running time O(log n) by computing power
+// of x by n
+template <typename Number>
+Number power_logarithm(const Number &x, const size_t &n) {
+  if (n == 0)
+    return 1;
+  if (n % 2 != 0) {
+    auto y = power_logarithm(x, (n - 1) / 2);
+    return x * y * y;
+  } else {
+    auto y = power_logarithm(x, n / 2);
+    return y * y;
+  }
 }
-//
+template <typename T> class stack_array {
+  enum { INITIAL_CAPACITY = 100 };
+
+public:
+  stack_array(const size_t &cap = INITIAL_CAPACITY);
+  size_t size() const;
+  bool empty() const;
+  const T &top() const;
+  void push(const T &);
+  void pop();
+
+private:
+  T *s;
+  size_t capacity;
+  int pos;
+};
+
+template <typename T>
+stack_array<T>::stack_array(const size_t &cap)
+    : s(new T[cap]), capacity{cap}, pos{-1} {}
+
+template <typename T> size_t stack_array<T>::size() const { return pos + 1; }
+
+template <typename T> bool stack_array<T>::empty() const { return pos < 0; }
+
+template <typename T> const T &stack_array<T>::top() const {
+  if (empty())
+    throw std::out_of_range("calling top() on empty stack array based");
+  return s[pos];
+}
+
+template <typename T> void stack_array<T>::push(const T &item) {
+  if (size() == capacity)
+    throw std::out_of_range("calling push() on full stack array based");
+  s[++pos] = item;
+}
+
+template <typename T> void stack_array<T>::pop() {
+  if (empty())
+    throw std::out_of_range("calling pop() on empty stack array based");
+  --pos;
+}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
