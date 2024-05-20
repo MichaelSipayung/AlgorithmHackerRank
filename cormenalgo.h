@@ -623,76 +623,116 @@ template <typename T> void stack_array<T>::pop() {
   --pos;
 }
 // stack based on singly linked list
-template<typename T>class stack_linked {
+template <typename T> class stack_linked {
 public:
-    stack_linked():s(),n{0}{}
-    size_t size()const;
-    bool empty()const;
-    const T& top()const;
-    void pop();
-    void push(const T&);
+  stack_linked() : s(), n{0} {}
+  size_t size() const;
+  bool empty() const;
+  const T &top() const;
+  void pop();
+  void push(const T &);
+
 private:
-    linked_list<T> s;
-    size_t n;
+  linked_list<T> s;
+  size_t n;
 };
-template<typename T>
-inline size_t stack_linked<T>::size() const{
-    return n;
+template <typename T> inline size_t stack_linked<T>::size() const { return n; }
+template <typename T> inline bool stack_linked<T>::empty() const {
+  return size() == 0;
 }
-template<typename T>
-inline bool stack_linked<T>::empty() const{
-    return size()==0;
+template <typename T> inline const T &stack_linked<T>::top() const {
+  if (empty())
+    throw std::out_of_range("calling top() on empty stack based linked list");
+  return s.front();
 }
-template<typename T>
-inline const T& stack_linked<T>::top() const
-{
-    if (empty())
-        throw std::out_of_range("calling top() on empty stack based linked list");
-    return s.front();
+template <typename T> inline void stack_linked<T>::pop() {
+  if (empty())
+    throw std::out_of_range("calling po() on empty stack based linked list");
+  s.pop_front();
+  --n;
 }
-template<typename T>
-inline void stack_linked<T>::pop()
-{
-    if (empty())
-        throw std::out_of_range("calling po() on empty stack based linked list");
-    s.pop_front();
-    --n;
-}
-template<typename T>
-inline void stack_linked<T>::push(const T& item){
-    s.push_front(item);
-    ++n;
+template <typename T> inline void stack_linked<T>::push(const T &item) {
+  s.push_front(item);
+  ++n;
 }
 
-//parent_pair(): matching parentheses problem, applications of stack, O(n)
-bool parent_pair(const std::string& ls){
-    char opening[] = {'{', '[', '('};
-    char closing[] = {'}', ']', ')'};
-    stack_linked<char> temp;
-    for(const auto &i : ls){
-        if(i==opening[0]  || i==opening[1] || i==opening[2])
-            temp.push(i);
-        else{
-            if(temp.empty())
-                return false; // no matching pair
-            else{ //not match as a pair
-                if(temp.top()==opening[0]){
-                    if(i!=closing[0])
-                        return false;
-                }
-                else if(temp.top()==opening[1]){
-                    if(i!=closing[1])
-                        return false;
-                }
-                else if(temp.top()==opening[2]){
-                    if(i!=closing[2])
-                        return false;
-                }
-            }
-            temp.pop(); //match, pop it
+// parent_pair(): matching parentheses problem, applications of stack, O(n)
+bool parent_pair(const std::string &ls) {
+  char opening[] = {'{', '[', '('};
+  char closing[] = {'}', ']', ')'};
+  stack_linked<char> temp;
+  for (const auto &i : ls) {
+    if (i == opening[0] || i == opening[1] || i == opening[2])
+      temp.push(i);
+    else {
+      if (temp.empty())
+        return false; // no matching pair
+      else {          // not match as a pair
+        if (temp.top() == opening[0]) {
+          if (i != closing[0])
+            return false;
+        } else if (temp.top() == opening[1]) {
+          if (i != closing[1])
+            return false;
+        } else if (temp.top() == opening[2]) {
+          if (i != closing[2])
+            return false;
         }
+      }
+      temp.pop(); // match, pop it
     }
-    return temp.size() == 0;
+  }
+  return temp.size() == 0;
+}
+
+// queue interface, data structure that maintain the FIFO behavior, using circular
+template <typename T> 
+class queue_array {
+enum {INITIAL_CAPACITY = 100};    
+public:
+  queue_array(const size_t &cap= INITIAL_CAPACITY): 
+    pointer{0}, first{0}, curr{0},capacity{cap}, s(new T[cap]){}
+  size_t size() const;
+  bool empty() const;
+  const T &front() const;
+  void enqueue(const T &);
+  void dequeue();
+private:
+  int pointer;
+  int first;
+  int curr;
+  size_t capacity;
+  T *s;
+};
+
+template<typename T>
+size_t queue_array<T>::size()const{ return curr;}
+
+template<typename T>
+bool queue_array<T>::empty()const{ return size() == 0;}
+
+template<typename T>
+const T &queue_array<T>::front()const{
+  if(empty())
+    throw std::out_of_range("calling front() on empty queue");
+  return s[first]; //first, current postion after or before dequeue
+}
+
+template<typename T>
+void queue_array<T>::enqueue(const T& item){
+  if(size() == capacity)
+    throw std::out_of_range("calling enqueue() on full queue");
+  s[pointer] = item; //position to insert the element
+  pointer = (pointer+1) % capacity; // if r+1 >= n, go back, set r = remainder
+  ++curr; //increase the size()
+}
+
+template<typename T>
+void queue_array<T>::dequeue(){
+  if(empty())
+    throw std::out_of_range("calling dequeue() on empty queue");
+  first = (first+1) % capacity; //move forward without copy entire remainder
+  --curr; // reduce the size
 }
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
