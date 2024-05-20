@@ -685,18 +685,20 @@ bool parent_pair(const std::string &ls) {
   return temp.size() == 0;
 }
 
-// queue interface, data structure that maintain the FIFO behavior, using circular
-template <typename T> 
-class queue_array {
-enum {INITIAL_CAPACITY = 100};    
+// queue interface, data structure that maintain the FIFO behavior, using
+// circular
+template <typename T> class queue_array {
+  enum { INITIAL_CAPACITY = 100 };
+
 public:
-  queue_array(const size_t &cap= INITIAL_CAPACITY): 
-    pointer{0}, first{0}, curr{0},capacity{cap}, s(new T[cap]){}
+  queue_array(const size_t &cap = INITIAL_CAPACITY)
+      : pointer{0}, first{0}, curr{0}, capacity{cap}, s(new T[cap]) {}
   size_t size() const;
   bool empty() const;
   const T &front() const;
   void enqueue(const T &);
   void dequeue();
+
 private:
   int pointer;
   int first;
@@ -705,34 +707,29 @@ private:
   T *s;
 };
 
-template<typename T>
-size_t queue_array<T>::size()const{ return curr;}
+template <typename T> size_t queue_array<T>::size() const { return curr; }
 
-template<typename T>
-bool queue_array<T>::empty()const{ return size() == 0;}
+template <typename T> bool queue_array<T>::empty() const { return size() == 0; }
 
-template<typename T>
-const T &queue_array<T>::front()const{
-  if(empty())
+template <typename T> const T &queue_array<T>::front() const {
+  if (empty())
     throw std::out_of_range("calling front() on empty queue");
-  return s[first]; //first, current postion after or before dequeue
+  return s[first]; // first, current postion after or before dequeue
 }
 
-template<typename T>
-void queue_array<T>::enqueue(const T& item){
-  if(size() == capacity)
+template <typename T> void queue_array<T>::enqueue(const T &item) {
+  if (size() == capacity)
     throw std::out_of_range("calling enqueue() on full queue");
-  s[pointer] = item; //position to insert the element
-  pointer = (pointer+1) % capacity; // if r+1 >= n, go back, set r = remainder
-  ++curr; //increase the size()
+  s[pointer] = item;                  // position to insert the element
+  pointer = (pointer + 1) % capacity; // if r+1 >= n, go back, set r = remainder
+  ++curr;                             // increase the size()
 }
 
-template<typename T>
-void queue_array<T>::dequeue(){
-  if(empty())
+template <typename T> void queue_array<T>::dequeue() {
+  if (empty())
     throw std::out_of_range("calling dequeue() on empty queue");
-  first = (first+1) % capacity; //move forward without copy entire remainder
-  --curr; // reduce the size
+  first = (first + 1) % capacity; // move forward without copy entire remainder
+  --curr;                         // reduce the size
 }
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

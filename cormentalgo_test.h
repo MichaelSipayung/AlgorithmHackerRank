@@ -525,105 +525,103 @@ TEST(stack_array, calling_top_onempty) {
   EXPECT_ANY_THROW(data.top());
 }
 TEST(stack_linked, calling_push) {
-    stack_linked<double> data;
-    data.push(23.23);
-    EXPECT_EQ(23.23, data.top());
+  stack_linked<double> data;
+  data.push(23.23);
+  EXPECT_EQ(23.23, data.top());
 }
 TEST(stack_linked, calling_pop) {
-    stack_linked<int> data;
-    data.push(8);
-    data.push(18);
-    EXPECT_EQ(18, data.top());
-    data.pop();
-    EXPECT_EQ(8, data.top());
+  stack_linked<int> data;
+  data.push(8);
+  data.push(18);
+  EXPECT_EQ(18, data.top());
+  data.pop();
+  EXPECT_EQ(8, data.top());
 }
 TEST(stack_linked, calling_pop_empty) {
-    stack_linked<size_t> data;
-    EXPECT_ANY_THROW(data.pop());
+  stack_linked<size_t> data;
+  EXPECT_ANY_THROW(data.pop());
 }
 TEST(stack_linked, calling_top) {
-    stack_linked<int> data;
-    data.push(8);
-    data.push(9);
-    data.push(89);
-    EXPECT_EQ(89, data.top());
+  stack_linked<int> data;
+  data.push(8);
+  data.push(9);
+  data.push(89);
+  EXPECT_EQ(89, data.top());
 }
 TEST(stack_linked, calling_top_empty) {
-    stack_linked<int> data;
-    EXPECT_ANY_THROW(data.top());
+  stack_linked<int> data;
+  EXPECT_ANY_THROW(data.top());
 }
 TEST(stack_linked, calling_empty) {
-    stack_linked<int> data;
-    EXPECT_TRUE(data.empty());
-    data.push(89);
-    EXPECT_FALSE(data.empty());
+  stack_linked<int> data;
+  EXPECT_TRUE(data.empty());
+  data.push(89);
+  EXPECT_FALSE(data.empty());
 }
 TEST(stack_linked, calling_size) {
-    stack_linked<int> data;
-    EXPECT_EQ(0, data.size());
-    data.push(89);
-    data.push(87);
-    EXPECT_EQ(2, data.size());
+  stack_linked<int> data;
+  EXPECT_EQ(0, data.size());
+  data.push(89);
+  data.push(87);
+  EXPECT_EQ(2, data.size());
 }
-TEST(parent_pair, sample1){
-	EXPECT_TRUE(parent_pair(string("()(()){([()])}")));
+TEST(parent_pair, sample1) {
+  EXPECT_TRUE(parent_pair(string("()(()){([()])}")));
 }
-TEST(parent_pair, sample2){
-	EXPECT_TRUE(parent_pair(string("((()(()){([()])}))")));
+TEST(parent_pair, sample2) {
+  EXPECT_TRUE(parent_pair(string("((()(()){([()])}))")));
 }
-TEST(parent_pair, sample3){
-	EXPECT_FALSE(parent_pair(string(")(()){([()])}")));
+TEST(parent_pair, sample3) {
+  EXPECT_FALSE(parent_pair(string(")(()){([()])}")));
 }
-TEST(parent_pair, sampe4){
-	EXPECT_FALSE(parent_pair(string("({[])}")));
+TEST(parent_pair, sampe4) { EXPECT_FALSE(parent_pair(string("({[])}"))); }
+TEST(queue_array, calling_empty) {
+  queue_array<int> data;
+  EXPECT_TRUE(data.empty());
+  data.enqueue(13);
+  EXPECT_FALSE(data.empty());
 }
-TEST(queue_array, calling_empty){
-	queue_array<int> data;
-	EXPECT_TRUE(data.empty());
-	data.enqueue(13);
-	EXPECT_FALSE(data.empty());
+TEST(queue_array, calling_front) {
+  queue_array<double> data;
+  data.enqueue(98.8);
+  data.enqueue(198.8);
+  data.enqueue(298.8);
+  EXPECT_EQ(98.8, data.front());
 }
-TEST(queue_array, calling_front){
-	queue_array<double> data;
-	data.enqueue(98.8);
-	data.enqueue(198.8);
-	data.enqueue(298.8);
-	EXPECT_EQ(98.8, data.front());
+TEST(queue_array, calling_front_empty) {
+  queue_array<std::string> data;
+  EXPECT_ANY_THROW(data.front());
 }
-TEST(queue_array, calling_front_empty){
-	queue_array<std::string> data;
-	EXPECT_ANY_THROW(data.front());
+TEST(queue_array, calling_dequeue) {
+  queue_array<std::string> data(1);
+  data.enqueue(std::string("six"));
+  EXPECT_EQ(string("six"), data.front());
+  data.dequeue();
+  EXPECT_TRUE(data.empty());
 }
-TEST(queue_array, calling_dequeue){
-	queue_array<std::string> data(1);
-	data.enqueue(std::string("six"));
-	EXPECT_EQ(string("six"), data.front());
-	data.dequeue();
-	EXPECT_TRUE(data.empty());
+TEST(queue_array, calling_dequeue_empty) {
+  queue_array<int> data(1);
+  data.enqueue(789);
+  data.dequeue();
+  EXPECT_ANY_THROW(data.dequeue());
 }
-TEST(queue_array, calling_dequeue_empty){
-	queue_array<int> data(1);
-	data.enqueue(789);
-	data.dequeue();
-	EXPECT_ANY_THROW(data.dequeue());
+TEST(queue_array, calling_size) {
+  queue_array<int> data;
+  data.enqueue(87);
+  data.enqueue(98);
+  EXPECT_EQ(2, data.size());
 }
-TEST(queue_array, calling_size){
-	queue_array<int> data;
-	data.enqueue(87);
-	data.enqueue(98);
-	EXPECT_EQ(2, data.size());
+TEST(queue_array, calling_enqueue) {
+  queue_array<int> data;
+  for (auto i = 0; i < 10; ++i)
+    data.enqueue(i);
+  EXPECT_EQ(10, data.size());
+  EXPECT_EQ(0, data.front());
 }
-TEST(queue_array, calling_enqueue){
-	queue_array<int> data;
-	for(auto i=0; i<10; ++i)
-		data.enqueue(i);
-	EXPECT_EQ(10,data.size());
-	EXPECT_EQ(0, data.front());
-}
-TEST(queue_array, calling_enqueue_full){
-	queue_array<int>data(10);
-	for(auto i=0; i<10; ++i)
-		data.enqueue(i);
-	EXPECT_ANY_THROW(data.enqueue(98));
+TEST(queue_array, calling_enqueue_full) {
+  queue_array<int> data(10);
+  for (auto i = 0; i < 10; ++i)
+    data.enqueue(i);
+  EXPECT_ANY_THROW(data.enqueue(98));
 }
 #endif
