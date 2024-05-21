@@ -666,74 +666,136 @@ TEST(queue_linked, calling_dequeue_empty) {
   EXPECT_ANY_THROW(data.dequeue());
 }
 TEST(queue_doubly_linked, calling_empty) {
-    queue_doubly_linked<double> data;
-    EXPECT_TRUE(data.empty());
-    data.push_back(89);
-    EXPECT_FALSE(data.empty());
+  queue_doubly_linked<double> data;
+  EXPECT_TRUE(data.empty());
+  data.push_back(89);
+  EXPECT_FALSE(data.empty());
 }
 TEST(queue_doubly_linked, calling_size) {
-    queue_doubly_linked<int> data;
-    EXPECT_EQ(0, data.size());
-    for (auto i = 0; i < 10; ++i)
-        data.push_back(i);
-    EXPECT_EQ(10, data.size());
+  queue_doubly_linked<int> data;
+  EXPECT_EQ(0, data.size());
+  for (auto i = 0; i < 10; ++i)
+    data.push_back(i);
+  EXPECT_EQ(10, data.size());
 }
 TEST(queue_doubly_linked, calling_front) {
-    queue_doubly_linked<double> data;
-    data.push_front(89);
-    data.push_back(78);
-    EXPECT_EQ(89, data.front());
+  queue_doubly_linked<double> data;
+  data.push_front(89);
+  data.push_back(78);
+  EXPECT_EQ(89, data.front());
 }
 TEST(queue_doubly_linked, calling_front_empty) {
-    queue_doubly_linked<int> data;
-    EXPECT_ANY_THROW(data.front());
+  queue_doubly_linked<int> data;
+  EXPECT_ANY_THROW(data.front());
 }
 TEST(queue_doubly_linked, calling_back) {
-    queue_doubly_linked<size_t>data;
-    for (auto i = 1; i <= 5; ++i)
-        data.push_back(i);
-    EXPECT_EQ(5, data.back());
+  queue_doubly_linked<size_t> data;
+  for (auto i = 1; i <= 5; ++i)
+    data.push_back(i);
+  EXPECT_EQ(5, data.back());
 }
 TEST(queue_doubly_linked, calling_back_empty) {
-    queue_doubly_linked<int> data;
-    EXPECT_ANY_THROW(data.back());
+  queue_doubly_linked<int> data;
+  EXPECT_ANY_THROW(data.back());
 }
 TEST(queue_doubly_linked, calling_pop_front) {
-    queue_doubly_linked<int> data;
-    data.push_back(89);
-    data.push_back(890);
-    data.pop_front();
-    EXPECT_EQ(1, data.size());
-    data.pop_front();
-    EXPECT_EQ(0, data.size());
+  queue_doubly_linked<int> data;
+  data.push_back(89);
+  data.push_back(890);
+  data.pop_front();
+  EXPECT_EQ(1, data.size());
+  data.pop_front();
+  EXPECT_EQ(0, data.size());
 }
 TEST(queue_doubly_linked, calling_pop_front_empty) {
-    queue_doubly_linked<int> data;
-    EXPECT_ANY_THROW(data.pop_front());
+  queue_doubly_linked<int> data;
+  EXPECT_ANY_THROW(data.pop_front());
 }
 TEST(queue_doubly_linked, calling_pop_back) {
-    queue_doubly_linked<int> data;
-    data.push_back(98);
-    data.push_back(77);
-    data.pop_back();
-    EXPECT_EQ(98, data.back());
+  queue_doubly_linked<int> data;
+  data.push_back(98);
+  data.push_back(77);
+  data.pop_back();
+  EXPECT_EQ(98, data.back());
+  data.pop_back();
+  EXPECT_TRUE(data.empty());
+}
+TEST(queue_doubly_linked, calling_pop_back_empty) {
+  queue_doubly_linked<int> data;
+  EXPECT_ANY_THROW(data.pop_back());
+}
+TEST(queue_doubly_linked, calling_push_back) {
+  queue_doubly_linked<int> data;
+  data.push_back(89);
+  data.push_back(8);
+  EXPECT_EQ(8, data.back());
+}
+TEST(queue_doubly_linked, calling_push_front) {
+  queue_doubly_linked<int> data;
+  data.push_front(889);
+  data.push_front(766);
+  EXPECT_EQ(766, data.front());
+}
+TEST(vector_arr, calling_empty) {
+  vector_arr<int> data;
+  EXPECT_TRUE(data.empty());
+  data.push_back(78);
+  EXPECT_FALSE(data.empty());
+}
+TEST(vector_arr, calling_size) {
+  vector_arr<int> data;
+  EXPECT_TRUE(data.empty());
+  data.push_back(90);
+  EXPECT_FALSE(data.empty());
+  data.push_back(920);
+  EXPECT_EQ(2, data.size());
+}
+TEST(vector_arr, using_subscript) {
+  vector_arr<double> data;
+  data.push_back(90.9);
+  EXPECT_EQ(90.9, data[0]);
+}
+TEST(vector_arr, using_subscript_invalid_pos) {
+    vector_arr<double> data;
+    data.push_back(90.9);
+    EXPECT_ANY_THROW(data[1]);
+}
+TEST(vector_arr, calling_push_back) {
+  vector_arr<size_t> data;
+  for (size_t i = 0; i < 100; ++i)
+    data.push_back(i);
+  EXPECT_EQ(100, data.size());
+  EXPECT_EQ(99, data[99]);
+}
+TEST(vector_arr, calling_pop_back) {
+    vector_arr<int> data;
+    data.push_back(34);
+    EXPECT_FALSE(data.empty());
     data.pop_back();
     EXPECT_TRUE(data.empty());
 }
-TEST(queue_doubly_linked, calling_pop_back_empty) {
-    queue_doubly_linked<int> data;
+TEST(vector_arr, calling_pop_back_empty) {
+    vector_arr<int> data;
     EXPECT_ANY_THROW(data.pop_back());
 }
-TEST(queue_doubly_linked, calling_push_back) {
-    queue_doubly_linked<int> data;
-    data.push_back(89);
-    data.push_back(8);
-    EXPECT_EQ(8, data.back());
+TEST(vector_arr, calling_back) {
+    vector_arr<int> data;
+    data.push_back(90);
+    data.push_back(77);
+    EXPECT_EQ(77, data.back());
 }
-TEST(queue_doubly_linked, calling_push_front) {
-    queue_doubly_linked<int> data;
-    data.push_front(889);
-    data.push_front(766);
-    EXPECT_EQ(766, data.front());
+TEST(vector_arr, calling_front) {
+    vector_arr<int> data;
+    data.push_back(78);
+    data.push_back(76);
+    EXPECT_EQ(78, data.front());
+}
+TEST(vector_arr, calling_front_empty) {
+    vector_arr<int> data;
+    EXPECT_ANY_THROW(data.front());
+}
+TEST(vector_arr, calling_back_empty) {
+    vector_arr<int> data;
+    EXPECT_ANY_THROW(data.back());
 }
 #endif

@@ -768,61 +768,162 @@ template <typename T> void queue_linked<T>::dequeue() {
   --sz;
 }
 
-template<typename T>
-class queue_doubly_linked {
+template <typename T> class queue_doubly_linked {
 public:
-    queue_doubly_linked(): sz{0}, ls(){}
+  queue_doubly_linked() : sz{0}, ls() {}
+  bool empty() const { return sz == 0; }
+  size_t size() const { return sz; }
+  const T &front() const;
+  const T &back() const;
+  void push_front(const T &) noexcept;
+  void push_back(const T &) noexcept;
+  void pop_back();
+  void pop_front();
+
+private:
+  size_t sz;
+  d_linked_list<T> ls;
+};
+template <typename T> inline const T &queue_doubly_linked<T>::front() const {
+  if (empty())
+    throw std::out_of_range("calling front() on empty deque");
+  return ls.front();
+}
+template <typename T> inline const T &queue_doubly_linked<T>::back() const {
+  if (empty())
+    throw std::out_of_range("calling back() on empty deque");
+  return ls.back();
+}
+template <typename T>
+inline void queue_doubly_linked<T>::push_front(const T &item) noexcept {
+  ls.push_front(item);
+  ++sz;
+}
+template <typename T>
+inline void queue_doubly_linked<T>::push_back(const T &item) noexcept {
+  ls.push_back(item);
+  ++sz;
+}
+template <typename T> inline void queue_doubly_linked<T>::pop_back() {
+  if (empty())
+    throw std::out_of_range("calling pop_back() on empty deque");
+  ls.pop_back();
+  --sz;
+}
+template <typename T> inline void queue_doubly_linked<T>::pop_front() {
+  if (empty())
+    throw std::out_of_range("calling pop_front() on empty deque");
+  ls.pop_front();
+  --sz;
+}
+// vector_arr: vector class based on array behavior, if size()==n, increase it
+template<typename T>
+class vector_arr {
+public:
+    explicit vector_arr(const size_t init_sz = 0) : sz{ init_sz },
+        capacity{ init_sz + SPARSE_CAPACITY } {
+        arr = new T[capacity];
+    }
+    vector_arr(const vector_arr& rhs);
+    vector_arr& operator=(const vector_arr& rhs);
+    ~vector_arr() { delete[]arr; }
+    void reserve(const size_t&);
+    void resize(const size_t&);
+    T& operator[](const size_t&);
+    const T& operator[](const size_t&)const;
     bool empty()const { return sz == 0; }
     size_t size()const { return sz; }
-    const T& front()const;
-    const T& back()const;
-    void push_front(const T&)noexcept;
-    void push_back(const T&)noexcept;
+    //size_t capacity_v()const { return capacity; }
+    void push_back(const T&);
     void pop_back();
-    void pop_front();
+    const T& back()const;
+    const T& front()const;
+protected:
+    static const size_t SPARSE_CAPACITY = 16;
 private:
     size_t sz;
-    d_linked_list<T> ls;
+    size_t capacity;
+    T* arr;
 };
 template<typename T>
-inline const T& queue_doubly_linked<T>::front() const
+inline vector_arr<T>::vector_arr(const vector_arr& rhs):
+    sz{ rhs.size }, capacity{ rhs.capacity }, arr{ nullptr }
+{
+    arr = new T[capacity];
+    for(size_t i=0; i<sz; ++i)
+        arr[i]= rhs.arr[i];
+}
+template<typename T>
+inline vector_arr<T>& vector_arr<T>::operator=(const vector_arr& rhs)
+{
+    vector_arr<T> cp = rhs;
+    std::swap(*this, cp);
+    return *this;
+}
+template<typename T>
+inline void vector_arr<T>::reserve(const size_t& n_cap)
+{
+    if (n_cap < sz)
+        return;
+    auto temp = new T[n_cap]; //request new capacity
+    for (size_t i = 0; i < sz; ++i)
+        temp[i] = std::move(arr[i]);
+    capacity = n_cap;
+    std::swap(arr, temp);
+    delete[]temp;
+}
+template<typename T>
+inline void vector_arr<T>::resize(const size_t& n_cap)
+{
+    if (n_cap > capacity)
+        reserve(n_cap * 2);
+    sz = n_cap;
+}
+template<typename T>
+inline T& vector_arr<T>::operator[](const size_t& pos)
 {
     if (empty())
-        throw std::out_of_range("calling front() on empty deque");
-    return ls.front();
+        throw std::out_of_range("vector: index out of range()");
+    else if (pos >= sz && pos != 0)
+        throw std::out_of_range("vector: index out range");
+    return arr[pos];
 }
 template<typename T>
-inline const T& queue_doubly_linked<T>::back() const
+inline const T& vector_arr<T>::operator[](const size_t& pos) const
 {
     if (empty())
-        throw std::out_of_range("calling back() on empty deque");
-    return ls.back();
+        throw std::out_of_range("vector: index out of range");
+    else if (pos >= sz && pos != 0)
+        throw std::out_of_range("vector: index out range");
+    return arr[pos];
 }
 template<typename T>
-inline void queue_doubly_linked<T>::push_front(const T& item)noexcept{
-    ls.push_front(item);
-    ++sz;
+inline void vector_arr<T>::push_back(const T& item)
+{
+    if (sz == capacity)
+        reserve(2 * capacity + 1);
+    arr[sz++] = item;
 }
 template<typename T>
-inline void queue_doubly_linked<T>::push_back(const T&item)noexcept{
-    ls.push_back(item);
-    ++sz;
-}
-template<typename T>
-inline void queue_doubly_linked<T>::pop_back()
+inline void vector_arr<T>::pop_back()
 {
     if (empty())
-        throw std::out_of_range("calling pop_back() on empty deque");
-    ls.pop_back();
+        throw std::out_of_range("calling pop_back() on empty vector");
     --sz;
 }
 template<typename T>
-inline void queue_doubly_linked<T>::pop_front()
+inline const T& vector_arr<T>::back() const
 {
     if (empty())
-        throw std::out_of_range("calling pop_front() on empty deque");
-    ls.pop_front();
-    --sz;
+        throw std::out_of_range("calling back() on empty vector");
+    return arr[sz - 1];
+}
+template<typename T>
+inline const T& vector_arr<T>::front() const
+{
+    if (empty())
+        throw std::out_of_range("calling front() on empty vector");
+    return arr[0];
 }
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
