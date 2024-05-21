@@ -767,5 +767,62 @@ template <typename T> void queue_linked<T>::dequeue() {
   ls.remove();
   --sz;
 }
+
+template<typename T>
+class queue_doubly_linked {
+public:
+    queue_doubly_linked(): sz{0}, ls(){}
+    bool empty()const { return sz == 0; }
+    size_t size()const { return sz; }
+    const T& front()const;
+    const T& back()const;
+    void push_front(const T&)noexcept;
+    void push_back(const T&)noexcept;
+    void pop_back();
+    void pop_front();
+private:
+    size_t sz;
+    d_linked_list<T> ls;
+};
+template<typename T>
+inline const T& queue_doubly_linked<T>::front() const
+{
+    if (empty())
+        throw std::out_of_range("calling front() on empty deque");
+    return ls.front();
+}
+template<typename T>
+inline const T& queue_doubly_linked<T>::back() const
+{
+    if (empty())
+        throw std::out_of_range("calling back() on empty deque");
+    return ls.back();
+}
+template<typename T>
+inline void queue_doubly_linked<T>::push_front(const T& item)noexcept{
+    ls.push_front(item);
+    ++sz;
+}
+template<typename T>
+inline void queue_doubly_linked<T>::push_back(const T&item)noexcept{
+    ls.push_back(item);
+    ++sz;
+}
+template<typename T>
+inline void queue_doubly_linked<T>::pop_back()
+{
+    if (empty())
+        throw std::out_of_range("calling pop_back() on empty deque");
+    ls.pop_back();
+    --sz;
+}
+template<typename T>
+inline void queue_doubly_linked<T>::pop_front()
+{
+    if (empty())
+        throw std::out_of_range("calling pop_front() on empty deque");
+    ls.pop_front();
+    --sz;
+}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

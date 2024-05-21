@@ -665,4 +665,75 @@ TEST(queue_linked, calling_dequeue_empty) {
   queue_linked<int> data;
   EXPECT_ANY_THROW(data.dequeue());
 }
+TEST(queue_doubly_linked, calling_empty) {
+    queue_doubly_linked<double> data;
+    EXPECT_TRUE(data.empty());
+    data.push_back(89);
+    EXPECT_FALSE(data.empty());
+}
+TEST(queue_doubly_linked, calling_size) {
+    queue_doubly_linked<int> data;
+    EXPECT_EQ(0, data.size());
+    for (auto i = 0; i < 10; ++i)
+        data.push_back(i);
+    EXPECT_EQ(10, data.size());
+}
+TEST(queue_doubly_linked, calling_front) {
+    queue_doubly_linked<double> data;
+    data.push_front(89);
+    data.push_back(78);
+    EXPECT_EQ(89, data.front());
+}
+TEST(queue_doubly_linked, calling_front_empty) {
+    queue_doubly_linked<int> data;
+    EXPECT_ANY_THROW(data.front());
+}
+TEST(queue_doubly_linked, calling_back) {
+    queue_doubly_linked<size_t>data;
+    for (auto i = 1; i <= 5; ++i)
+        data.push_back(i);
+    EXPECT_EQ(5, data.back());
+}
+TEST(queue_doubly_linked, calling_back_empty) {
+    queue_doubly_linked<int> data;
+    EXPECT_ANY_THROW(data.back());
+}
+TEST(queue_doubly_linked, calling_pop_front) {
+    queue_doubly_linked<int> data;
+    data.push_back(89);
+    data.push_back(890);
+    data.pop_front();
+    EXPECT_EQ(1, data.size());
+    data.pop_front();
+    EXPECT_EQ(0, data.size());
+}
+TEST(queue_doubly_linked, calling_pop_front_empty) {
+    queue_doubly_linked<int> data;
+    EXPECT_ANY_THROW(data.pop_front());
+}
+TEST(queue_doubly_linked, calling_pop_back) {
+    queue_doubly_linked<int> data;
+    data.push_back(98);
+    data.push_back(77);
+    data.pop_back();
+    EXPECT_EQ(98, data.back());
+    data.pop_back();
+    EXPECT_TRUE(data.empty());
+}
+TEST(queue_doubly_linked, calling_pop_back_empty) {
+    queue_doubly_linked<int> data;
+    EXPECT_ANY_THROW(data.pop_back());
+}
+TEST(queue_doubly_linked, calling_push_back) {
+    queue_doubly_linked<int> data;
+    data.push_back(89);
+    data.push_back(8);
+    EXPECT_EQ(8, data.back());
+}
+TEST(queue_doubly_linked, calling_push_front) {
+    queue_doubly_linked<int> data;
+    data.push_front(889);
+    data.push_front(766);
+    EXPECT_EQ(766, data.front());
+}
 #endif
