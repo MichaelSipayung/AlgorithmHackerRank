@@ -1051,5 +1051,18 @@ namespace cormen {
 		v->prev = u; u->next = v; // link in v after u
 		++sz;
 	}
+	template<class Container>
+	inline void buble_sort(Container &ls) {
+		size_t len = ls.size();
+		while (len > 1) {
+			size_t track = 0;
+			for (size_t i = 1; i < len; ++i) 
+				if (ls[i - 1] > ls[i]) {
+					std::swap(ls[i - 1], ls[i]);
+					track = i;
+				}
+			len = track; // dont traver to back if it already in sorted
+		}
+	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

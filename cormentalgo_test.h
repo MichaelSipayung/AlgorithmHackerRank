@@ -894,4 +894,23 @@ TEST(list_adt, calling_erase_empty) {
 	list_adt<int> data;
 	EXPECT_ANY_THROW(data.erase(data.begin()));
 }
+TEST(buble_sort, simplecase) {
+	vector<int> data = { 4,3,1,2 };
+	buble_sort(data);
+	EXPECT_EQ(vector({ 1,2,3,4 }), data);
+}
+TEST(buble_sort, anothercase) {
+	vector<int> data = { 7,8,4,3,1,2 };
+	buble_sort(data);
+	EXPECT_EQ(vector({ 1,2,3,4,7,8}), data);
+}
+TEST(buble_sort, largesample) {
+	vector<double> data;
+	for (auto i = 100; i > 1; --i)
+		data.push_back((i + 1.0) * i);
+	vector<double> temp(data.begin(), data.end());
+	std::sort(temp.begin(), temp.end());
+	buble_sort(data);
+	EXPECT_EQ(data, temp);
+}
 #endif
