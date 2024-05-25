@@ -979,4 +979,54 @@ TEST(binary_tree, calling_remove_ab_ext_withgrandfa) {
 	EXPECT_EQ(78.9, *data.root());
 	EXPECT_EQ(200.23, *pos.left());
 }
+TEST(binary_tree, calling_parent) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos, 89.9, 90.7);
+	EXPECT_EQ(78.9, *data.root().left().parent());
+}
+TEST(binary_tree, calling_positions_traverse) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos, 89.9, 90.7);
+	data.expand_external(pos.right(), 43.1, 67.1);
+	vector<double> result;
+	auto temp = data.positions();
+	for (auto begin = temp.begin(); begin != temp.end(); ++begin)
+		result.push_back(begin->value());
+	EXPECT_EQ(5, temp.size());
+	EXPECT_EQ(vector({ 78.9,89.9,90.7,43.1,67.1 }), result);
+}
+TEST(binary_tree, removing_on_empty) {
+	binary_tree<int> data;
+	auto pos = data.root();
+	EXPECT_ANY_THROW(data.remove_above_external(pos));
+}
+TEST(binary_tree, removing_on_root) {
+	binary_tree<int> data;
+	data.add_root(23);
+	EXPECT_ANY_THROW(data.remove_above_external(data.root()));
+}
+TEST(binary_tree, removing_on_nonexternal) {
+	binary_tree<size_t> data;
+	data.add_root(89);
+	data.expand_external(data.root(), 43, 45);
+	auto pos = data.root().left();
+	data.expand_external(pos, 819, 32);
+	EXPECT_ANY_THROW(data.remove_above_external(pos));
+}
+TEST(binary_tree, adding_on_exist_root) {
+	binary_tree<int> data;
+	data.add_root(78);
+	EXPECT_ANY_THROW(data.add_root(78));
+}
+TEST(binary_tree, expand_for_non_external) {
+	binary_tree<int> data;
+	data.add_root(78);
+	auto pos = data.root();
+	data.expand_external(pos, 432, 433);
+	EXPECT_ANY_THROW(data.expand_external(pos, 34, 21));
+}
 #endif

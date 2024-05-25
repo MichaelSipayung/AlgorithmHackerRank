@@ -1075,7 +1075,7 @@ namespace cormen {
 			node_tr* parent;
 			node_tr* left;
 			node_tr* right;
-			node_tr(const T& _it) : item{_it}, parent{ nullptr },
+			node_tr(const T& _it) : item{ _it }, parent{ nullptr },
 				left{ nullptr }, right{ nullptr } {}
 		};
 	public:
@@ -1083,6 +1083,9 @@ namespace cormen {
 		public:
 			position_tr(node_tr* tr = nullptr) : _tr{ tr } {}
 			T& operator*() { return _tr->item; }
+			const T& value()const {
+				return _tr->item;
+			}
 			position_tr left()const { return position_tr(_tr->left); }
 			position_tr right()const { return position_tr(_tr->right); }
 			position_tr parent()const { return position_tr(_tr->parent); }
@@ -1108,15 +1111,25 @@ namespace cormen {
 			return position_list(pl); // return resulting list
 		}
 		// adding root to empty tree
-		void add_root(const T & item= T{}) { _root = new node_tr(item); sz = 1; }
+		void add_root(const T& item = T{}) {
+			if (!empty())
+				throw std::out_of_range("calling add_root() for non empty tree");
+			_root = new node_tr(item); sz = 1;
+		}
 		// expand external node
 		void expand_external(const position_tr&, const T& left_item,
-			const T &right_item); 
+			const T& right_item);
 		// removing the node at pos p and its parent (above external)
 		position_tr remove_above_external(const position_tr& p) {
+			if (empty())
+				throw std::out_of_range("calling remove_above_external() on empty tree");
+			if (p.is_root())
+				throw std::out_of_range("calling remove_above_external() on root");
+			if (!p.is_external())
+				throw std::out_of_range("calling remove_above_external() for non external");
 			auto w = p._tr; // get p node and parent
 			auto v = w->parent;
-			auto sibling=w; // temporary assigment, assignment is at the next line
+			auto sibling = w; // temporary assigment, assignment is at the next line
 			if (w == v->left) // if parent of w->parent->left = w sibl is right 
 				sibling = v->right;
 			else
@@ -1144,7 +1157,7 @@ namespace cormen {
 			pl.push_back(position_tr(v)); // add this node
 			if (v->left)
 				preorder(v->left, pl); // traverse left subtree
-			else
+			if (v->right)
 				preorder(v->right, pl); // traverse right subtree
 		}
 	private:
@@ -1159,8 +1172,10 @@ namespace cormen {
 	// transform p from external node into an internal node by creating 2 external nd
 	template<typename T>
 	inline void binary_tree<T>::expand_external(const binary_tree<T>::position_tr& p,
-		const T& left_item, const T &right_item)
+		const T& left_item, const T& right_item)
 	{
+		if (!p.is_external())
+			throw std::out_of_range("calling expand_external() for non external node");
 		auto v = p._tr;
 		v->left = new node_tr(left_item);
 		v->left->parent = v;
