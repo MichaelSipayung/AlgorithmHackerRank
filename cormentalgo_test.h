@@ -913,4 +913,70 @@ TEST(buble_sort, largesample) {
 	buble_sort(data);
 	EXPECT_EQ(data, temp);
 }
+TEST(binary_tree, calling_size){
+	binary_tree<int> data;
+	EXPECT_EQ(0, data.size());
+	data.add_root(14);
+	EXPECT_EQ(1, data.size());
+}
+TEST(binary_tree, calling_expand_external){
+	binary_tree<double> data;
+	data.add_root(34.4);
+	EXPECT_EQ(1, data.size());
+	auto pos = data.root();
+	data.expand_external(pos,45.5,545.43);
+	EXPECT_EQ(3, data.size());
+}
+TEST(binary_tree, calling_dereference_operator){
+	binary_tree<double> data;
+	data.add_root(56.34);
+	EXPECT_EQ(1, data.size());
+	auto pos = data.root();
+	EXPECT_EQ(56.34, *pos);
+	// data.expand_external(pos,45.5,545.43);
+}
+TEST(binary_tree, calling_left_right) {
+	binary_tree<double> data;
+	data.add_root(89.5);
+	auto pos = data.root();
+	data.expand_external(pos,45.5,545.43);
+	EXPECT_EQ(45.5, *pos.left());
+	EXPECT_EQ(545.43, *pos.right());
+}
+TEST(binary_tree, calling_positions) {
+	binary_tree<size_t> data;
+	data.add_root(89);
+	auto pos = data.root();
+	data.expand_external(pos, 78, 90);
+	auto pos_right = pos.right();
+	auto pos_left = pos.left();
+	data.expand_external(pos_right, 88, 98);
+	EXPECT_EQ(5, data.size());
+	EXPECT_EQ(88, *pos_right.left());
+	EXPECT_EQ(98, *pos_right.right());
+	data.expand_external(pos_left, 32, 45);
+	EXPECT_EQ(7, data.size());
+	EXPECT_EQ(32, *pos_left.left());
+	EXPECT_EQ(45, *pos_left.right());
+}
+TEST(binary_tree, calling_remove_ab_ext_nograndfa) {
+	binary_tree<size_t> data;
+	data.add_root(89);
+	auto pos = data.root();
+	data.expand_external(pos, 78, 90);
+	data.remove_above_external(pos.left());
+	EXPECT_EQ(1, data.size());
+	EXPECT_EQ(90, *data.root());
+}
+TEST(binary_tree, calling_remove_ab_ext_withgrandfa) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos,89.9,90.7);
+	data.expand_external(pos.left(), 100.23, 200.23);
+	data.remove_above_external(pos.left().left());
+	EXPECT_EQ(3, data.size());
+	EXPECT_EQ(78.9, *data.root());
+	EXPECT_EQ(200.23, *pos.left());
+}
 #endif

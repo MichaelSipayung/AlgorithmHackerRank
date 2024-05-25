@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include <list>
 using namespace std;
 using std::vector;
 namespace cormen {
@@ -934,8 +935,8 @@ namespace cormen {
 	private:
 		struct node {
 		public:
-			node(const T& d= T{}, node *p = nullptr, node *n = nullptr):
-				item{d}, prev{p}, next{n}{}
+			node(const T& d = T{}, node* p = nullptr, node* n = nullptr) :
+				item{ d }, prev{ p }, next{ n } {}
 			T item;
 			node* prev;
 			node* next;
@@ -994,12 +995,12 @@ namespace cormen {
 		const T& back()const {
 			if (empty())
 				throw std::out_of_range("calling back() on empty list");
-			return *--end(); 
+			return *--end();
 		}
-		const T& front()const { 
+		const T& front()const {
 			if (empty())
 				throw std::out_of_range("calling front() on empty list");
-			return *begin(); 
+			return *begin();
 		}
 	private:
 		size_t sz;
@@ -1029,7 +1030,7 @@ namespace cormen {
 	template<typename T>
 	inline void list_adt<T>::erase(const iterator_adt& pos)
 	{
-		if (empty() || pos==nullptr)
+		if (empty() || pos == nullptr)
 			throw std::out_of_range("calling erase() for empty list");
 		auto v = pos.itr_node; //node to remove
 		auto w = v->next; //successor
@@ -1052,17 +1053,120 @@ namespace cormen {
 		++sz;
 	}
 	template<class Container>
-	inline void buble_sort(Container &ls) {
+	inline void buble_sort(Container& ls) {
 		size_t len = ls.size();
 		while (len > 1) {
 			size_t track = 0;
-			for (size_t i = 1; i < len; ++i) 
+			for (size_t i = 1; i < len; ++i)
 				if (ls[i - 1] > ls[i]) {
 					std::swap(ls[i - 1], ls[i]);
 					track = i;
 				}
 			len = track; // dont traver to back if it already in sorted
 		}
+	}
+	// binary_tree: binary tree class, implementation
+	template<typename T>
+	class binary_tree {
+	protected:
+		class node_tr {
+		public:
+			T item;
+			node_tr* parent;
+			node_tr* left;
+			node_tr* right;
+			node_tr(const T& _it) : item{_it}, parent{ nullptr },
+				left{ nullptr }, right{ nullptr } {}
+		};
+	public:
+		class position_tr {
+		public:
+			position_tr(node_tr* tr = nullptr) : _tr{ tr } {}
+			T& operator*() { return _tr->item; }
+			position_tr left()const { return position_tr(_tr->left); }
+			position_tr right()const { return position_tr(_tr->right); }
+			position_tr parent()const { return position_tr(_tr->parent); }
+			bool is_root()const { return _tr->parent == nullptr; }
+			bool is_external()const {
+				return _tr->left == nullptr && _tr->right == nullptr;
+			}
+			friend class binary_tree;
+		private:
+			node_tr* _tr;
+		};
+		typedef std::list<position_tr> position_list;
+	public:
+		binary_tree();
+		size_t size()const { return sz; }
+		bool empty()const { return size() == 0; }
+		// return root position
+		position_tr root()const { return position_tr(_root); }
+		// list of all nodes
+		position_list positions()const {
+			position_list pl;
+			preorder(_root, pl); // preorder traversal
+			return position_list(pl); // return resulting list
+		}
+		// adding root to empty tree
+		void add_root(const T & item= T{}) { _root = new node_tr(item); sz = 1; }
+		// expand external node
+		void expand_external(const position_tr&, const T& left_item,
+			const T &right_item); 
+		// removing the node at pos p and its parent (above external)
+		position_tr remove_above_external(const position_tr& p) {
+			auto w = p._tr; // get p node and parent
+			auto v = w->parent;
+			auto sibling=w; // temporary assigment, assignment is at the next line
+			if (w == v->left) // if parent of w->parent->left = w sibl is right 
+				sibling = v->right;
+			else
+				sibling = v->left;
+			if (v == _root) {
+				_root = sibling; // child of root
+				sibling->parent = nullptr; // make sibling root
+			}
+			else {
+				auto grand_parent = v->parent; // w is grandparent
+				if (v == grand_parent->left) //replace parent by sibling
+					grand_parent->left = sibling;
+				else
+					grand_parent->right = sibling;
+				sibling->parent = grand_parent;
+			}
+			delete w; //delete removed nodes
+			delete v;
+			sz -= 2;
+			return position_tr(sibling);
+		}
+	protected:
+		// preorder traversal
+		void preorder(node_tr* v, std::list<position_tr>& pl)const {
+			pl.push_back(position_tr(v)); // add this node
+			if (v->left)
+				preorder(v->left, pl); // traverse left subtree
+			else
+				preorder(v->right, pl); // traverse right subtree
+		}
+	private:
+		node_tr* _root; // pointer to the root
+		size_t sz; // number of nodes
+	};
+
+	template<typename T>
+	inline binary_tree<T>::binary_tree() : _root{ nullptr }, sz{ 0 }
+	{
+	}
+	// transform p from external node into an internal node by creating 2 external nd
+	template<typename T>
+	inline void binary_tree<T>::expand_external(const binary_tree<T>::position_tr& p,
+		const T& left_item, const T &right_item)
+	{
+		auto v = p._tr;
+		v->left = new node_tr(left_item);
+		v->left->parent = v;
+		v->right = new node_tr(right_item);
+		v->right->parent = v;
+		sz += 2;
 	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
