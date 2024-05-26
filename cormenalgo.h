@@ -1082,16 +1082,26 @@ namespace cormen {
 		class position_tr {
 		public:
 			position_tr(node_tr* tr = nullptr) : _tr{ tr } {}
-			T& operator*() { return _tr->item; }
+			T& operator*() { 
+				if (!_tr)
+					throw std::out_of_range("calling dereference for invalid node");
+				return _tr->item; 
+			}
 			const T& value()const {
+				if ((!_tr))
+					throw std::out_of_range("calling value() on invalid node");
 				return _tr->item;
 			}
 			position_tr left()const { return position_tr(_tr->left); }
 			position_tr right()const { return position_tr(_tr->right); }
 			position_tr parent()const { return position_tr(_tr->parent); }
 			bool is_root()const { return _tr->parent == nullptr; }
+			void clear_head() {
+				if (_tr)
+					delete _tr;
+			}
 			bool is_external()const {
-				return _tr->left == nullptr && _tr->right == nullptr;
+				return !_tr->left && !_tr->right;
 			}
 			friend class binary_tree;
 		private:
@@ -1100,21 +1110,48 @@ namespace cormen {
 		typedef std::list<position_tr> position_list;
 	public:
 		binary_tree();
+		// return total node on binary tree
 		size_t size()const { return sz; }
+		// return true for empty binary tree otherwise false
 		bool empty()const { return size() == 0; }
 		// return root position
-		position_tr root()const { return position_tr(_root); }
+		position_tr root()const{ return position_tr(_root); }
 		// list of all nodes
 		position_list positions()const {
 			position_list pl;
+			if (empty())
+				return position_list(pl);
 			preorder(_root, pl); // preorder traversal
 			return position_list(pl); // return resulting list
+		}
+		// position at the left most
+		position_tr left_most()const {
+			auto pos = root();
+			if (pos._tr)
+				while (pos.left()._tr)
+					pos = pos.left();
+			return pos;
+		}
+		// position at the right most
+		position_tr right_most()const {
+			auto pos = root();
+			if (pos._tr)
+				while (pos.right()._tr)
+					pos = pos.right();
+			return pos;
+		}
+		// erase all node or clear binary tree
+		void erase() { 
+			if (empty())
+				return;
+			_erase(); 
 		}
 		// adding root to empty tree
 		void add_root(const T& item = T{}) {
 			if (!empty())
 				throw std::out_of_range("calling add_root() for non empty tree");
-			_root = new node_tr(item); sz = 1;
+			_root = new node_tr(item); 
+			sz = 1;
 		}
 		// expand external node
 		void expand_external(const position_tr&, const T& left_item,
@@ -1163,6 +1200,7 @@ namespace cormen {
 	private:
 		node_tr* _root; // pointer to the root
 		size_t sz; // number of nodes
+		void _erase();
 	};
 
 	template<typename T>
@@ -1174,7 +1212,7 @@ namespace cormen {
 	inline void binary_tree<T>::expand_external(const binary_tree<T>::position_tr& p,
 		const T& left_item, const T& right_item)
 	{
-		if (!p.is_external())
+		if (!p.is_external())	
 			throw std::out_of_range("calling expand_external() for non external node");
 		auto v = p._tr;
 		v->left = new node_tr(left_item);
@@ -1182,6 +1220,26 @@ namespace cormen {
 		v->right = new node_tr(right_item);
 		v->right->parent = v;
 		sz += 2;
+	}
+	template<typename T>
+	inline void binary_tree<T>::_erase()
+	{
+		while (size() > 1) {
+			auto left = left_most();
+			auto right = right_most();
+			if (!left.is_root())
+				remove_above_external(left);
+			if (!right.is_root())
+				remove_above_external(right);
+		}
+		if (left_most()._tr) {
+			left_most().clear_head();
+			sz -= 1;
+		}
+		if (_root) {
+			_root->item = T{};
+			_root = nullptr;
+		}
 	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

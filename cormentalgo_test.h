@@ -1029,4 +1029,88 @@ TEST(binary_tree, expand_for_non_external) {
 	data.expand_external(pos, 432, 433);
 	EXPECT_ANY_THROW(data.expand_external(pos, 34, 21));
 }
+TEST(binary_tree, calling_dereference_on_invalid) {
+	binary_tree<int> data;
+	EXPECT_ANY_THROW(*data.root());
+}
+TEST(binary_tree, calling_value_on_invalid) {
+	binary_tree<int> data;
+	EXPECT_ANY_THROW(data.root().value());
+}
+TEST(binary_tree, calling_erase) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos, 89.9, 90.7);
+	EXPECT_TRUE(pos.left().value() == 89.9);
+	EXPECT_TRUE(pos.right().value() == 90.7);
+
+	data.expand_external(pos.right(), 43.1, 67.1);
+	EXPECT_TRUE(pos.right().left().value() == 43.1);
+	EXPECT_TRUE(pos.right().right().value() == 67.1);
+
+	data.expand_external(pos.left(), 413.1, 167.1);
+	EXPECT_TRUE(pos.left().left().value() == 413.1);
+	EXPECT_TRUE(pos.left().right().value() == 167.1);
+
+	EXPECT_EQ(7, data.positions().size());
+	data.erase();
+	
+	EXPECT_FALSE(pos.left().value() == 89.9);
+	EXPECT_FALSE(pos.right().value() == 90.7);
+
+	EXPECT_EQ(0, data.positions().size());
+	EXPECT_EQ(0, data.size());
+}
+TEST(binary_tree, calling_erase_default_behavior) {
+	binary_tree<double> data;
+	data.add_root(89.009181);
+	EXPECT_EQ(89.009181, data.root().value());
+	EXPECT_TRUE(data.size() == 1);
+	EXPECT_TRUE(data.positions().size() == 1);
+	data.erase();
+	EXPECT_ANY_THROW(data.root().value());
+	EXPECT_TRUE(data.size() == 0);
+	EXPECT_TRUE(data.positions().size() == 0);
+	data.add_root(89);
+	data.expand_external(data.root(), 900.23, 897.23);
+	EXPECT_TRUE(data.size() == 3);
+	EXPECT_TRUE(data.positions().size() == 3);
+	EXPECT_TRUE(data.root().left().value()==900.23);
+	EXPECT_TRUE(data.root().right().value()==897.23);
+
+	data.erase();
+	EXPECT_TRUE(data.size() == 0);
+	EXPECT_TRUE(data.positions().size() == 0);
+	EXPECT_ANY_THROW(data.root().value());
+	EXPECT_ANY_THROW(data.root().value());
+}
+TEST(binary_tree, calling_positions_default_behavior) {
+	binary_tree<int> data;
+	data.add_root(34);
+	EXPECT_EQ(1, data.positions().size()); //default behavior is 1
+	data.erase();
+	EXPECT_EQ(0, data.size());
+	EXPECT_TRUE(data.positions().size() == 0);
+}
+TEST(binary_tree, left_most_test) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos, 89.9, 90.7);
+	data.expand_external(pos.right(), 43.1, 67.1);
+	data.expand_external(pos.left(), 413.1, 167.1);
+	EXPECT_EQ(413.1, *data.left_most());
+	EXPECT_FALSE(data.left_most().is_root());
+}
+TEST(binary_tree, right_most_test) {
+	binary_tree<double> data;
+	data.add_root(78.9);
+	auto pos = data.root();
+	data.expand_external(pos, 89.9, 90.7);
+	data.expand_external(pos.right(), 43.1, 67.1);
+	data.expand_external(pos.left(), 413.1, 167.1);
+	EXPECT_EQ(67.1, *data.right_most());
+	EXPECT_FALSE(data.right_most().is_root());
+}
 #endif
