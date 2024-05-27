@@ -1096,10 +1096,6 @@ namespace cormen {
 			position_tr right()const { return position_tr(_tr->right); }
 			position_tr parent()const { return position_tr(_tr->parent); }
 			bool is_root()const { return _tr->parent == nullptr; }
-			void clear_head() {
-				if (_tr)
-					delete _tr;
-			}
 			bool is_external()const {
 				return !_tr->left && !_tr->right;
 			}
@@ -1232,14 +1228,18 @@ namespace cormen {
 			if (!right.is_root())
 				remove_above_external(right);
 		}
-		if (left_most()._tr) {
-			left_most().clear_head();
+		if (root()._tr!= nullptr) {
+			delete root()._tr;
 			sz -= 1;
 		}
-		if (_root) {
-			_root->item = T{};
-			_root = nullptr;
-		}
+        if(_root->left)
+            _root->left = nullptr;
+        if(_root->right)
+            _root->right= nullptr;
+        if(_root->parent)
+            _root->parent= nullptr;
+        if(_root)
+            _root= nullptr;
 	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
