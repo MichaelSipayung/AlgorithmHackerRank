@@ -1112,4 +1112,30 @@ TEST(binary_tree, right_most_test) {
 	EXPECT_EQ(67.1, *data.right_most());
 	EXPECT_FALSE(data.right_most().is_root());
 }
+TEST(binary_tree, left_most_after_deleted){
+    binary_tree<char> data;
+    data.add_root('A');
+    data.expand_external(data.root(),'B','C');
+    data.expand_external(data.root().left(),'1','2');
+    data.expand_external(data.root().right(),'3','4');
+    EXPECT_EQ(char('1'),data.left_most().value());
+    data.remove_above_external(data.left_most());
+    EXPECT_EQ(char('2'),data.left_most().value());
+    data.erase();
+    EXPECT_TRUE(data.empty());
+    EXPECT_ANY_THROW(data.root().value());
+}
+TEST(binary_tree,right_most_after_deleted){
+    binary_tree<char> data;
+    data.add_root('A');
+    data.expand_external(data.root(),'B','C');
+    data.expand_external(data.root().left(),'1','2');
+    data.expand_external(data.root().right(),'3','4');
+    EXPECT_EQ(char('4'),data.right_most().value());
+    data.remove_above_external(data.right_most());
+    EXPECT_EQ(char('3'),data.right_most().value());
+    data.erase();
+    EXPECT_TRUE(data.empty());
+    EXPECT_ANY_THROW(data.root().value());
+}
 #endif
