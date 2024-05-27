@@ -1138,4 +1138,41 @@ TEST(binary_tree,right_most_after_deleted){
     EXPECT_TRUE(data.empty());
     EXPECT_ANY_THROW(data.root().value());
 }
+TEST(priority_queue_list, calling_empty) {
+	priority_queue_list<int, std::less<>> data;
+	EXPECT_TRUE(data.empty());
+}
+TEST(priority_queue_list, calling_size) {
+	priority_queue_list<double, std::greater<>> data;
+	for (size_t i = 0; i < 15; ++i)
+		data.insert(i + 1 * 1.23);
+	EXPECT_EQ(15, data.size());
+	data.remove_min();
+	EXPECT_EQ(14, data.size());
+}
+TEST(priority_queue_list, calling_min) {
+	priority_queue_list<size_t, std::greater<>> data;
+	data.insert(89);
+	data.insert(78);
+	EXPECT_EQ(89, data.min_element());
+	priority_queue_list<int, std::less<>> data_1;
+	data_1.insert(98);
+	data_1.insert(65);
+	EXPECT_EQ(65, data_1.min_element());
+}
+TEST(priority_queue_list, calling_remove_min) {
+	priority_queue_list<size_t, std::greater<>> data;
+	data.insert(89);
+	data.insert(78);
+	EXPECT_EQ(2, data.size());
+	data.remove_min();
+	EXPECT_EQ(1, data.size());
+}
+TEST(priority_queue_list, calling_insert) {
+	priority_queue_list<int, std::less<>> data;
+	data.insert(89);
+	EXPECT_EQ(1, data.size());
+	data.insert(97);
+	EXPECT_EQ(2, data.size());
+}
 #endif

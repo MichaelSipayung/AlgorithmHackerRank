@@ -1241,5 +1241,42 @@ namespace cormen {
         if(_root)
             _root= nullptr;
 	}
+	// priority_queue_list: interface of priority queue based on list and sorted order
+	template<typename T, class Comparable>
+	class priority_queue_list {
+	public:
+		size_t size()const { return _data.size(); }
+		bool empty()const { return _data.empty(); }
+		void insert(const T&);
+		const T& min_element()const;
+		void remove_min();
+	private:
+		std::list<T> _data;
+		Comparable compare;
+	};
+	// insert: insert an element to priority queue
+	template<typename T, class Comparable>
+	inline void priority_queue_list<T, Comparable>::insert(const T&  _val)
+	{
+		auto begin = _data.begin();
+		while ((begin != _data.end()) && !compare(_val, *begin))
+			++begin;
+		_data.insert(begin, _val);
+	}
+	// need constant reference, the value can't be write, since the priority integrity
+	template<typename T, class Comparable>
+	inline const T& priority_queue_list<T, Comparable>::min_element() const
+	{
+		if (empty())
+			throw std::out_of_range("calling min_element() on empty priority_queue");
+		return _data.front();
+	}
+	template<typename T, class Comparable>
+	inline void priority_queue_list<T, Comparable>::remove_min()
+	{
+		if (empty())
+			throw std::out_of_range("calling remove_min() on empty priority_queue");
+		_data.pop_front();
+	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
