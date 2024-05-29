@@ -1299,8 +1299,10 @@ namespace cormen {
 	class binary_heap {
 	public:
 		// ctor for heap, default capacity is 100
-		binary_heap(const size_t& capacity = 100) :
+		explicit binary_heap(const size_t& capacity = 100) :
 			_heap{ std::vector<Comparable>(capacity) }, _sz{ 0 } {}
+		// construct binary heap from initial collections item
+		explicit binary_heap(const std::vector<Comparable>&);
 		bool empty()const { return _sz == 0; }
 		// return maximum or minimum of element, default is max
 		const Comparable& front()const;
@@ -1319,7 +1321,17 @@ namespace cormen {
 		void percolate_up(const Comparable &item);
 		// check current heap size, if exceed the capacity, request or resize
 		void check_size();
+		// extablish heap order property from arbitary arrangments of items, runs on linear time
+		void build_heap();
 	};
+	template<typename Comparable, bool is_max>
+	inline binary_heap<Comparable, is_max>::binary_heap(const std::vector<Comparable>& collection)
+		: _heap(collection.size()+10), _sz{collection.size()}
+	{
+		for (size_t i = 0; i < collection.size(); ++i)
+			_heap[i + 1] = collection[i];
+		build_heap(); // build heap based on given collection
+	}
 	template<typename Comparable, bool is_max>
 	inline const Comparable& binary_heap<Comparable, is_max>::front() const
 	{
@@ -1334,7 +1346,7 @@ namespace cormen {
 	template<typename Comparable, bool is_max>
 	inline void binary_heap<Comparable, is_max>::pop_front()
 	{
-		if (empty())
+		if (empty())	
 			throw std::out_of_range("calling pop_front() on empty heap");
 		_heap[1] = std::move(_heap[_sz]);
 		--_sz;
@@ -1381,6 +1393,12 @@ namespace cormen {
 	{
 		if (_sz == _heap.size() - 1)
 			_heap.resize(2 * _heap.size());
+	}
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::build_heap()
+	{
+		for (int i = _sz / 2; i > 0; --i)
+			percolate_down(i);
 	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

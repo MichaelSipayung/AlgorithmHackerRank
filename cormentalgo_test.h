@@ -1287,4 +1287,14 @@ TEST(binary_heap, calling_pop_front_even) {
 		data.pop_front();
 	EXPECT_EQ('F', data.front());
 }
+TEST(binary_heap, build_heap_from_ctor) {
+	vector<int> data = 
+		{150,80,40,30,10,70,110,100,20,90,60,50,120,140,130};
+	binary_heap<int, false> build_from_collection(data);
+	std::sort(data.begin(), data.end());
+	for (const auto& item : data) {
+		EXPECT_EQ(build_from_collection.front(), item);
+		build_from_collection.pop_front();
+	}
+}
 #endif
