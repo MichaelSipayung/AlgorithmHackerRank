@@ -1175,4 +1175,55 @@ TEST(priority_queue_list, calling_insert) {
 	data.insert(97);
 	EXPECT_EQ(2, data.size());
 }
+TEST(priority_queue_list, calling_selection_sort) {
+	std::list<int> data = { 5,4,3,2,1,0 };
+	selection_sort(data);
+	EXPECT_EQ(std::list({ 0,1,2,3,4,5 }), data);
+}
+TEST(binary_heap, calling_empty) {
+	binary_heap<int> data(100);
+	EXPECT_TRUE(data.empty());
+}
+TEST(binary_heap, calling_insert) {
+	binary_heap<char> data(100);
+	vector<char> temp = { 'T','N','R','P','H','O','A','E','I','G'};
+	for (const auto& i : temp)
+		data.insert(i);
+	data.insert('S');
+	EXPECT_EQ(data.front(), 'T');
+}
+TEST(binary_heap, calling_insert_worst_case) {
+	binary_heap<char> data(100);
+	vector<char> temp = { 'T','N','R','P','H','O','A','E','I','G' };
+	for (const auto& i : temp)
+		data.insert(i);
+	data.insert('S');
+	data.insert('V');
+	EXPECT_EQ(data.front(), 'V');
+}
+TEST(binary_heap, calling_pop_front) {
+	binary_heap<char> data(100);
+	vector<char> temp = { 'T','N','R','P','H','O','A','E','I','G' };
+	for (const auto& i : temp)
+		data.insert(i);
+	data.insert('S');
+	data.insert('V');
+	EXPECT_EQ(data.front(), 'V');
+	data.pop_front();
+	EXPECT_EQ(data.front(), 'T');
+}
+TEST(binary_heap, calling_pop_front_sample) {
+	binary_heap<char> data;
+	std::vector<char> temp = { 'P','P','A','M','L','E','E' };
+	for (const auto& i : temp)
+		data.insert(i);
+	EXPECT_EQ('P', data.front());
+	data.pop_front();
+	EXPECT_EQ('P', data.front());
+	data.pop_front();
+	EXPECT_EQ('M', data.front());
+	data.pop_front();
+	EXPECT_EQ('L', data.front());
+
+}
 #endif
