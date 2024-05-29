@@ -1294,37 +1294,45 @@ namespace cormen {
 			temp.remove_min(); // remove minimum element
 		}
 	}
-	// binary_heap: class interface for priority queue
-	template<typename Comparable>
+	// binary_heap: class interface for priority queue, default priority is max
+	template<typename Comparable, bool is_max = true>
 	class binary_heap {
 	public:
+		// ctor for heap, default capacity is 100
 		binary_heap(const size_t& capacity = 100) :
 			_heap{ std::vector<Comparable>(capacity) }, _sz{ 0 } {}
 		bool empty()const { return _sz == 0; }
+		// return maximum or minimum of element, default is max
 		const Comparable& front()const;
+		// insert an element to heap, default insertion priority is max
 		void insert(const Comparable& item);
+		// remove maximum or minimum element from heap, default is max
 		void pop_front();
+		// clear all element from heap
 		void clear();
 	private:
 		std::vector<Comparable> _heap;
 		size_t _sz;
+		// precolate down or sink to the hole
 		void percolate_down(size_t hole);
+		// percolate up or swim the to the hole
 		void percolate_up(const Comparable &item);
+		// check current heap size, if exceed the capacity, request or resize
 		void check_size();
 	};
-	template<typename Comparable>
-	inline const Comparable& binary_heap<Comparable>::front() const
+	template<typename Comparable, bool is_max>
+	inline const Comparable& binary_heap<Comparable, is_max>::front() const
 	{
 		if (empty())
 			throw std::out_of_range("calling front() on empty heap");
 		return _heap[1];
 	}
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::insert(const Comparable& item){
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::insert(const Comparable& item){
 		percolate_up(item);
 	}
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::pop_front()
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::pop_front()
 	{
 		if (empty())
 			throw std::out_of_range("calling pop_front() on empty heap");
@@ -1332,42 +1340,44 @@ namespace cormen {
 		--_sz;
 		percolate_down(1);
 	}
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::clear(){
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::clear(){
 		_heap.clear();
+		_heap = std::vector<Comparable>(1);
 		_sz = 0;
 	}
 	// percolate_down: percolate_down in the heap, hole is the index at which percolate begin
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::percolate_down(size_t hole)
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::percolate_down(size_t hole)
 	{
 		Comparable temp = std::move(_heap[hole]);
 		size_t child = 0;
 		while ((2 * hole) <= _sz) {
 			child = 2 * hole;
-			if ((child != _sz) && (_heap[child] < _heap[child + 1]))
+			if ((child != _sz) && 
+				is_max ? (_heap[child] < _heap[child + 1]) : (_heap[child] > _heap[child + 1]))
 				++child; // who will the next candidate at the top (parent)
-			if (_heap[child] < _heap[hole])
+			if (is_max ? (_heap[child] < _heap[hole]) : (_heap[child] > _heap[hole]))
 				break; // already not violate the order, stop!
 			std::swap(_heap[hole], _heap[child]); // sink down or precolate_down
 			hole = child; //remember the exchange position
 		}
 		//_heap[hole] = std::move(temp); // move the remainding/ top to hole
 	}
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::percolate_up(const Comparable &item)
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::percolate_up(const Comparable &item)
 	{
 		check_size();
 		size_t hole = ++_sz; // create hole at the end
 		const Comparable temp = std::move(item);
 		_heap[0] = std::move(temp);
 		// move the key to the right (no violate the heap) position
-		for (; item > _heap[hole / 2]; hole /= 2)
+		for(;is_max ? (item > _heap[hole / 2]) : (item < _heap[hole / 2]); hole /= 2)
 			_heap[hole] = std::move(_heap[hole / 2]);
-		_heap[hole] = std::move(_heap[0]);
+		_heap[hole] = std::move(item);
 	}
-	template<typename Comparable>
-	inline void binary_heap<Comparable>::check_size()
+	template<typename Comparable, bool is_max>
+	inline void binary_heap<Comparable, is_max>::check_size()
 	{
 		if (_sz == _heap.size() - 1)
 			_heap.resize(2 * _heap.size());

@@ -1226,4 +1226,65 @@ TEST(binary_heap, calling_pop_front_sample) {
 	EXPECT_EQ('L', data.front());
 
 }
+TEST(binary_heap, calling_pop_front_empty) {
+	binary_heap<char> data;
+	EXPECT_ANY_THROW(data.pop_front());
+}
+TEST(binary_heap, calling_front_on_empty) {
+	binary_heap<int> data;
+	EXPECT_ANY_THROW(data.front());
+}
+TEST(binary_heap, calling_clear) {
+	binary_heap<char> data;
+	std::vector<char> temp = { 'P','P','A','M','L','E','E' };
+	for (const auto& i : temp)
+		data.insert(i);
+	EXPECT_EQ('P', data.front());
+	data.clear();
+	EXPECT_ANY_THROW(data.front());
+}
+TEST(binary_heap, calling_empty_vmin) {
+	binary_heap<int, false> data;
+	EXPECT_TRUE(data.empty());
+}
+TEST(binary_heap, calling_insert_odds) {
+	binary_heap<char, false> data;
+	std::vector<char> temp = { 'P','P','F','M','L','E','E' };
+	for (const auto& i : temp)
+		data.insert(i);
+	EXPECT_EQ(data.front(), 'E');
+	data.insert('A');
+	EXPECT_EQ(data.front(), 'A');
+}
+TEST(binary_heap, calling_insert_even) {
+	binary_heap<char, false> data;
+	std::vector<char> temp = { 'P','P','K','F','M','L','E','E' };
+	for (const auto& i : temp)
+		data.insert(i);
+	EXPECT_EQ(data.front(), 'E');
+	data.insert('A');
+	EXPECT_EQ(data.front(), 'A');
+}
+TEST(binary_heap, calling_pop_front_odds) {
+	binary_heap<char, false> data;
+	std::vector<char> temp = { 'P','P','F','M','L','E','E' };
+	for (const auto& i : temp)
+		data.insert(i);
+	data.pop_front();
+	EXPECT_EQ('E', data.front());
+	data.pop_front();
+	EXPECT_EQ('F', data.front());
+	data.pop_front();
+	EXPECT_EQ('L', data.front());
+}
+TEST(binary_heap, calling_pop_front_even) {
+	binary_heap<char, false> data;
+	std::vector<char> temp = { 'P','P','F','M','L','E','E', 'A', 'B','C'};
+	for (const auto& i : temp)
+		data.insert(i);
+	EXPECT_EQ('A', data.front());
+	for (auto i = 0; i < 5; ++i)
+		data.pop_front();
+	EXPECT_EQ('F', data.front());
+}
 #endif
