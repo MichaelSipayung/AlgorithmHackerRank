@@ -1190,7 +1190,7 @@ TEST(binary_heap, calling_insert) {
 	for (const auto& i : temp)
 		data.insert(i);
 	data.insert('S');
-	EXPECT_EQ(data.front(), 'T');
+	EXPECT_EQ(data.front(), 'A');
 }
 TEST(binary_heap, calling_insert_worst_case) {
 	binary_heap<char> data(100);
@@ -1199,7 +1199,7 @@ TEST(binary_heap, calling_insert_worst_case) {
 		data.insert(i);
 	data.insert('S');
 	data.insert('V');
-	EXPECT_EQ(data.front(), 'V');
+	EXPECT_EQ(data.front(), 'A');
 }
 TEST(binary_heap, calling_pop_front) {
 	binary_heap<char> data(100);
@@ -1208,20 +1208,20 @@ TEST(binary_heap, calling_pop_front) {
 		data.insert(i);
 	data.insert('S');
 	data.insert('V');
-	EXPECT_EQ(data.front(), 'V');
+	EXPECT_EQ(data.front(), 'A');
 	data.pop_front();
-	EXPECT_EQ(data.front(), 'T');
+	EXPECT_EQ(data.front(), 'E');
 }
 TEST(binary_heap, calling_pop_front_sample) {
 	binary_heap<char> data;
 	std::vector<char> temp = { 'P','P','A','M','L','E','E' };
 	for (const auto& i : temp)
 		data.insert(i);
-	EXPECT_EQ('P', data.front());
+	EXPECT_EQ('A', data.front());
 	data.pop_front();
-	EXPECT_EQ('P', data.front());
+	EXPECT_EQ('E', data.front());
 	data.pop_front();
-	EXPECT_EQ('M', data.front());
+	EXPECT_EQ('E', data.front());
 	data.pop_front();
 	EXPECT_EQ('L', data.front());
 
@@ -1239,16 +1239,16 @@ TEST(binary_heap, calling_clear) {
 	std::vector<char> temp = { 'P','P','A','M','L','E','E' };
 	for (const auto& i : temp)
 		data.insert(i);
-	EXPECT_EQ('P', data.front());
+	EXPECT_EQ('A', data.front());
 	data.clear();
 	EXPECT_ANY_THROW(data.front());
 }
 TEST(binary_heap, calling_empty_vmin) {
-	binary_heap<int, false> data;
+	binary_heap<int> data;
 	EXPECT_TRUE(data.empty());
 }
 TEST(binary_heap, calling_insert_odds) {
-	binary_heap<char, false> data;
+	binary_heap<char> data;
 	std::vector<char> temp = { 'P','P','F','M','L','E','E' };
 	for (const auto& i : temp)
 		data.insert(i);
@@ -1257,7 +1257,7 @@ TEST(binary_heap, calling_insert_odds) {
 	EXPECT_EQ(data.front(), 'A');
 }
 TEST(binary_heap, calling_insert_even) {
-	binary_heap<char, false> data;
+	binary_heap<char> data;
 	std::vector<char> temp = { 'P','P','K','F','M','L','E','E' };
 	for (const auto& i : temp)
 		data.insert(i);
@@ -1266,7 +1266,7 @@ TEST(binary_heap, calling_insert_even) {
 	EXPECT_EQ(data.front(), 'A');
 }
 TEST(binary_heap, calling_pop_front_odds) {
-	binary_heap<char, false> data;
+	binary_heap<char> data;
 	std::vector<char> temp = { 'P','P','F','M','L','E','E' };
 	for (const auto& i : temp)
 		data.insert(i);
@@ -1278,23 +1278,125 @@ TEST(binary_heap, calling_pop_front_odds) {
 	EXPECT_EQ('L', data.front());
 }
 TEST(binary_heap, calling_pop_front_even) {
-	binary_heap<char, false> data;
+	binary_heap<char> data;
 	std::vector<char> temp = { 'P','P','F','M','L','E','E', 'A', 'B','C'};
 	for (const auto& i : temp)
 		data.insert(i);
 	EXPECT_EQ('A', data.front());
-	for (auto i = 0; i < 5; ++i)
+	std::sort(temp.begin(), temp.end());
+	for (auto i = 0; i < temp.size(); ++i) {
+		EXPECT_EQ(temp[i], data.front());
 		data.pop_front();
-	EXPECT_EQ('F', data.front());
+	}
+}
+TEST(binary_heap, bugs_on_minimum) {
+	std::vector<char> temp = { 'P','P','F','M','L','E','E', 'A', 'B','C' };
+	binary_heap<char> data(temp);
+	EXPECT_EQ('A', data.front());
 }
 TEST(binary_heap, build_heap_from_ctor) {
 	vector<int> data = 
 		{150,80,40,30,10,70,110,100,20,90,60,50,120,140,130};
-	binary_heap<int, false> build_from_collection(data);
+	binary_heap<int> build_from_collection(data);
 	std::sort(data.begin(), data.end());
 	for (const auto& item : data) {
 		EXPECT_EQ(build_from_collection.front(), item);
 		build_from_collection.pop_front();
 	}
 }
-#endif
+TEST(heap_sort, heap_sort_sample1) {
+	std::vector<char> temp = { 'P','P','F','M','L','E','E', 'A', 'B','C' };
+	auto temp_min = temp;
+	std::sort(temp_min.begin(), temp_min.end());
+	heap_sort_min(temp);
+	EXPECT_EQ(temp_min, temp);
+}
+TEST(heap_sort, heap_sort_sample2) {
+	vector<int> data = { 150,80,40,30,10,70,110,100,20,90,60,50,120,140,130 };
+	auto temp = data;
+	std::sort(temp.begin(), temp.end());
+	heap_sort_min(data);
+	EXPECT_EQ(temp, data);
+}
+
+TEST(heap_sort, heap_sort_ascending_example) {
+	std::vector<char> data = { 'S','O','R','T','E','X','A','M','P','L','E' };
+	auto temp = data;
+	std::sort(temp.begin(), temp.end());
+	heap_sort_min(data);
+	EXPECT_EQ(temp, data);
+}
+// heap sort for double, large number of elements
+TEST(heap_sort, heap_sort_ascending_large) {
+	std::vector<double> data;
+	for (auto i = 100; i > 0; --i)
+		data.push_back(i * 1.5);
+	auto temp = data;
+	std::sort(temp.begin(), temp.end());
+	heap_sort_min(data);
+	EXPECT_EQ(temp, data);
+}
+
+TEST(binary_heap_max, calling_insert) {
+	std::vector<int> temp;
+	for (size_t i = 0; i < 200; ++i)
+		temp.push_back(i);
+	binary_heap_max<int> heap_max(temp);
+	EXPECT_EQ(199,heap_max.max());
+}
+TEST(binary_heap, calling_pop_max) {
+	std::vector<int> temp;
+	for (size_t i = 0; i < 200; ++i)
+		temp.push_back(i);
+	binary_heap_max<int> heap_max(temp);
+	std::reverse(temp.begin(), temp.end());
+	for (const auto& item : temp) {
+		EXPECT_EQ(item, heap_max.max());
+		heap_max.pop_max();
+	}
+}
+TEST(binary_heap_max, calling_empty) {
+	binary_heap_max<int> data;
+	EXPECT_TRUE(data.empty());
+}
+TEST(binary_heap, calling_size_on_insert) {
+	binary_heap_max<int> data;
+	for (int i = 0; i < 100; ++i)
+		data.insert(i);
+	EXPECT_EQ(100, data.size());
+}
+TEST(binary_heap, calling_size_on_clear) {
+	binary_heap_max<int> data;
+	for (int i = 0; i < 100; ++i)
+		data.insert(i);
+	EXPECT_EQ(100, data.size());
+	data.clear();
+	EXPECT_EQ(0, data.size());
+}
+TEST(binary_heap_max, calling_max_on_empty) {
+	binary_heap_max<int> data;
+	EXPECT_ANY_THROW(data.max());
+}
+TEST(binary_heap_max, calling_pop_max_on_empty) {
+	binary_heap_max<int> data;
+	EXPECT_ANY_THROW(data.pop_max());
+}
+TEST(binary_heap_max, calling_heap_sort_sample1) {
+	std::vector<int> data;
+	for (auto i = 0; i < 100; ++i)
+		data.push_back(i);
+	auto temp = data;
+	std::reverse(temp.begin(), temp.end());
+	heap_sort_max(data);
+	EXPECT_EQ(data, temp);
+}
+TEST(binary_heap_max, calling_heap_sort_sample2) {
+	std::vector<char> data;
+	for (auto i = 65; i < 91; ++i)
+		data.push_back(i);
+	auto temp = data;
+	std::reverse(temp.begin(), temp.end());
+	heap_sort_max(data);
+	EXPECT_EQ(data, temp);
+}
+#endif	

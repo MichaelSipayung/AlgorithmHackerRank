@@ -1241,6 +1241,47 @@ namespace cormen {
         if(_root)
             _root= nullptr;
 	}
+	template<typename Comparable>
+	class binary_heap_max {
+	public:
+		explicit binary_heap_max(const size_t capacity = 100) : 
+			_heap(std::vector<Comparable>(capacity)), _sz{ 0 } {}
+		explicit binary_heap_max(const std::vector<Comparable> & _ls):
+			_heap(_ls.size()+10), _sz{_ls.size()} {
+			for (size_t i = 0; i < _ls.size(); ++i)
+				_heap[i + 1] = _ls[i];
+			build_heap();
+		}
+		const Comparable& max()const {
+			if (empty())
+				throw std::out_of_range("calling max() on empty heap");
+			return _heap[1];
+		}
+		void clear() {
+			_heap.clear();
+			_sz = 0;
+			_heap.resize(100);
+		}
+		void pop_max() {
+			if (empty())
+				throw std::out_of_range("calling pop_max() on empty");
+			_heap[1] = std::move(_heap[_sz]); //move hole
+			--_sz;
+			precolate_down(1);
+		}
+		void insert(const Comparable& item) {
+			precolate_up(item);
+		}
+		bool empty()const { return _sz == 0; }
+		size_t size()const { return _sz; }
+	private:
+		std::vector<Comparable> _heap;
+		size_t _sz;
+		void precolate_up(const Comparable&);
+		void precolate_down(size_t);
+		void build_heap();
+		void check_size();
+	};
 	// priority_queue_list: interface of priority queue based on list and sorted order
 	template<typename T, class Comparable>
 	class priority_queue_list {
@@ -1294,8 +1335,9 @@ namespace cormen {
 			temp.remove_min(); // remove minimum element
 		}
 	}
+
 	// binary_heap: class interface for priority queue, default priority is max
-	template<typename Comparable, bool is_max = true>
+	template<typename Comparable>
 	class binary_heap {
 	public:
 		// ctor for heap, default capacity is 100
@@ -1324,27 +1366,27 @@ namespace cormen {
 		// extablish heap order property from arbitary arrangments of items, runs on linear time
 		void build_heap();
 	};
-	template<typename Comparable, bool is_max>
-	inline binary_heap<Comparable, is_max>::binary_heap(const std::vector<Comparable>& collection)
-		: _heap(collection.size()+10), _sz{collection.size()}
+	template<typename Comparable>
+	inline binary_heap<Comparable>::binary_heap(const std::vector<Comparable>&
+		collection): _heap(collection.size()+10), _sz{collection.size()}
 	{
 		for (size_t i = 0; i < collection.size(); ++i)
 			_heap[i + 1] = collection[i];
 		build_heap(); // build heap based on given collection
 	}
-	template<typename Comparable, bool is_max>
-	inline const Comparable& binary_heap<Comparable, is_max>::front() const
+	template<typename Comparable>
+	inline const Comparable& binary_heap<Comparable>::front() const
 	{
 		if (empty())
 			throw std::out_of_range("calling front() on empty heap");
 		return _heap[1];
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::insert(const Comparable& item){
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::insert(const Comparable& item){
 		percolate_up(item);
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::pop_front()
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::pop_front()
 	{
 		if (empty())	
 			throw std::out_of_range("calling pop_front() on empty heap");
@@ -1352,53 +1394,106 @@ namespace cormen {
 		--_sz;
 		percolate_down(1);
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::clear(){
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::clear(){
 		_heap.clear();
 		_heap = std::vector<Comparable>(1);
 		_sz = 0;
 	}
-	// percolate_down: percolate_down in the heap, hole is the index at which percolate begin
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::percolate_down(size_t hole)
+	// percolate_down: percolate_down in the heap, 
+	// hole is the index at which percolate begin
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::percolate_down(size_t hole)
 	{
-		Comparable temp = std::move(_heap[hole]);
 		size_t child = 0;
 		while ((2 * hole) <= _sz) {
 			child = 2 * hole;
-			if ((child != _sz) && 
-				is_max ? (_heap[child] < _heap[child + 1]) : (_heap[child] > _heap[child + 1]))
+			if ((child != _sz) && (_heap[child] > _heap[child + 1]))
 				++child; // who will the next candidate at the top (parent)
-			if (is_max ? (_heap[child] < _heap[hole]) : (_heap[child] > _heap[hole]))
+			if (_heap[child] > _heap[hole])
 				break; // already not violate the order, stop!
 			std::swap(_heap[hole], _heap[child]); // sink down or precolate_down
 			hole = child; //remember the exchange position
 		}
-		//_heap[hole] = std::move(temp); // move the remainding/ top to hole
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::percolate_up(const Comparable &item)
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::percolate_up(const Comparable &item)
 	{
 		check_size();
 		size_t hole = ++_sz; // create hole at the end
 		const Comparable temp = std::move(item);
 		_heap[0] = std::move(temp);
 		// move the key to the right (no violate the heap) position
-		for(;is_max ? (item > _heap[hole / 2]) : (item < _heap[hole / 2]); hole /= 2)
+		for(; item < _heap[hole / 2] ; hole /= 2)
 			_heap[hole] = std::move(_heap[hole / 2]);
 		_heap[hole] = std::move(item);
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::check_size()
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::check_size()
 	{
 		if (_sz == _heap.size() - 1)
 			_heap.resize(2 * _heap.size());
 	}
-	template<typename Comparable, bool is_max>
-	inline void binary_heap<Comparable, is_max>::build_heap()
+	template<typename Comparable>
+	inline void binary_heap<Comparable>::build_heap()
 	{
 		for (int i = _sz / 2; i > 0; --i)
 			percolate_down(i);
+	}
+	// heap_sort: sorting algorithm based on binary heap, complexity O(n log n)
+	template<typename Comparable>
+	inline void heap_sort_max(std::vector<Comparable>& _ls)
+	{
+		binary_heap_max<Comparable> temp(_ls);
+		for (size_t i = 0; i < _ls.size(); ++i) {
+			_ls[i] = temp.max();
+			temp.pop_max();
+		}
+	}
+	template<typename Comparable>
+	inline void heap_sort_min(std::vector<Comparable>& _ls)
+	{
+		binary_heap<Comparable> temp(_ls);
+		for (size_t i = 0; i < _ls.size(); ++i) {
+			_ls[i] = temp.front();
+			temp.pop_front();
+		}
+	}
+	template<typename Comparable>
+	inline void binary_heap_max<Comparable>::precolate_up(const Comparable& item)
+	{
+		check_size();
+		auto hole = ++_sz;
+		for (; item < _heap[hole / 2]; hole /= 2)
+			_heap[hole] = std::move(_heap[hole / 2]);
+		_heap[hole] = std::move(item);
+	}
+	template<typename Comparable>
+	inline void binary_heap_max<Comparable>::precolate_down(size_t hole)
+	{
+		size_t child = 0;
+		while (2*hole <= size())
+		{
+			child = 2 * hole;
+			if ((child != size()) && (_heap[child] < _heap[child + 1]))
+				++child;
+			if (_heap[child] < _heap[hole])
+				break;
+			std::swap(_heap[child], _heap[hole]);
+			hole = child;
+		}
+	}
+	template<typename Comparable>
+	inline void binary_heap_max<Comparable>::build_heap()
+	{
+		for (int i = _sz / 2; i > 0; --i)
+			precolate_down(i);
+	}
+	template<typename Comparable>
+	inline void binary_heap_max<Comparable>::check_size()
+	{
+		if (size() == _heap.size() - 1)
+			_heap.resize(_heap.size() * 2);
 	}
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
