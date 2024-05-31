@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <numeric>
+#include <random>
 using namespace std;
 using namespace cormen;
 TEST(InsertionSort, evensample) {
@@ -1344,6 +1345,7 @@ TEST(binary_heap_max, calling_insert) {
 	binary_heap_max<int> heap_max(temp);
 	EXPECT_EQ(199,heap_max.max());
 }
+
 TEST(binary_heap, calling_pop_max) {
 	std::vector<int> temp;
 	for (size_t i = 0; i < 200; ++i)
@@ -1355,16 +1357,19 @@ TEST(binary_heap, calling_pop_max) {
 		heap_max.pop_max();
 	}
 }
+
 TEST(binary_heap_max, calling_empty) {
 	binary_heap_max<int> data;
 	EXPECT_TRUE(data.empty());
 }
+
 TEST(binary_heap, calling_size_on_insert) {
 	binary_heap_max<int> data;
 	for (int i = 0; i < 100; ++i)
 		data.insert(i);
 	EXPECT_EQ(100, data.size());
 }
+
 TEST(binary_heap, calling_size_on_clear) {
 	binary_heap_max<int> data;
 	for (int i = 0; i < 100; ++i)
@@ -1373,14 +1378,17 @@ TEST(binary_heap, calling_size_on_clear) {
 	data.clear();
 	EXPECT_EQ(0, data.size());
 }
+
 TEST(binary_heap_max, calling_max_on_empty) {
 	binary_heap_max<int> data;
 	EXPECT_ANY_THROW(data.max());
 }
+
 TEST(binary_heap_max, calling_pop_max_on_empty) {
 	binary_heap_max<int> data;
 	EXPECT_ANY_THROW(data.pop_max());
 }
+
 TEST(binary_heap_max, calling_heap_sort_sample1) {
 	std::vector<int> data;
 	for (auto i = 0; i < 100; ++i)
@@ -1390,6 +1398,7 @@ TEST(binary_heap_max, calling_heap_sort_sample1) {
 	heap_sort_max(data);
 	EXPECT_EQ(data, temp);
 }
+
 TEST(binary_heap_max, calling_heap_sort_sample2) {
 	std::vector<char> data;
 	for (auto i = 65; i < 91; ++i)
@@ -1397,6 +1406,37 @@ TEST(binary_heap_max, calling_heap_sort_sample2) {
 	auto temp = data;
 	std::reverse(temp.begin(), temp.end());
 	heap_sort_max(data);
+	EXPECT_EQ(data, temp);
+}
+
+TEST(binary_heap_max, random_sample) {
+	vector<int> data;
+	for (size_t i = 0; i < 100; ++i)
+		data.push_back(std::rand());
+	auto temp = data;
+	std::sort(temp.begin(), temp.end(), std::greater<>());
+	binary_heap_max<int> heap_max(data);
+	for (size_t i = 0; i < 100; ++i) {
+		EXPECT_EQ(temp[i], heap_max.max());
+		heap_max.pop_max();
+	}
+}
+TEST(binary_heap_max, random_heap_sort) {
+	vector<int> data;
+	for (size_t i = 0; i < 100; ++i)
+		data.push_back(std::rand());
+	auto temp = data;
+	std::sort(temp.begin(), temp.end(), std::greater<>());
+	heap_sort_max(data);
+	EXPECT_EQ(data, temp);
+}
+TEST(binary_heap, random_heap_sort) {
+	vector<int> data;
+	for (size_t i = 0; i < 100; ++i)
+		data.push_back(std::rand());
+	auto temp = data;
+	std::sort(temp.begin(), temp.end());
+	heap_sort_min(data);
 	EXPECT_EQ(data, temp);
 }
 #endif	
