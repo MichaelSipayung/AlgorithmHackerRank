@@ -1460,6 +1460,14 @@ namespace cormen {
 		}
 	}
 	template<typename Comparable>
+	void heap_sort(std::vector<Comparable>& _ls, const bool& min_priority = true) {
+		binaryheap<Comparable> temp(_ls, min_priority);
+		for (size_t i = 0; i < _ls.size(); ++i) {
+			_ls[i] = temp.front();
+			temp.pop_front();
+		}
+	}
+	template<typename Comparable>
 	inline void binary_heap_max<Comparable>::precolate_up(const Comparable& item)
 	{
 		check_size();

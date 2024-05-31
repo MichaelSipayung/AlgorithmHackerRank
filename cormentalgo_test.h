@@ -1570,4 +1570,22 @@ TEST(generic_binary_heap, priority_maximum_usingcollections) {
 	heap.pop_front();
 	EXPECT_EQ(19, heap.size());
 }
+TEST(generic_heap_sort, minimum_as_priority) {
+	std::vector<int> data;
+	for (auto i = 0; i < 20; ++i)
+		data.push_back(std::rand());
+	auto temp = data;
+	std::sort(temp.begin(), temp.end());
+	heap_sort(data);
+	EXPECT_EQ(data, temp);
+}
+TEST(generic_heap_sort, maximum_as_priority) {
+	std::vector<int> data;
+	for (auto i = 0; i < 20; ++i)
+		data.push_back(std::rand());
+	auto temp = data;
+	std::sort(temp.begin(), temp.end(), std::greater<>());
+	heap_sort(data, false);
+	EXPECT_EQ(data, temp);
+}
 #endif	
