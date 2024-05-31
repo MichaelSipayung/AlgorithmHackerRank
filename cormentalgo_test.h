@@ -1439,4 +1439,135 @@ TEST(binary_heap, random_heap_sort) {
 	heap_sort_min(data);
 	EXPECT_EQ(data, temp);
 }
+TEST(generic_binary_heap, priority_minimum_callsize) {
+	binaryheap<int> data;
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(10, data.size());
+}
+TEST(generic_binary_heap, priority_minimum_callinsert) {
+	binaryheap<int> data;
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+}
+TEST(generic_binary_heap, priority_minimum_callpopfront) {
+	binaryheap<int> data;
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+	data.pop_front();
+	EXPECT_EQ(data.size(), 9);
+	data.pop_front();
+	EXPECT_EQ(data.size(), 8);
+}
+TEST(generic_binary_heap, priority_minimum_callempty) {
+	binaryheap<int> data;
+	EXPECT_TRUE(data.empty());
+}
+TEST(generic_binary_heap, priority_minimum_callfront) {
+	binaryheap<int> data;
+	std::vector<int> temp;
+	for (size_t i = 0; i < 10; ++i) {
+		auto item = std::rand();
+		temp.push_back(item);
+		data.insert(item);
+	}
+	std::sort(temp.begin(), temp.end());
+	for (const auto& i : temp) {
+		EXPECT_EQ(i, data.front());
+		data.pop_front();
+	}
+	EXPECT_TRUE(data.empty());
+}
+TEST(generic_binary_heap, priority_minimum_callfront_empty) {
+	binaryheap<int> data;
+	EXPECT_ANY_THROW(data.front());
+}
+TEST(generic_binary_heap, priority_minimum_call_popfront_empty) {
+	binaryheap<int> data;
+	EXPECT_ANY_THROW(data.pop_front());
+}
+TEST(generic_binary_heap, priority_minimum_call_erase) {
+	binaryheap<int> data(100);
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+	data.clear();
+	EXPECT_TRUE(data.empty());
+}
+// test case for maximum as priority
+TEST(generic_binary_heap, priority_maximum_callinsert) {
+	binaryheap<int> data(100, false);
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+}
+TEST(generic_binary_heap, priority_maximum_callpopfront) {
+	binaryheap<int> data(100, false);
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+	data.pop_front();
+	EXPECT_EQ(data.size(), 9);
+	data.pop_front();
+	EXPECT_EQ(data.size(), 8);
+}
+TEST(generic_binary_heap, priority_maximum_callempty) {
+	binaryheap<int> data(100, false);
+	EXPECT_TRUE(data.empty());
+}
+TEST(generic_binary_heap, priority_maximum_callfront) {
+	binaryheap<int> data(100, false);
+	std::vector<int> temp;
+	for (size_t i = 0; i < 10; ++i) {
+		auto item = std::rand();
+		temp.push_back(item);
+		data.insert(item);
+	}
+	std::sort(temp.begin(), temp.end(), std::greater<>());
+	for (const auto& i : temp) {
+		EXPECT_EQ(i, data.front());
+		data.pop_front();
+	}
+	EXPECT_TRUE(data.empty());
+}
+TEST(generic_binary_heap, priority_maximum_callfront_empty) {
+	binaryheap<int> data(100, false);
+	EXPECT_ANY_THROW(data.front());
+}
+TEST(generic_binary_heap, priority_maximum_call_popfront_empty) {
+	binaryheap<int> data(100,false);
+	EXPECT_ANY_THROW(data.pop_front());
+}
+TEST(generic_binary_heap, priority_maximum_call_erase) {
+	binaryheap<int> data(100, false);
+	for (size_t i = 0; i < 10; ++i)
+		data.insert(std::rand());
+	EXPECT_EQ(data.size(), 10);
+	data.clear();
+	EXPECT_TRUE(data.empty());
+}
+TEST(generic_binary_heap, priority_minimum_usingcollections) {
+	std::vector<int> data;
+	for (auto i = 0; i < 20; ++i)
+		data.push_back(std::rand());
+	binaryheap<int> heap(data);
+	std::sort(data.begin(), data.end());
+	EXPECT_EQ(data.front(), heap.front());
+	EXPECT_EQ(20, heap.size());
+	heap.pop_front();
+	EXPECT_EQ(19, heap.size());
+}
+TEST(generic_binary_heap, priority_maximum_usingcollections) {
+	std::vector<int> data;
+	for (auto i = 0; i < 20; ++i)
+		data.push_back(std::rand());
+	binaryheap<int> heap(data, false);
+	std::sort(data.begin(), data.end(), std::greater<>());
+	EXPECT_EQ(data.front(), heap.front());
+	EXPECT_EQ(20, heap.size());
+	heap.pop_front();
+	EXPECT_EQ(19, heap.size());
+}
 #endif	
