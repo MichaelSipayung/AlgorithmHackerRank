@@ -1675,7 +1675,7 @@ namespace cormen {
 
 			binary_node(Comparable_Key &&key, Comparable_Value && value, binary_node *lt, 
 				binary_node*rt) : _key{std::move(key)}, _value{std::move(value)},
-				_left{std::move(lt)}, _right{std:::move(rt)}{}
+				_left{std::move(lt)}, _right{std::move(rt)}{}
 		};
 		binary_node* _root;
 		void insert(const Comparable_Key& key, const Comparable_Value& value, binary_node*& t)
