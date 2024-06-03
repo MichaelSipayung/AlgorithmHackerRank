@@ -5,6 +5,7 @@
 #include <ostream>
 #include <vector>
 #include <list>
+#include <stack>
 using namespace std;
 using std::vector;
 namespace cormen {
@@ -1635,33 +1636,74 @@ namespace cormen {
 			_root{ nullptr } {
 			_root = clone(rhs._root);
 		};
+		// min: return minimum key and its value
+		const std::pair<Comparable_Key, Comparable_Value> min()const {
+			if (empty())
+				throw std::out_of_range("calling min() on empty tree");
+			return std::make_pair(find_min(_root)->_key, find_min(_root)->_value);
+		}
+		// max: return maximum key and its value
+		const std::pair<Comparable_Key, Comparable_Value> max()const {
+			if (empty())
+				throw std::out_of_range("calling max() on empty tree");
+			return std::make_pair(find_max(_root)->_key, find_max(_root)->_value);
+		}
+		// find_min: return minimum key
 		const Comparable_Key& find_min()const {
 			if (empty())
 				throw std::out_of_range("calling find_min() on empty tree");
 			return find_min(_root)->_key;
 		}
+		// find_max: return maximum key
 		const Comparable_Key& find_max()const {
 			if (empty())
 				throw std::out_of_range("calling find_max() on empty tree");
 			return find_max(_root)->_key;
 		}
+		// empty: return true if tree is empty otherwise false
 		bool empty()const { return _root == nullptr; }
+		// insert: insert key and value pair to tree
 		void insert(const Comparable_Key& key, const Comparable_Value& value) {
 			insert(key, value, _root);
 		}
+		// contains: return true if key is found otherwise false
 		bool contains(const Comparable_Key &key)const{
 			return contains(key, _root);
 		}
+		// remove: remove key from tree
 		void remove(const Comparable_Key& key) {
 			remove(key, _root);
 		}
+		// clear: remove all node from tree
 		void clear() {
 			clear(_root);
 		}
+		// size: return total number of node in tree
 		size_t size()const {
 			return size(_root);
 		}
-		// void insert(const Comparable&& x);
+		// items: return all key and value pair in tree
+		const std::vector<std::pair<Comparable_Key, Comparable_Value>> items()const {
+			std::vector<std::pair<Comparable_Key, Comparable_Value>> vec;
+			std::stack<binary_node*> st;
+			auto current = _root;
+			while (current || !st.empty()) {
+				if (current) {
+					st.push(current);
+					current = current->_left;
+				}
+				else {
+					current = st.top();
+					st.pop();
+					vec.push_back(std::make_pair(current->_key, current->_value));
+					current = current->_right;
+				}
+			}
+			return vec;
+		}
+		void insert(const Comparable_Key &&key, const Comparable_Value &&value) {
+			insert(std::move(key), std::move(value), _root);
+		}
 	private:
 		struct binary_node {
 			Comparable_Key _key;
@@ -1749,6 +1791,17 @@ namespace cormen {
 			if (t==nullptr)
 				return 0;
 			return 1 + size(t->_left) + size(t->_right);
+		}
+		void insert(Comparable_Key&& key, Comparable_Value&& value, binary_node*& t)
+		{
+			if (t==nullptr)
+				t = new binary_node(std::move(key), std::move(value), nullptr, nullptr);
+			else if (key < t->_key)
+				insert(std::move(key), std::move(value), t->_left);
+			else if (t->_key < key)
+				insert(std::move(key), std::move(value), t->_right);
+			else
+				; // duplicate
 		}
 	};
 

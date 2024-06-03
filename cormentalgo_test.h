@@ -1692,4 +1692,55 @@ TEST(binary_search_tree_key_value, calling_clone){
 	EXPECT_FALSE(clone.contains(90));
 	EXPECT_FALSE(clone.contains(89));
 }
+// test case calling items()
+TEST(binary_search_tree_key_value, calling_items){
+	binary_search_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::vector<std::pair<int, int>> goal = { {78,902},{89,901},{90,903} };
+	EXPECT_EQ(goal, data.items());
+}
+// test case calling items() random large sample
+TEST(binary_search_tree_key_value, calling_items_random){
+	binary_search_tree<int, int> data;
+	std::vector<std::pair<int, int>> goal;
+	for (size_t i = 0; i < 30; ++i) {
+		auto key = std::rand();
+		auto value = std::rand();
+		data.insert(key, value);
+		goal.push_back({ key,value });
+	}
+	std::sort(goal.begin(), goal.end());
+	EXPECT_EQ(goal, data.items());
+}
+// test calling min for pair key value
+TEST(binary_search_tree_key_value, calling_min){
+	binary_search_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::pair<int, int> goal = { 78,902 };
+	EXPECT_EQ(goal, data.min());
+}
+// test calling max for pair key value
+TEST(binary_search_tree_key_value, calling_max){
+	binary_search_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::pair<int, int> goal = { 90,903 };
+	EXPECT_EQ(goal, data.max());
+}
+// test calling min for pair key value, throw exception
+TEST(binary_search_tree_key_value, calling_min_empty){
+	binary_search_tree<int, int> data;
+	EXPECT_ANY_THROW(data.min());
+}
+// test calling max for pair key value, throw exception
+TEST(binary_search_tree_key_value, calling_max_empty){
+	binary_search_tree<int, int> data;
+	EXPECT_ANY_THROW(data.max());
+}
+
 #endif	
