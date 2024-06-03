@@ -1588,4 +1588,108 @@ TEST(generic_heap_sort, maximum_as_priority) {
 	heap_sort(data, false);
 	EXPECT_EQ(data, temp);
 }
+TEST(binary_search_tree_key_value, calling_empty) {
+	binary_search_tree<int, int> data;
+	EXPECT_TRUE(data.empty());
+}
+// binary search tree key value pair test cases
+TEST(binary_search_tree_key_value, calling_size) {
+	binary_search_tree<int, int> data;
+	EXPECT_EQ(0, data.size());
+	data.insert(89, 90);
+	EXPECT_EQ(1, data.size());
+}
+TEST(binary_search_tree_key_value, calling_insert) {
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	EXPECT_EQ(1, data.size());
+}
+TEST(binary_search_tree_key_value, calling_insert_multiple) {
+	binary_search_tree<int, int> data;
+	data.insert(89, 9440);
+	data.insert(78, 940);
+	data.insert(90, 9430);
+	EXPECT_EQ(3, data.size());
+}
+TEST(binary_search_tree_key_value, calling_insert_duplicate) {
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	EXPECT_EQ(1, data.size());
+	data.insert(89, 90);
+	EXPECT_EQ(1, data.size());
+}
+TEST(binary_search_tree_key_value, calling_find_min){
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	data.insert(78, 90);
+	data.insert(90, 90);
+	EXPECT_EQ(78, data.find_min());
+}
+TEST(binary_search_tree_key_value, calling_find_max){
+	binary_search_tree<int, int> data;
+	data.insert(89, 690);
+	data.insert(78, 790);
+	data.insert(90, 990);
+	EXPECT_EQ(90, data.find_max());
+}
+TEST(binary_search_tree_key_value, calling_remove){
+	binary_search_tree<int, int> data;
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	EXPECT_EQ(3, data.size());
+	data.remove(78);
+	EXPECT_EQ(2, data.size());
+
+	data.remove(90);
+	EXPECT_EQ(1, data.size());
+
+	data.remove(89);
+	EXPECT_EQ(0, data.size());
+}
+TEST(binary_search_tree_key_value, calling_find_min_empty){
+	binary_search_tree<int, int> data;
+	EXPECT_ANY_THROW(data.find_min());
+}
+TEST(binary_search_tree_key_value, calling_find_max_empty){
+	binary_search_tree<int, int> data;
+	EXPECT_ANY_THROW(data.find_max());
+}
+TEST(binary_search_tree_key_value, calling_remove_contains){
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	data.insert(78, 90);
+	data.insert(90, 90);
+	EXPECT_TRUE(data.contains(78));
+	EXPECT_TRUE(data.contains(90));
+	EXPECT_TRUE(data.contains(89));
+	EXPECT_FALSE(data.contains(100));
+}
+TEST(binary_search_tree_key_value, calling_Clear){
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	data.insert(78, 90);
+	data.insert(90, 90);
+	EXPECT_EQ(3, data.size());
+	data.clear();
+	EXPECT_EQ(0, data.size());
+}
+// clone test 
+TEST(binary_search_tree_key_value, calling_clone){
+	binary_search_tree<int, int> data;
+	data.insert(89, 90);
+	data.insert(78, 90);
+	data.insert(90, 90);
+	binary_search_tree<int, int> clone(data);
+	EXPECT_EQ(3, clone.size());
+	EXPECT_TRUE(clone.contains(78));
+	EXPECT_TRUE(clone.contains(90));
+	EXPECT_TRUE(clone.contains(89));
+	clone.clear();
+	EXPECT_EQ(0, clone.size());
+	EXPECT_EQ(3, data.size());
+	EXPECT_FALSE(clone.contains(78));
+	EXPECT_FALSE(clone.contains(90));
+	EXPECT_FALSE(clone.contains(89));
+}
 #endif	

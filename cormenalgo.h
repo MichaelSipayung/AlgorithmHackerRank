@@ -1625,5 +1625,138 @@ namespace cormen {
 			temp.pop_front();
 		}
 	}
+	// binary search tree interface with key and value pair
+	template<typename Comparable_Key, typename Comparable_Value>
+	class binary_search_tree {
+	public:
+		binary_search_tree();
+		~binary_search_tree() { clear(); }
+		binary_search_tree(const binary_search_tree& rhs) :
+			_root{ nullptr } {
+			_root = clone(rhs._root);
+		};
+		const Comparable_Key& find_min()const {
+			if (empty())
+				throw std::out_of_range("calling find_min() on empty tree");
+			return find_min(_root)->_key;
+		}
+		const Comparable_Key& find_max()const {
+			if (empty())
+				throw std::out_of_range("calling find_max() on empty tree");
+			return find_max(_root)->_key;
+		}
+		bool empty()const { return _root == nullptr; }
+		void insert(const Comparable_Key& key, const Comparable_Value& value) {
+			insert(key, value, _root);
+		}
+		bool contains(const Comparable_Key &key)const{
+			return contains(key, _root);
+		}
+		void remove(const Comparable_Key& key) {
+			remove(key, _root);
+		}
+		void clear() {
+			clear(_root);
+		}
+		size_t size()const {
+			return size(_root);
+		}
+		// void insert(const Comparable&& x);
+	private:
+		struct binary_node {
+			Comparable_Key _key;
+			Comparable_Value _value;
+			binary_node* _left;
+			binary_node* _right;
+
+			binary_node(const Comparable_Key& key,const Comparable_Value& value, 
+				binary_node* lt, binary_node *rt) : _key{ key }, 
+				_value {value}, _left{ lt }, _right{ rt } {}
+
+			binary_node(Comparable_Key &&key, Comparable_Value && value, binary_node *lt, 
+				binary_node*rt) : _key{std::move(key)}, _value{std::move(value)},
+				_left{std::move(lt)}, _right{std:::move(rt)}{}
+		};
+		binary_node* _root;
+		void insert(const Comparable_Key& key, const Comparable_Value& value, binary_node*& t)
+		{
+			if (t==nullptr)
+				t = new binary_node(key, value, nullptr, nullptr);
+			else if (key < t->_key)
+				insert(key, value, t->_left);
+			else if (t->_key<key)
+				insert(key, value, t->_right);
+			else
+				; // duplicate
+		}
+		binary_node* find_min(binary_node* t)const {
+			if (t==nullptr)
+				return nullptr;
+			else if (t->_left==nullptr)
+				return t;
+			return find_min(t->_left);
+		}
+		binary_node* find_max(binary_node* t)const {
+			if (t==nullptr)
+				return nullptr;
+			else if (t->_right==nullptr)
+				return t;
+			return find_max(t->_right);
+		}
+		bool contains(const Comparable_Key &key, binary_node *t)const {
+			if (t==nullptr)
+				return false;
+			else if (key < t->_key)
+				return contains(key, t->_left);
+			else if (t->_key < key)
+				return contains(key, t->_right);
+			return true; // match with given key
+		}
+		void remove(const Comparable_Key& key, binary_node* &t) {
+			if (t==nullptr)
+				return; // item not found
+			if (key < t->_key)
+				remove(key, t->_left);
+			else if (t->_key < key)
+				remove(key, t->_right);
+			else if (t->_left != nullptr && t->_right != nullptr) 
+			{
+				// in case deletion contains two child
+				t->_key = find_min(t->_right)->_key;
+				remove(t->_key, t->_right);
+			}
+			else {
+				binary_node* old_node = t;
+				t = (t->_left != nullptr) ? t->_left : t->_right;
+				delete old_node;
+			}
+		}
+		void clear(binary_node*& t) {
+			if (t) {
+				clear(t->_left); // delete all node from left-right
+				clear(t->_right);
+				delete t;
+			}
+			t = nullptr;
+		}
+		binary_node* clone(binary_node* t) {
+			if (t==nullptr)
+				return nullptr;
+			return new binary_node(t->_key, t->_value, 
+				clone(t->_left),clone(t->_right));
+		}
+		size_t size(binary_node* t)const {
+			if (t==nullptr)
+				return 0;
+			return 1 + size(t->_left) + size(t->_right);
+		}
+	};
+
+	template<typename Comparable_Key, typename Comparable_Value>
+	inline binary_search_tree<Comparable_Key, Comparable_Value>::binary_search_tree()
+	{
+		_root = nullptr;
+	}
+
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
