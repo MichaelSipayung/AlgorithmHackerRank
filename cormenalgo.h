@@ -1631,7 +1631,9 @@ namespace cormen {
 	class binary_search_tree {
 	public:
 		binary_search_tree();
+		// dtor for binary search tree
 		~binary_search_tree() { clear(); }
+		// copy ctor for binary search tree
 		binary_search_tree(const binary_search_tree& rhs) :
 			_root{ nullptr } {
 			_root = clone(rhs._root);
@@ -1706,15 +1708,15 @@ namespace cormen {
 		}
 	private:
 		struct binary_node {
-			Comparable_Key _key;
-			Comparable_Value _value;
-			binary_node* _left;
-			binary_node* _right;
-
+			Comparable_Key _key; // key
+			Comparable_Value _value; // value
+			binary_node* _left; // left child
+			binary_node* _right; // right child
+			// ctor for binary node with key and value pair
 			binary_node(const Comparable_Key& key,const Comparable_Value& value, 
 				binary_node* lt, binary_node *rt) : _key{ key }, 
 				_value {value}, _left{ lt }, _right{ rt } {}
-
+			// ctor for binary node with key and value pair
 			binary_node(Comparable_Key &&key, Comparable_Value && value, binary_node *lt, 
 				binary_node*rt) : _key{std::move(key)}, _value{std::move(value)},
 				_left{std::move(lt)}, _right{std::move(rt)}{}
