@@ -1083,10 +1083,10 @@ namespace cormen {
 		class position_tr {
 		public:
 			position_tr(node_tr* tr = nullptr) : _tr{ tr } {}
-			T& operator*() { 
+			T& operator*() {
 				if (!_tr)
 					throw std::out_of_range("calling dereference for invalid node");
-				return _tr->item; 
+				return _tr->item;
 			}
 			const T& value()const {
 				if ((!_tr))
@@ -1112,7 +1112,7 @@ namespace cormen {
 		// return true for empty binary tree otherwise false
 		bool empty()const { return size() == 0; }
 		// return root position
-		position_tr root()const{ return position_tr(_root); }
+		position_tr root()const { return position_tr(_root); }
 		// list of all nodes
 		position_list positions()const {
 			position_list pl;
@@ -1138,16 +1138,16 @@ namespace cormen {
 			return pos;
 		}
 		// erase all node or clear binary tree
-		void erase() { 
+		void erase() {
 			if (empty())
 				return;
-			_erase(); 
+			_erase();
 		}
 		// adding root to empty tree
 		void add_root(const T& item = T{}) {
 			if (!empty())
 				throw std::out_of_range("calling add_root() for non empty tree");
-			_root = new node_tr(item); 
+			_root = new node_tr(item);
 			sz = 1;
 		}
 		// expand external node
@@ -1209,7 +1209,7 @@ namespace cormen {
 	inline void binary_tree<T>::expand_external(const binary_tree<T>::position_tr& p,
 		const T& left_item, const T& right_item)
 	{
-		if (!p.is_external())	
+		if (!p.is_external())
 			throw std::out_of_range("calling expand_external() for non external node");
 		auto v = p._tr;
 		v->left = new node_tr(left_item);
@@ -1229,26 +1229,26 @@ namespace cormen {
 			if (!right.is_root())
 				remove_above_external(right);
 		}
-		if (root()._tr!= nullptr) {
+		if (root()._tr != nullptr) {
 			delete root()._tr;
 			sz -= 1;
 		}
-        if(_root->left)
-            _root->left = nullptr;
-        if(_root->right)
-            _root->right= nullptr;
-        if(_root->parent)
-            _root->parent= nullptr;
-        if(_root)
-            _root= nullptr;
+		if (_root->left)
+			_root->left = nullptr;
+		if (_root->right)
+			_root->right = nullptr;
+		if (_root->parent)
+			_root->parent = nullptr;
+		if (_root)
+			_root = nullptr;
 	}
 	template<typename Comparable>
 	class binary_heap_max {
 	public:
-		explicit binary_heap_max(const size_t capacity = 100) : 
+		explicit binary_heap_max(const size_t capacity = 100) :
 			_heap(std::vector<Comparable>(capacity)), _sz{ 0 } {}
-		explicit binary_heap_max(const std::vector<Comparable> & _ls):
-			_heap(_ls.size()+10), _sz{_ls.size()} {
+		explicit binary_heap_max(const std::vector<Comparable>& _ls) :
+			_heap(_ls.size() + 10), _sz{ _ls.size() } {
 			for (size_t i = 0; i < _ls.size(); ++i)
 				_heap[i + 1] = _ls[i];
 			build_heap();
@@ -1298,7 +1298,7 @@ namespace cormen {
 	};
 	// insert: insert an element to priority queue
 	template<typename T, class Comparable>
-	inline void priority_queue_list<T, Comparable>::insert(const T&  _val)
+	inline void priority_queue_list<T, Comparable>::insert(const T& _val)
 	{
 		auto begin = _data.begin();
 		while ((begin != _data.end()) && !compare(_val, *begin))
@@ -1322,7 +1322,7 @@ namespace cormen {
 	}
 	// selection_sort: sorting algorithm based on priority queue, complexity O(n^2)
 	template<typename T>
-	void selection_sort(std::list<T> & _ls) {
+	void selection_sort(std::list<T>& _ls) {
 		priority_queue_list<T, std::less<>> temp;
 		auto len_ls = _ls.size();
 		for (size_t i = 0; i < len_ls; ++i) // copy to priority queue
@@ -1361,7 +1361,7 @@ namespace cormen {
 		// precolate down or sink to the hole
 		void percolate_down(size_t hole);
 		// percolate up or swim the to the hole
-		void percolate_up(const Comparable &item);
+		void percolate_up(const Comparable& item);
 		// check current heap size, if exceed the capacity, request or resize
 		void check_size();
 		// extablish heap order property from arbitary arrangments of items, runs on linear time
@@ -1369,7 +1369,7 @@ namespace cormen {
 	};
 	template<typename Comparable>
 	inline binary_heap<Comparable>::binary_heap(const std::vector<Comparable>&
-		collection): _heap(collection.size()+10), _sz{collection.size()}
+		collection) : _heap(collection.size() + 10), _sz{ collection.size() }
 	{
 		for (size_t i = 0; i < collection.size(); ++i)
 			_heap[i + 1] = collection[i];
@@ -1383,20 +1383,20 @@ namespace cormen {
 		return _heap[1];
 	}
 	template<typename Comparable>
-	inline void binary_heap<Comparable>::insert(const Comparable& item){
+	inline void binary_heap<Comparable>::insert(const Comparable& item) {
 		percolate_up(item);
 	}
 	template<typename Comparable>
 	inline void binary_heap<Comparable>::pop_front()
 	{
-		if (empty())	
+		if (empty())
 			throw std::out_of_range("calling pop_front() on empty heap");
 		_heap[1] = std::move(_heap[_sz]);
 		--_sz;
 		percolate_down(1);
 	}
 	template<typename Comparable>
-	inline void binary_heap<Comparable>::clear(){
+	inline void binary_heap<Comparable>::clear() {
 		_heap.clear();
 		_heap = std::vector<Comparable>(1);
 		_sz = 0;
@@ -1418,14 +1418,14 @@ namespace cormen {
 		}
 	}
 	template<typename Comparable>
-	inline void binary_heap<Comparable>::percolate_up(const Comparable &item)
+	inline void binary_heap<Comparable>::percolate_up(const Comparable& item)
 	{
 		check_size();
 		size_t hole = ++_sz; // create hole at the end
 		const Comparable temp = std::move(item);
 		_heap[0] = std::move(temp);
 		// move the key to the right (no violate the heap) position
-		for(; item < _heap[hole / 2] ; hole /= 2)
+		for (; item < _heap[hole / 2]; hole /= 2)
 			_heap[hole] = std::move(_heap[hole / 2]);
 		_heap[hole] = std::move(item);
 	}
@@ -1474,7 +1474,7 @@ namespace cormen {
 	inline void binary_heap_max<Comparable>::precolate_down(size_t hole)
 	{
 		size_t child = 0;
-		while (2*hole <= size())
+		while (2 * hole <= size())
 		{
 			child = 2 * hole;
 			if ((child != size()) && (_heap[child] < _heap[child + 1]))
@@ -1500,12 +1500,12 @@ namespace cormen {
 	template<typename Comparable>
 	class binaryheap {
 	public:
-		binaryheap(const size_t &capacity = 100, const bool &min_priority=true) :
-			_heap(std::vector<Comparable>(capacity)), _sz{ 0 }, _minpriority{ min_priority} {}
+		binaryheap(const size_t& capacity = 100, const bool& min_priority = true) :
+			_heap(std::vector<Comparable>(capacity)), _sz{ 0 }, _minpriority{ min_priority } {}
 
 		binaryheap(const std::vector<Comparable>& collections, const bool& min_priority = true)
-			: _heap(collections.size()+10), _minpriority{ min_priority }, 
-			_sz{collections.size()} {
+			: _heap(collections.size() + 10), _minpriority{ min_priority },
+			_sz{ collections.size() } {
 			for (size_t i = 0; i < collections.size(); ++i)
 				_heap[i + 1] = collections[i];
 			build_heap();
@@ -1577,7 +1577,7 @@ namespace cormen {
 	{
 		size_t child = 0;
 		if (_minpriority) { // minimum for as a priority
-			while (2*hole<=size())
+			while (2 * hole <= size())
 			{
 				child = 2 * hole;
 				if ((size() != child) && (_heap[child] > _heap[child + 1]))
@@ -1589,7 +1589,7 @@ namespace cormen {
 			}
 		}
 		else { // otherwise make maximum as priority
-			while (2*hole<=size())
+			while (2 * hole <= size())
 			{
 				child = 2 * hole;
 				if ((size() != child) && (_heap[child] < _heap[child + 1]))
@@ -1669,7 +1669,7 @@ namespace cormen {
 			insert(key, value, _root);
 		}
 		// contains: return true if key is found otherwise false
-		bool contains(const Comparable_Key &key)const{
+		bool contains(const Comparable_Key& key)const {
 			return contains(key, _root);
 		}
 		// remove: remove key from tree
@@ -1703,7 +1703,7 @@ namespace cormen {
 			}
 			return vec;
 		}
-		void insert(const Comparable_Key &&key, const Comparable_Value &&value) {
+		void insert(const Comparable_Key&& key, const Comparable_Value&& value) {
 			insert(std::move(key), std::move(value), _root);
 		}
 	private:
@@ -1713,42 +1713,43 @@ namespace cormen {
 			binary_node* _left; // left child
 			binary_node* _right; // right child
 			// ctor for binary node with key and value pair
-			binary_node(const Comparable_Key& key,const Comparable_Value& value, 
-				binary_node* lt, binary_node *rt) : _key{ key }, 
-				_value {value}, _left{ lt }, _right{ rt } {}
+			binary_node(const Comparable_Key& key, const Comparable_Value& value,
+				binary_node* lt, binary_node* rt) : _key{ key },
+				_value{ value }, _left{ lt }, _right{ rt } {}
 			// ctor for binary node with key and value pair
-			binary_node(Comparable_Key &&key, Comparable_Value && value, binary_node *lt, 
-				binary_node*rt) : _key{std::move(key)}, _value{std::move(value)},
-				_left{std::move(lt)}, _right{std::move(rt)}{}
+			binary_node(Comparable_Key&& key, Comparable_Value&& value, binary_node* lt,
+				binary_node* rt) : _key{ std::move(key) }, _value{ std::move(value) },
+				_left{ std::move(lt) }, _right{ std::move(rt) } {}
 		};
 		binary_node* _root;
-		void insert(const Comparable_Key& key, const Comparable_Value& value, binary_node*& t)
+		void insert(const Comparable_Key& key, const Comparable_Value& value,
+			binary_node*& t)
 		{
-			if (t==nullptr)
+			if (t == nullptr)
 				t = new binary_node(key, value, nullptr, nullptr);
 			else if (key < t->_key)
 				insert(key, value, t->_left);
-			else if (t->_key<key)
+			else if (t->_key < key)
 				insert(key, value, t->_right);
 			else
 				; // duplicate
 		}
 		binary_node* find_min(binary_node* t)const {
-			if (t==nullptr)
+			if (t == nullptr)
 				return nullptr;
-			else if (t->_left==nullptr)
+			else if (t->_left == nullptr)
 				return t;
 			return find_min(t->_left);
 		}
 		binary_node* find_max(binary_node* t)const {
-			if (t==nullptr)
+			if (t == nullptr)
 				return nullptr;
-			else if (t->_right==nullptr)
+			else if (t->_right == nullptr)
 				return t;
 			return find_max(t->_right);
 		}
-		bool contains(const Comparable_Key &key, binary_node *t)const {
-			if (t==nullptr)
+		bool contains(const Comparable_Key& key, binary_node* t)const {
+			if (t == nullptr)
 				return false;
 			else if (key < t->_key)
 				return contains(key, t->_left);
@@ -1756,14 +1757,14 @@ namespace cormen {
 				return contains(key, t->_right);
 			return true; // match with given key
 		}
-		void remove(const Comparable_Key& key, binary_node* &t) {
-			if (t==nullptr)
+		void remove(const Comparable_Key& key, binary_node*& t) {
+			if (t == nullptr)
 				return; // item not found
 			if (key < t->_key)
 				remove(key, t->_left);
 			else if (t->_key < key)
 				remove(key, t->_right);
-			else if (t->_left != nullptr && t->_right != nullptr) 
+			else if (t->_left != nullptr && t->_right != nullptr)
 			{
 				// in case deletion contains two child
 				t->_key = find_min(t->_right)->_key;
@@ -1784,19 +1785,19 @@ namespace cormen {
 			t = nullptr;
 		}
 		binary_node* clone(binary_node* t) {
-			if (t==nullptr)
+			if (t == nullptr)
 				return nullptr;
-			return new binary_node(t->_key, t->_value, 
-				clone(t->_left),clone(t->_right));
+			return new binary_node(t->_key, t->_value,
+				clone(t->_left), clone(t->_right));
 		}
 		size_t size(binary_node* t)const {
-			if (t==nullptr)
+			if (t == nullptr)
 				return 0;
 			return 1 + size(t->_left) + size(t->_right);
 		}
 		void insert(Comparable_Key&& key, Comparable_Value&& value, binary_node*& t)
 		{
-			if (t==nullptr)
+			if (t == nullptr)
 				t = new binary_node(std::move(key), std::move(value), nullptr, nullptr);
 			else if (key < t->_key)
 				insert(std::move(key), std::move(value), t->_left);
@@ -1812,6 +1813,146 @@ namespace cormen {
 	{
 		_root = nullptr;
 	}
+	template<typename key, typename value>
+	class red_black_tree {
+	public:
+		red_black_tree() {
+			_root = nullptr;		
+		}
+		// empty: return true if tree is empty otherwise false
+		bool empty()const {
+			return _root == nullptr ? true : false;
+		}
+		// size: return total number of node in tree
+		size_t size()const { 
+			// return size(_root); 
+			return items().size();
+		}
 
+		// front: return the root key and value pair
+		std::pair<key, value> top()const {
+			if (empty())
+				throw std::out_of_range("call top() on empty tree");
+			return std::make_pair(_root->_key, _root->_value);
+		}
+
+		// insert: insert key and value pair to tree
+		void insert(const key& k, const value& val) {
+			_root = insert(_root, k, val);
+			_root->_color = BLACK;
+		}
+		// items: return all key and value pair in tree using vector
+		std::vector<std::pair<key, value>> items()const {
+			std::vector<std::pair<key, value>> vec;
+			std::stack<red_black_node*> st;
+			auto current = _root;
+			while (current || !st.empty()) {
+				if (current) {
+					st.push(current);
+					current = current->_left;
+				}
+				else {
+					current = st.top();
+					st.pop();
+					vec.push_back(std::make_pair(current->_key, current->_value));
+					current = current->_right;
+				}
+			}
+			return vec;
+		}
+		// min: return minimum key and its value
+		std::pair<key, value> min(){
+			if (empty())
+				throw std::out_of_range("calling min() on empty tree");
+			return std::make_pair(find_min(_root)->_key, find_min(_root)->_value);
+		}
+		// max: return maximum key and its value
+		std::pair<key, value> max(){
+			if (empty())
+				throw std::out_of_range("calling max() on empty tree");
+			return std::make_pair(find_max(_root)->_key, find_max(_root)->_value);
+		}
+	private:
+		enum {
+			RED, BLACK
+		};
+		struct red_black_node
+		{
+			key _key;
+			value _value;
+			int _color;
+			size_t _sz;
+			red_black_node* _left;
+			red_black_node* _right;
+			red_black_node(const key& k = key{}, const value& v = value{},
+				const int color = RED, const size_t sz = 1, red_black_node* lhs = nullptr,
+				red_black_node* rhs = nullptr) : _key{ k }, _value{ v }, _color{ color },
+				_left{ lhs }, _right{ rhs } {}
+		};
+		red_black_node* _root;
+		red_black_node* rotate_left(red_black_node*& head) {
+			red_black_node *x = head->_right;
+			head->_right = x->_left;
+			x->_left = head;
+			x->_color = head->_color;
+			head->_color = RED;
+			x->_sz = head->_sz;
+			head->_sz = 1 + size(head->_left) + size(head->_right);
+			return x;
+		}
+		red_black_node* rotate_right(red_black_node*& head) {
+			red_black_node *x = head->_left;
+			head->_left = x->_right;
+			x->_right = head;
+			head->_color = RED;
+			x->_sz = head->_sz;
+			head->_sz = 1 + size(head->_left) + size(head->_right);
+			return x;
+		}
+		bool red(const red_black_node* nd)const {
+			if (!nd) return false;
+			return nd->_color == RED;
+		}
+		void flip_color(red_black_node *& head) {
+			head->_color = RED;
+			head->_left->_color = BLACK;
+			head->_right->_color = BLACK;
+		}
+		red_black_node* insert(red_black_node* &head, const key& k, const value& val) {
+			if (!head)
+				return new red_black_node(k, val, RED, 1);
+			if (k < head->_key) {
+				head->_left = insert(head->_left, k, val);
+				head->_sz++;
+			}
+			else if (head->_key < k) {
+				head->_right = insert(head->_right, k, val);
+				head->_sz++;
+			}
+			else
+				head->_value = val;
+			if (red(head->_right) && !red(head->_left))
+				head = rotate_left(head);
+			if (red(head->_left) && red(head->_left->_left))
+				head = rotate_right(head);
+			if (red(head->_left) && red(head->_right))
+				flip_color(head);
+			return head;
+		}
+		size_t size(red_black_node *head)const {
+			if (!head) return 0;
+			return head->_sz;
+		}
+		red_black_node* find_min(red_black_node* head) {
+			if(!head) return nullptr;
+			if(!head->_left) return head;
+			return find_min(head->_left);
+		}
+		red_black_node* find_max(red_black_node* head) {
+			if(!head) return nullptr;
+			if(!head->_right) return head;
+			return find_max(head->_right);
+		}
+	};
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

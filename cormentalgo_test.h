@@ -1640,10 +1640,8 @@ TEST(binary_search_tree_key_value, calling_remove){
 	EXPECT_EQ(3, data.size());
 	data.remove(78);
 	EXPECT_EQ(2, data.size());
-
 	data.remove(90);
 	EXPECT_EQ(1, data.size());
-
 	data.remove(89);
 	EXPECT_EQ(0, data.size());
 }
@@ -1742,5 +1740,92 @@ TEST(binary_search_tree_key_value, calling_max_empty){
 	binary_search_tree<int, int> data;
 	EXPECT_ANY_THROW(data.max());
 }
-
+TEST(red_black_tree, calling_size) {
+	red_black_tree<int, std::string> name;
+	EXPECT_EQ(0, name.size());
+}
+TEST(red_black_tree, calling_front) {
+	red_black_tree<int, std::string> name;
+	name.insert(1, std::string("michael s"));
+	std::pair<int, std::string> goal = make_pair( 1, "michael s" );
+	EXPECT_EQ(goal, name.top());
+}
+TEST(red_black_tree, calling_insert_multiple) {
+	red_black_tree<int, std::string> name;
+	name.insert(1, std::string("michael s"));
+	name.insert(2, std::string("dwi s"));
+	name.insert(3, std::string("kuncjoro s"));
+	std::pair<int, std::string> goal = make_pair(2, "dwi s");
+	EXPECT_EQ(goal, name.top());
+}
+TEST(red_black_tree, calling_size_on_multiple_insert) {
+	red_black_tree<int, std::string> name;
+	name.insert(1, std::string("michael s"));
+	name.insert(2, std::string("dwi s"));
+	EXPECT_EQ(2, name.size());
+}
+TEST(red_black_tree, calling_empty) {
+	red_black_tree<int, int> data;
+	EXPECT_TRUE(data.empty());
+}
+TEST(red_black_tree, calling_min) {
+	red_black_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::pair<int, int> goal = { 78,902 };
+	EXPECT_EQ(goal, data.min());
+}
+TEST(red_black_tree, calling_min_random) {
+	red_black_tree<int, int> data;
+	std::vector<std::pair<int, int>> goal;
+	for (size_t i = 0; i < 30; ++i) {
+		auto key = std::rand();
+		auto value = std::rand();
+		data.insert(key, value);
+		goal.push_back({ key,value });
+	}
+	std::sort(goal.begin(), goal.end());
+	EXPECT_EQ(goal.front(), data.min());
+}
+TEST(red_black_tree, calling_max) {
+	red_black_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::pair<int, int> goal = { 90,903 };
+	EXPECT_EQ(goal, data.max());
+}
+TEST(red_black_tree, calling_max_random) {
+	red_black_tree<int, int> data;
+	std::vector<std::pair<int, int>> goal;
+	for (size_t i = 0; i < 30; ++i) {
+		auto key = std::rand();
+		auto value = std::rand();
+		data.insert(key, value);
+		goal.push_back({ key,value });
+	}
+	std::sort(goal.begin(), goal.end());
+	EXPECT_EQ(goal.back(), data.max());
+}
+TEST(red_black_tree, calling_items) {
+	red_black_tree<int, int> data;
+	data.insert(89, 901);
+	data.insert(78, 902);
+	data.insert(90, 903);
+	std::vector<std::pair<int, int>> goal = { {78,902},{89,901},{90,903} };
+	EXPECT_EQ(goal, data.items());
+}
+TEST(red_black_tree, calling_items_random) {
+	red_black_tree<int, int> data;
+	std::vector<std::pair<int, int>> goal;
+	for (size_t i = 0; i < 30; ++i) {
+		auto key = std::rand();
+		auto value = std::rand();
+		data.insert(key, value);
+		goal.push_back({ key,value });
+	}
+	std::sort(goal.begin(), goal.end());
+	EXPECT_EQ(goal, data.items());
+}
 #endif	
