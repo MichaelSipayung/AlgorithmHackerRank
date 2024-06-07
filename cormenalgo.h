@@ -1817,16 +1817,17 @@ namespace cormen {
 	class red_black_tree {
 	public:
 		red_black_tree() {
-			_root = nullptr;		
+			_root = nullptr;
+			total_node	= 0;
 		}
 		// empty: return true if tree is empty otherwise false
 		bool empty()const {
-			return _root == nullptr ? true : false;
+			return total_node == 0;
 		}
 		// size: return total number of node in tree
 		size_t size()const { 
 			// return size(_root); 
-			return items().size();
+			return total_node;
 		}
 
 		// front: return the root key and value pair
@@ -1840,6 +1841,7 @@ namespace cormen {
 		void insert(const key& k, const value& val) {
 			_root = insert(_root, k, val);
 			_root->_color = BLACK;
+			total_node++;
 		}
 		// items: return all key and value pair in tree using vector
 		std::vector<std::pair<key, value>> items()const {
@@ -1876,6 +1878,7 @@ namespace cormen {
 		enum {
 			RED, BLACK
 		};
+		size_t total_node;
 		struct red_black_node
 		{
 			key _key;
