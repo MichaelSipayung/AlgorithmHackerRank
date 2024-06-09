@@ -1828,4 +1828,18 @@ TEST(red_black_tree, calling_items_random) {
 	std::sort(goal.begin(), goal.end());
 	EXPECT_EQ(goal, data.items());
 }
+TEST(red_black_tree, calling_contain) {
+	red_black_tree<int, int> data;
+	auto temp = 0;
+	for (size_t i = 0; i < 30; ++i) {
+		auto key = std::rand();
+		if (i == 15)
+			temp = key;
+		auto value = std::rand();
+		data.insert(key, value);
+	}
+	data.insert(99, 66);
+	EXPECT_TRUE(data.contain(99));
+	EXPECT_TRUE(data.contain(temp));
+}
 #endif	
