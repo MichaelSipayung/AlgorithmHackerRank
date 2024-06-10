@@ -6,6 +6,7 @@
 /.vs
 /.vscode
 /build
+/debug
 /cmake-build-debug
 /gcc_build
 /clang_gcc

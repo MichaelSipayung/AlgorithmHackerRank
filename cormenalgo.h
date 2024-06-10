@@ -1876,6 +1876,24 @@ namespace cormen {
 				throw std::out_of_range("calling max() on empty tree");
 			return std::make_pair(find_max(_root)->_key, find_max(_root)->_value);
 		}
+		
+		// delete_min: delete the smallest key at the tree
+		void delete_min(){
+			if(!red(_root->_left) && !red(_root->_right))
+				_root->_color = RED;
+			_root = delete_min(_root); // make the 3-node, and delete it
+			if(!empty()) // after performing delete, change the head color back
+				_root->_color = BLACK;
+		}
+
+		// delete_max: delete the greatest key at the tree
+		void delete_max(){
+			if(!red(_root->_left) && !red(_root->_right)) // look at the parent
+				_root->_color = RED;
+			_root = delete_max(_root);
+			if(!empty())
+				_root->_color = BLACK;
+		}
 	private:
 		enum {
 			RED, BLACK
@@ -1919,9 +1937,13 @@ namespace cormen {
 			return nd->_color == RED;
 		}
 		void flip_color(red_black_node *& head) {
-			head->_color = RED;
-			head->_left->_color = BLACK;
-			head->_right->_color = BLACK;
+			if(head){
+				head->_color =RED;
+				if(head->_left)
+					head->_left->_color = BLACK;
+				if(head->_right)
+					head->_right->_color = BLACK;
+			}
 		}
 		red_black_node* insert(red_black_node* &head, const key& k, const value& val) {
 			if (!head)
@@ -1966,6 +1988,52 @@ namespace cormen {
 			else if (head->_key < k)
 				return contain(head->_right, k);
 			return true;
+		}
+		red_black_node *balance(red_black_node *&head){
+			if(head)
+				if(red(head->_right))
+					head = rotate_left(head);
+			return head;
+		}
+		red_black_node *move_red_right(red_black_node *&head){
+			if(head){
+				flip_color(head);
+				if(head->_left && !red(head->_left->_left))
+					head = rotate_right(head);
+			}
+			return head;
+		}
+		red_black_node *move_red_left(red_black_node *&head){
+			if(head){
+				flip_color(head);
+				if(head->_right && red(head->_right->_left)){
+					head->_right = rotate_right(head->_right);
+					head = rotate_left(head);
+				}
+			}
+			return head;
+		}
+		red_black_node *delete_max(red_black_node *&head){
+			if(head){
+				if(red(head->_left))
+					head = rotate_right(head);
+				if(!head->_right)
+					return nullptr;
+				if(!red(head->_right) && !red(head->_right->_left))
+					head= move_red_right(head);
+				head->_right = delete_max(head->_right);
+			}
+			return head ? balance(head) : nullptr;
+		}
+		red_black_node *delete_min(red_black_node *&head){
+			if(head){
+				if(!head->_left)
+					return nullptr;
+				if(!red(head->_left) && !red(head->_left->_left))
+					head = move_red_left(head);
+				head->_left = delete_min(head->_left);
+			}
+			return head ? balance(head) : nullptr;
 		}
 	};
 };     // namespace cormen

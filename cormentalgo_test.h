@@ -1842,4 +1842,13 @@ TEST(red_black_tree, calling_contain) {
 	EXPECT_TRUE(data.contain(99));
 	EXPECT_TRUE(data.contain(temp));
 }
+TEST(red_black_node, calling_delete_max){
+	red_black_tree<std::string, size_t> data;
+	data.insert(std::string("michael"), 2);
+	data.insert(std::string("simon"), 3);
+	data.insert(std::string("yoel"), 4);
+	std::pair<std::string, size_t> temp = {std::string("simon"), 3};
+	data.delete_max();
+	EXPECT_EQ(temp, data.max());
+}
 #endif	
