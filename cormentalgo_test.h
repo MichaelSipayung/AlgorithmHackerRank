@@ -1842,7 +1842,7 @@ TEST(red_black_tree, calling_contain) {
 	EXPECT_TRUE(data.contain(99));
 	EXPECT_TRUE(data.contain(temp));
 }
-TEST(red_black_node, calling_delete_max){
+TEST(red_black_tree, calling_delete_max){
 	red_black_tree<std::string, size_t> data;
 	data.insert(std::string("michael"), 2);
 	data.insert(std::string("simon"), 3);
@@ -1850,5 +1850,48 @@ TEST(red_black_node, calling_delete_max){
 	std::pair<std::string, size_t> temp = {std::string("simon"), 3};
 	data.delete_max();
 	EXPECT_EQ(temp, data.max());
+}
+TEST(red_black_tree, calling_delete_min){
+	red_black_tree<std::string, size_t> data;
+	data.insert(std::string("michael"), 2);
+	data.insert(std::string("simon"), 3);
+	data.insert(std::string("yoel"), 4);
+	std::pair<std::string, size_t> temp = {std::string("simon"), 3};
+	data.delete_min();
+	EXPECT_EQ(temp, data.min());
+}
+TEST(red_black_tree, random_delete_min){
+	red_black_tree<int, double> data;
+	std::vector<std::pair<int, double>> temp = {
+		{13,90.2}, {136,90.2},{133,90.2},
+		{113,90.2},{1389,90.2}
+	};	
+	for (size_t i = 0; i < 5; i++)
+		data.insert(temp[i].first, temp[i].second);
+		
+	std::sort(temp.begin(), temp.end());
+	auto beg = temp.begin();
+	while(beg!= temp.end()){
+		EXPECT_EQ(*beg, data.min());
+		data.delete_min();
+		++beg;
+	}
+}
+TEST(red_black_tree, random_delete_max){
+	red_black_tree<int, double> data;
+	std::vector<std::pair<int, double>> temp = {
+		{13,90.2}, {136,90.2},{133,90.2},
+		{113,90.2},{1389,90.2}
+	};
+	for (size_t i = 0; i < 5; i++)
+		data.insert(temp[i].first, temp[i].second);
+
+	std::sort(temp.begin(), temp.end(), std::greater<>());
+	auto beg = temp.begin();
+	while(beg!= temp.end()){
+		EXPECT_EQ(*beg, data.max());
+		data.delete_max();
+		++beg;
+	}
 }
 #endif	

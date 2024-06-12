@@ -1882,8 +1882,11 @@ namespace cormen {
 			if(!red(_root->_left) && !red(_root->_right))
 				_root->_color = RED;
 			_root = delete_min(_root); // make the 3-node, and delete it
-			if(!empty()) // after performing delete, change the head color back
+			// after performing delete, change the head color back
+			if(_root)
 				_root->_color = BLACK;
+			if(_root)
+				--_total_node;
 		}
 
 		// delete_max: delete the greatest key at the tree
@@ -1891,8 +1894,10 @@ namespace cormen {
 			if(!red(_root->_left) && !red(_root->_right)) // look at the parent
 				_root->_color = RED;
 			_root = delete_max(_root);
-			if(!empty())
+			if(_root)
 				_root->_color = BLACK;
+			if(_root)
+				--_total_node;
 		}
 	private:
 		enum {
