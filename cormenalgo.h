@@ -2030,16 +2030,20 @@ namespace cormen {
 			}
 			return head ? balance(head) : nullptr;
 		}
+
 		red_black_node *delete_min(red_black_node *&head){
 			if(head){
-				if(!head->_left)
+				if(!head->_left && !head->_right){
+					--_total_node;
 					return nullptr;
+				}
 				if(!red(head->_left) && !red(head->_left->_left))
 					head = move_red_left(head);
 				head->_left = delete_min(head->_left);
 			}
 			return head ? balance(head) : nullptr;
 		}
+		
 	};
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM

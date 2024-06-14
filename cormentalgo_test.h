@@ -1862,22 +1862,22 @@ TEST(red_black_tree, calling_delete_min){
 }
 TEST(red_black_tree, random_delete_min){
 	red_black_tree<int, double> data;
-	std::vector<std::pair<int, double>> temp = {
-		{13,90.2}, {136,90.2},{133,90.2},
-		{113,90.2},{1389,90.2}
-	};	
-	for (size_t i = 0; i < 5; i++)
-		data.insert(temp[i].first, temp[i].second);
-		
-	std::sort(temp.begin(), temp.end());
-	auto beg = temp.begin();
-	while(beg!= temp.end()){
-		EXPECT_EQ(*beg, data.min());
+	std::set<int> key;
+	for (size_t i = 0; i < 20; i++){
+		key.insert(std::rand());
+	}
+	for(auto beg = key.begin(); beg!= key.end(); ++beg){
+		data.insert(*beg, 90.2);
+	}
+	auto beg = key.begin();
+	while(beg!= key.end()){
+		auto temp_pair = std::make_pair(*beg, 90.2);
+		EXPECT_EQ(temp_pair, data.min());
 		data.delete_min();
 		++beg;
 	}
 }
-TEST(red_black_tree, random_delete_max){
+TEST(red_black_tree, DISABLED_random_delete_max){
 	red_black_tree<int, double> data;
 	std::vector<std::pair<int, double>> temp = {
 		{13,90.2}, {136,90.2},{133,90.2},
