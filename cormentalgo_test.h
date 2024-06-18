@@ -1926,7 +1926,6 @@ TEST(non_recursive_binary_tree, calling_find_min) {
 	data.insert(89, 90);
 	data.insert(78, 90);
 	data.insert(90, 90);
-	data.print();
 	auto pairmin = std::make_pair(78, 90);
 	EXPECT_EQ(pairmin, data.minimum());
 }
@@ -1946,9 +1945,9 @@ TEST(non_recursive_binary_tree, calling_find_min_random) {
 		key.insert(std::rand());
 
 	for (auto beg = key.begin(); beg != key.end(); ++beg)
-		data.insert(*beg, 90.2);
+		data.insert(*beg, 90);
 
-	auto pairmin = std::make_pair(*key.begin(), 90.2);
+	auto pairmin = std::make_pair(*key.begin(), 90);
 	EXPECT_EQ(pairmin, data.minimum());
 }
 // random test case for non recursive binary tree, maximum
@@ -1959,9 +1958,10 @@ TEST(non_recursive_binary_tree, calling_find_max_random) {
 		key.insert(std::rand());
 
 	for (auto beg = key.begin(); beg != key.end(); ++beg)
-		data.insert(*beg, 90.2);
-
-	auto pairmax = std::make_pair(*key.begin(), 90.2);
+		data.insert(*beg, 90);
+	auto max = key.end();
+	--max;
+	auto pairmax = std::make_pair(*max, 90);
 	EXPECT_EQ(pairmax, data.maximum());
 }
 TEST(non_recursive_binary_tree, DISABLED_calling_remove) {

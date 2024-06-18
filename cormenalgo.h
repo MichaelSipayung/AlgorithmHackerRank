@@ -2136,7 +2136,7 @@ namespace cormen {
 			}
 			return current;
 		}
-		void insert(non_recursive_node *x, const key& k, const value& v) {
+		void insert(non_recursive_node *&x, const key& k, const value& v) {
 			non_recursive_node *y = nullptr;
 			auto temp = x;
 			while (temp) {
