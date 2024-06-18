@@ -2045,5 +2045,123 @@ namespace cormen {
 		}
 		
 	};
+	template<typename key, typename value>
+	class non_recursive_binary_search_tree {
+	private:
+		struct non_recursive_node {
+			non_recursive_node(const key& k = key{}, const value& v = value{},
+				non_recursive_node* lt = nullptr, non_recursive_node* rt = nullptr,
+				non_recursive_node* pt = nullptr) : _key{ k }, _value{ v },
+				left{ lt }, right{ rt }, parent{ pt } {}
+			key _key;
+			value _value;
+			non_recursive_node* left;
+			non_recursive_node* right;
+			non_recursive_node* parent;
+		};
+	public:
+		non_recursive_binary_search_tree() {
+			_root = nullptr;
+			_total_node = 0;
+		}
+		// empty: return true if tree is empty otherwise false
+		bool empty()const {
+			return _total_node == 0;
+		}
+		// size: return total number of node in tree
+		size_t size()const {
+			return _total_node;
+		}
+		// minimum: return minimum key and its value
+		const std::pair<key, value> minimum()const {
+			if (empty())
+				throw std::out_of_range("calling minimum() on empty tree");
+			auto min = minimum(_root);
+			return std::make_pair(min->_key, min->_value);
+		}
+		// maximum: return maximum key and its value
+		const std::pair<key, value> maximum()const {
+			if (empty())
+				throw std::out_of_range("calling maximum() on empty tree");
+			auto max = maximum(_root);
+			return std::make_pair(max->_key, max->_value);
+
+			//return std::make_pair(maximum(_root)->_key, maximum(_root)->_value);
+		}
+		// successor: return the successor key and its value
+		non_recursive_node* successor(const  key& k) {
+			return find(_root, k);
+		}
+		// insert: insert key and value pair to tree
+		void insert(const key& k, const value& v)noexcept {
+			insert(_root, k, v);
+		}
+		// print: print all key and value pair in tree
+		void print()const {
+			print(_root);
+		}
+	private:
+		non_recursive_node* _root;
+		size_t _total_node;
+		non_recursive_node* minimum(non_recursive_node* nd)const{
+			auto current = nd;
+			while (current->left)
+				current = current->left;
+			return current;
+		}
+		non_recursive_node* maximum(non_recursive_node* nd)const {
+			auto current = nd;
+			while (current->right)
+				current = current->right;
+			return current;
+		}
+		non_recursive_node* successor(non_recursive_node* x) {
+			if (x->right) // if right subtree is not empty
+				return minimum(x->right);
+			non_recursive_node* y = x->parent; // goes up to the parent
+			while (y && x == y->right) {
+				x = y;
+				y = y->parent;
+			}
+			return y;
+		}
+		non_recursive_node* find(const non_recursive_node& nd, const
+			key& k) {
+			auto current = nd;
+			while (current && current->_key != k) {
+				if (k < current->_key)
+					current = current->left;
+				else
+					current = current->right;
+			}
+			return current;
+		}
+		void insert(non_recursive_node *x, const key& k, const value& v) {
+			non_recursive_node *y = nullptr;
+			auto temp = x;
+			while (temp) {
+				y = temp;
+				if (k < temp->_key)
+					temp = temp->left;
+				else
+					temp = temp->right;
+			}
+			non_recursive_node *z = new non_recursive_node(k, v, nullptr, nullptr, y);
+			if(!y)
+				x = z;
+			else if(k < y->_key)
+				y->left = z;
+			else
+				y->right = z;
+			_total_node++;
+		}
+		void print(const non_recursive_node* nd)const {
+			if (nd) {
+				print(nd->left);
+				std::cout << nd->_key << " ";
+				print(nd->right);
+			}
+		}
+	};
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
