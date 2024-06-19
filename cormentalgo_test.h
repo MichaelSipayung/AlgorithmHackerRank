@@ -1894,65 +1894,68 @@ TEST(red_black_tree, DISABLED_random_delete_max){
 		++beg;
 	}
 }
-TEST(non_recursive_binary_tree, calling_empty) {
+class non_recursive_binary_search_tree_test : public ::testing::Test {
+protected:
 	non_recursive_binary_search_tree<int, int> data;
+	void SetUp()override {
+	}
+	void TearDown()override {
+		data.clear();
+	}
+};
+
+TEST_F(non_recursive_binary_search_tree_test, calling_empty) {
 	EXPECT_TRUE(data.empty());
 }
-TEST(non_recursive_binary_tree, calling_size) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_size) {
 	EXPECT_EQ(0, data.size());
 }
-TEST(non_recursive_binary_tree, calling_insert) {
-	non_recursive_binary_search_tree<int, int> data;
-	data.insert(89, 90);
+TEST_F(non_recursive_binary_search_tree_test, calling_insert) {
+	data.insert(100, 90);
 	EXPECT_EQ(1, data.size());
 }
-TEST(non_recursive_binary_tree, calling_insert_multiple) {
-	non_recursive_binary_search_tree<int, int> data;
-	data.insert(89, 9440);
-	data.insert(78, 940);
-	data.insert(90, 9430);
-	EXPECT_EQ(3, data.size());
+TEST_F(non_recursive_binary_search_tree_test, calling_insert_multiple) {
+	for (int i = 0; i < 10; i++)
+		data.insert(i, 90);
+	EXPECT_EQ(10, data.size());
 }
-TEST(non_recursive_binary_tree, calling_insert_duplicate) {
-	non_recursive_binary_search_tree<int, int> data;
-	data.insert(89, 90);
-	EXPECT_EQ(1, data.size());
-	data.insert(89, 90);
+TEST_F(non_recursive_binary_search_tree_test, calling_insert_duplicate) {
+	data.insert(11,90);
+	data.insert(11, 89);
 	EXPECT_EQ(2, data.size());
 }
-TEST(non_recursive_binary_tree, calling_find_min) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_find_min) {
 	data.insert(89, 90);
 	data.insert(78, 90);
 	data.insert(90, 90);
 	auto pairmin = std::make_pair(78, 90);
 	EXPECT_EQ(pairmin, data.minimum());
 }
-TEST(non_recursive_binary_tree, calling_find_max) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_find_max) {
 	data.insert(89, 690);
 	data.insert(78, 790);
 	data.insert(90, 990);
 	auto pairmax = std::make_pair(90, 990);
 	EXPECT_EQ(pairmax, data.maximum());
 }
+TEST_F(non_recursive_binary_search_tree_test, calling_find_min_empty) {
+	EXPECT_ANY_THROW(data.minimum());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_find_max_empty) {
+	EXPECT_ANY_THROW(data.maximum());
+}
 // random test case for non recursive binary tree, minimum
-TEST(non_recursive_binary_tree, calling_find_min_random) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_find_min_random) {
 	std::set<int> key;
 	for (size_t i = 0; i < 20; i++)
 		key.insert(std::rand());
-
 	for (auto beg = key.begin(); beg != key.end(); ++beg)
 		data.insert(*beg, 90);
-
 	auto pairmin = std::make_pair(*key.begin(), 90);
 	EXPECT_EQ(pairmin, data.minimum());
 }
 // random test case for non recursive binary tree, maximum
-TEST(non_recursive_binary_tree, calling_find_max_random) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_find_max_random) {
 	std::set<int> key;
 	for (size_t i = 0; i < 20; i++)
 		key.insert(std::rand());
@@ -1964,17 +1967,108 @@ TEST(non_recursive_binary_tree, calling_find_max_random) {
 	auto pairmax = std::make_pair(*max, 90);
 	EXPECT_EQ(pairmax, data.maximum());
 }
-TEST(non_recursive_binary_tree, DISABLED_calling_remove) {
-	non_recursive_binary_search_tree<int, int> data;
+TEST_F(non_recursive_binary_search_tree_test, calling_remove) {
 	data.insert(89, 990);
 	data.insert(78, 980);
 	data.insert(90, 790);
+	data.insert(100, 900);
+	EXPECT_EQ(4, data.size());
+	data.remove(78);
 	EXPECT_EQ(3, data.size());
-	//data.remove(78);
+	data.remove(90);
 	EXPECT_EQ(2, data.size());
-	//data.remove(90);
+	data.remove(89);
 	EXPECT_EQ(1, data.size());
-	//data.remove(89);
+	data.remove(100);
+	EXPECT_EQ(0, data.size());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_remove_random) {
+	std::set<int> key;
+	for (size_t i = 0; i < 20; i++)
+		key.insert(std::rand());
+
+	for (auto beg = key.begin(); beg != key.end(); ++beg)
+		data.insert(*beg, 90);
+
+	auto max = key.end();
+	--max;
+	auto pairmax = std::make_pair(*max, 90);
+	EXPECT_EQ(pairmax, data.maximum());
+	data.remove(*max);
+	key.erase(max);
+	max = key.end();
+	--max;
+	pairmax = std::make_pair(*max, 90);
+	EXPECT_EQ(pairmax, data.maximum());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_remove_multiple_times) {
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	data.insert(100, 900);
+	EXPECT_EQ(4, data.size());
+	data.remove(78);
+	EXPECT_EQ(3, data.size());
+	data.remove(90);
+	EXPECT_EQ(2, data.size());
+	data.remove(89);
+	EXPECT_EQ(1, data.size());
+	data.remove(100);
+	EXPECT_EQ(0, data.size());
+	EXPECT_ANY_THROW(data.minimum());
+	EXPECT_ANY_THROW(data.maximum());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_remove_for_non_exist) {
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	data.insert(100, 900);
+	data.remove(101);
+	EXPECT_EQ(4, data.size());
+	data.remove(781);
+	EXPECT_EQ(4, data.size());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_contain){
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	data.insert(100, 900);
+	EXPECT_TRUE(data.contain(78));
+	EXPECT_TRUE(data.contain(90));
+	EXPECT_TRUE(data.contain(89));
+	EXPECT_FALSE(data.contain(1000));
+}
+// calling contain after remove
+TEST_F(non_recursive_binary_search_tree_test, calling_contain_after_remove){
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	data.insert(100, 900);
+	data.remove(78);
+	EXPECT_FALSE(data.contain(78));
+	EXPECT_TRUE(data.contain(90));
+	EXPECT_TRUE(data.contain(89));
+	EXPECT_TRUE(data.contain(100));
+	data.remove(100);
+	EXPECT_FALSE(data.contain(100));
+	data.remove(90);
+	EXPECT_FALSE(data.contain(90));
+	data.remove(89);
+	EXPECT_FALSE(data.contain(89));
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_clear) {
+	data.insert(89, 990);
+	data.insert(78, 980);
+	data.insert(90, 790);
+	data.insert(100, 900);
+	EXPECT_EQ(4, data.size());
+	data.clear();
+	EXPECT_EQ(0, data.size());
+	EXPECT_ANY_THROW(data.minimum());
+	EXPECT_ANY_THROW(data.maximum());
+}
+TEST_F(non_recursive_binary_search_tree_test, calling_clear_on_empty) {
+	data.clear();
 	EXPECT_EQ(0, data.size());
 }
 #endif	

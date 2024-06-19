@@ -2064,6 +2064,9 @@ namespace cormen {
 			_root = nullptr;
 			_total_node = 0;
 		}
+		~non_recursive_binary_search_tree() {
+			clear();
+		}
 		// empty: return true if tree is empty otherwise false
 		bool empty()const {
 			return _total_node == 0;
@@ -2085,11 +2088,9 @@ namespace cormen {
 				throw std::out_of_range("calling maximum() on empty tree");
 			auto max = maximum(_root);
 			return std::make_pair(max->_key, max->_value);
-
-			//return std::make_pair(maximum(_root)->_key, maximum(_root)->_value);
 		}
 		// successor: return the successor key and its value
-		non_recursive_node* successor(const  key& k) {
+		non_recursive_node* successor(const  key& k)noexcept {
 			return find(_root, k);
 		}
 		// insert: insert key and value pair to tree
@@ -2099,6 +2100,38 @@ namespace cormen {
 		// print: print all key and value pair in tree
 		void print()const {
 			print(_root);
+		}
+		// contain: return true if key is found otherwise false
+		bool contain(const key& k){
+			return find(_root, k) ? true : false;
+		}
+		// remove: remove key from tree
+		void remove(const key& k) {
+			auto z = find(_root, k);
+			if (!z) return;
+			if (!z->left)
+				transplant(z, z->right);
+			else if (!z->right)
+				transplant(z, z->left);
+			else
+			{
+				auto y = minimum(z->right);
+				if (!y->parent) {
+					transplant(y, y->right);
+					y->right = z->right;
+					y->right->parent = y;
+				}
+				transplant(z, y);
+				y->left = z->left;
+				y->left->parent = y;
+			}
+			delete z;
+			_total_node--;
+		}
+		//clear: remove all node from tree
+		void clear() {
+			clear(_root);
+			_total_node = 0;
 		}
 	private:
 		non_recursive_node* _root;
@@ -2125,8 +2158,8 @@ namespace cormen {
 			}
 			return y;
 		}
-		non_recursive_node* find(const non_recursive_node& nd, const
-			key& k) {
+		non_recursive_node* find(non_recursive_node* nd, const
+			key& k){
 			auto current = nd;
 			while (current && current->_key != k) {
 				if (k < current->_key)
@@ -2162,6 +2195,26 @@ namespace cormen {
 				print(nd->right);
 			}
 		}
+		void transplant(non_recursive_node* u, non_recursive_node* v) {
+			if (!u->parent)
+				_root = v;
+			else if (u == u->parent->left)
+				u->parent->left = v;
+			else
+				u->parent->right = v;
+			if (v)
+				v->parent = u->parent;
+		}
+		// clear: remove all node from tree
+		void clear(non_recursive_node* &nd) {
+			if (nd) {
+				clear(nd->left);
+				clear(nd->right);
+				delete nd;
+				nd = nullptr;
+			}
+		}
+
 	};
 };     // namespace cormen
 #endif // !CORMEN_ALGORITHM
