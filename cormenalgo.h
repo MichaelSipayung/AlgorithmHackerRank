@@ -2105,15 +2105,16 @@ namespace cormen {
 		bool contain(const key& k){
 			return find(_root, k) ? true : false;
 		}
-		// remove: remove key from tree
+		// remove: remove key from tree, if key exist delete it otherwise do nothing
 		void remove(const key& k) {
-			auto z = find(_root, k);
+			auto z = find(_root, k); // z or old node to delete
 			if (!z) return;
+			// if z is root node do the first case
 			if (!z->left)
 				transplant(z, z->right);
 			else if (!z->right)
 				transplant(z, z->left);
-			else
+			else // contain two leaves 
 			{
 				auto y = minimum(z->right);
 				if (!y->parent) {
@@ -2195,7 +2196,7 @@ namespace cormen {
 				print(nd->right);
 			}
 		}
-		void transplant(non_recursive_node* u, non_recursive_node* v) {
+		void transplant(non_recursive_node* &u, non_recursive_node* &v) {
 			if (!u->parent)
 				_root = v;
 			else if (u == u->parent->left)

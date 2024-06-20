@@ -2071,4 +2071,15 @@ TEST_F(non_recursive_binary_search_tree_test, calling_clear_on_empty) {
 	data.clear();
 	EXPECT_EQ(0, data.size());
 }
+TEST_F(non_recursive_binary_search_tree_test, calling_delete_on_root) {
+	EXPECT_TRUE(data.empty());
+	data.insert(111, 2332);
+	data.print();
+	EXPECT_FALSE(data.empty());
+	data.remove(111);
+	data.print();
+	EXPECT_TRUE(data.empty());
+	EXPECT_ANY_THROW(data.minimum());
+	EXPECT_ANY_THROW(data.maximum());
+}
 #endif	
