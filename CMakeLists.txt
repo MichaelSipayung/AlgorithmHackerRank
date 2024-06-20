@@ -10,7 +10,7 @@ find_package(fmt CONFIG REQUIRED)
 #        GTest::gmock GTest::gmock_main)
 
 # add separate executable for test
-add_executable(AlgorithmTests test.cpp )
+add_executable(AlgorithmTests test.cpp)
 target_link_libraries(AlgorithmTests PRIVATE GTest::gtest GTest::gtest_main fmt::fmt)
 
 add_test(AllTestsInAlgorithm AlgorithmTests)
