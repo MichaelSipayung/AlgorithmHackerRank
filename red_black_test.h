@@ -38,4 +38,18 @@ TEST_F(red_black_test, calling_maximum) {
 	tree.insert(3, 3);
 	EXPECT_EQ(tree.maximum().first, 3);
 }
+TEST_F(red_black_test, calling_random_behavior){
+	std::set<int> temp;
+	for(auto i =0; i<20; ++i)
+		temp.insert(std::rand());
+	EXPECT_TRUE(tree.empty());
+	for(auto beg = temp.begin(); beg!= temp.end(); ++beg)
+		tree.insert(*beg, 0);
+	EXPECT_FALSE(tree.empty());
+	EXPECT_EQ(temp.size(), tree.size());
+	EXPECT_EQ(*temp.begin(), tree.minimum().first);
+	auto temp_max = temp.end();
+	--temp_max;
+	EXPECT_EQ(*temp_max, tree.maximum().first);
+}
 } // namespace red_black

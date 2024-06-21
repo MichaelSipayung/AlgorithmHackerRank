@@ -25,6 +25,7 @@ namespace red_black {
 		red_black_tree() {
 			nil = new node<Key, Value>(Key(), Value(), BLACK);
 			root = nil;
+			root->parent =  root->left = root->right = nil;
 			sz = 0;
 		}
 		// dtor: destroy the red black tree
@@ -57,9 +58,9 @@ namespace red_black {
 		node<Key, Value>* root;
 		node<Key, Value>* nil;
 		size_t sz;
-		void left_rotate(node<Key, Value>* x);
-		void right_rotate(node<Key, Value>* x);
-		void insert_fixup(node<Key, Value>* z);
+		void left_rotate(node<Key, Value>* &x);
+		void right_rotate(node<Key, Value>* &x);
+		void insert_fixup(node<Key, Value>* &z);
 		void delete_fixup(node<Key, Value>* x);
 		node<Key, Value>* minimum(node<Key, Value>* x);
 		node<Key, Value>* maximum(node<Key, Value>* x);
@@ -70,84 +71,90 @@ namespace red_black {
 
 	// left_rotate: rotate the tree to the left
 	template<class Key, class Value>
-	inline void red_black_tree<Key, Value>::left_rotate(node<Key, Value>* x)
+	inline void red_black_tree<Key, Value>::left_rotate(node<Key, Value>* &x)
 	{
-		auto y = x->right; // set y
-		x->right = y->left; // turn y's left subtree into x's right subtree
-		if(y->left != nil)
-			y->left->parent = x;
-		y->parent = x->parent; // link x's parent to y
-		if (x->parent == nil)
-			root = y;
-		else if(x == x->parent->left)
-			x->parent->left = y;
-		else
-			x->parent->right = y;
-		y->left = x; // put x on y's left
-		x->parent = y;
+		if(x->right != nil) // performing left_rotate need node at the right of x
+		{
+			auto y = x->right; // set y
+			x->right = y->left; // turn y's left subtree into x's right subtree
+			if(y->left != nil)
+				y->left->parent = x;
+			y->parent = x->parent; // link x's parent to y
+			if (x->parent == nil)
+				root = y;
+			else if((x->parent != nil) && (x == x->parent->left))
+				x->parent->left = y;
+			else
+				x->parent->right = y;
+			y->left = x; // put x on y's left
+			x->parent = y;
+		}
 	}
 
 	// right_rotate: rotate the tree to the right
 	template<class Key, class Value>
-	inline void red_black_tree<Key, Value>::right_rotate(node<Key, Value>* x)
+	inline void red_black_tree<Key, Value>::right_rotate(node<Key, Value>* &x)
 	{
-		auto y = x->left; // set y
-		x->left = y->right; // turn y's right subtree into x's left subtree
-		if(y->right != nil)
-			y->right->parent = x;
-		y->parent = x->parent; // link x's parent to y
-		if (x->parent == nil)
-			root = y;
-		else if(x == x->parent->right)
-			x->parent->right = y;
-		else
-			x->parent->left = y;
-		y->right = x; // put x on y's right
-		x->parent = y;
+		if(x->left != nil){ // performing right rotate need node at the left of x
+			auto y = x->left; // set y
+			x->left = y->right; // turn y's right subtree into x's left subtree
+			if(y->right != nil)
+				y->right->parent = x;
+			y->parent = x->parent; // link x's parent to y
+			if (x->parent == nil)
+				root = y;
+			else if((x->parent != nil) && (x == x->parent->right))
+				x->parent->right = y;
+			else
+				x->parent->left = y;
+			y->right = x; // put x on y's right
+			x->parent = y;
+		}
 	}
 
 	// insert_fixup: fix the tree after insertion
 	template<class Key, class Value>
-	inline void red_black_tree<Key, Value>::insert_fixup(node<Key, Value>* z)
+	inline void red_black_tree<Key, Value>::insert_fixup(node<Key, Value>* &z)
 	{
 		while (z->parent->color == RED) {
 			if (z->parent == z->parent->parent->left) {
 				auto y = z->parent->parent->right;
-				if (y->color == RED) { // case 1
+				if (y!=nil && y->color == RED) { // case 1
 					z->parent->color = BLACK; 
 					y->color = BLACK; 
 					z->parent->parent->color = RED;
 					z = z->parent->parent;
 				}
-				else if (z == z->parent->right) { // case 2
-					z = z->parent;
-					left_rotate(z);
-				}
-				else { // case 3
-					z->parent->color = BLACK;
+				else {
+					if (z == z->parent->right) { // case 2
+						z = z->parent;
+						left_rotate(z);
+					}
+					z->parent->color = BLACK; // case 3
 					z->parent->parent->color = RED;
 					right_rotate(z->parent->parent);
 				}
 			}
 			else {
 				auto y = z->parent->parent->left;
-				if (y->color == RED) { // case 1
+				if (y!= nil && y->color == RED) { // case 1
 					z->parent->color = BLACK;
 					y->color = BLACK;
 					z->parent->parent->color = RED;
 					z = z->parent->parent;
 				}
-				else if (z == z->parent->left) { // case 2
-					z = z->parent;
-					right_rotate(z);
-				}
-				else { // case 3
-					z->parent->color = BLACK;
+				else{
+					if (z == z->parent->left) { // case 2
+						z = z->parent;
+						right_rotate(z);
+					}
+					z->parent->color = BLACK; // case 3
 					z->parent->parent->color = RED;
 					left_rotate(z->parent->parent);
-				}
+				} 
 			}
 		}
+		root->color = BLACK;
 	}
 
 	//minimum: find the minimum node in the tree
@@ -175,8 +182,13 @@ namespace red_black {
 			y = x;
 			if (z->key < x->key)
 				x = x->left;
-			else
+			else if(z->key > x->key)
 				x = x->right;
+			else{
+				x->value = value;
+				--sz;
+				return;
+			}
 		}
 		z->parent = y;
 		if(y==nil)

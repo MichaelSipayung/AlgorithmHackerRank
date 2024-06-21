@@ -108,7 +108,7 @@ TEST(LinkedList, operloadoutoperator) {
 	auto temp = linked_list<double>();
 	temp.push_front(1.5);
 	temp.push_front(2.5);
-	temp.print();
+	// temp.print();
 	cout.rdbuf(previous);
 	const auto output = buffer.str();
 	EXPECT_EQ(string("2.5 1.5 "), output);
@@ -2074,10 +2074,10 @@ TEST_F(non_recursive_binary_search_tree_test, calling_clear_on_empty) {
 TEST_F(non_recursive_binary_search_tree_test, calling_delete_on_root) {
 	EXPECT_TRUE(data.empty());
 	data.insert(111, 2332);
-	data.print();
+	// data.print();
 	EXPECT_FALSE(data.empty());
 	data.remove(111);
-	data.print();
+	// data.print();
 	EXPECT_TRUE(data.empty());
 	EXPECT_ANY_THROW(data.minimum());
 	EXPECT_ANY_THROW(data.maximum());
